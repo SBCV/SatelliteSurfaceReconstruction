@@ -131,4 +131,4 @@ dmypy.json
 .pyre/
 
 ########### CUSTOM PATHS ###########
-doc/paper.pdf
+doc/images/paper.pdf
