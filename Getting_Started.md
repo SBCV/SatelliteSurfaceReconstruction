@@ -1,7 +1,8 @@
 # Installation Instructions for Ubuntu 18.04
 
 - Install Python 3.6, 3.7 or 3.8
-    - The following Python version have been used with Python 3.8 and might differ for 3.6 / 3.7
+    - We have tested the pipeline with Python 3.8
+    - The library versions in ```SatelliteSurfaceReconstruction/requirements.txt``` might differ for Python 3.6 and 3.7
 
 - Install [VisSat](https://openaccess.thecvf.com/content_ICCVW_2019/html/3DRW/Zhang_Leveraging_Vision_Reconstruction_Pipelines_for_Satellite_Imagery_ICCVW_2019_paper.html)
     - Follow the [install instructions of ColmapForVisSat](https://github.com/Kai-46/ColmapForVisSat)
