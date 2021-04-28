@@ -132,3 +132,5 @@ dmypy.json
 
 ########### CUSTOM PATHS ###########
 doc/images/paper.pdf
+.idea/
+ssr/configs/pipeline.cfg
