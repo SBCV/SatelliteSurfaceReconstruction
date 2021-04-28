@@ -1,0 +1,26 @@
+{
+  "dataset_dir": "/path/to/spacenet-dataset/Hosted-Datasets/MVS_dataset/WV3/MSI",
+  "work_dir": "/path/to/workspace/site2/msi",
+  "bounding_box": {
+    "zone_number": 21,
+    "hemisphere": "S",
+    "ul_easting": 354984.0,
+    "ul_northing": 6185506.0,
+    "width": 366.0,
+    "height": 350.0
+  },
+  "steps_to_run": {
+    "clean_data": true,
+    "crop_image": true,
+    "derive_approx": false,
+    "choose_subset": false,
+    "colmap_sfm_perspective": false,
+    "inspect_sfm_perspective": false,
+    "reparam_depth": false,
+    "colmap_mvs": false,
+    "aggregate_2p5d": false,
+    "aggregate_3d": false
+  },
+  "alt_min": -20.0,
+  "alt_max": 80.0
+}

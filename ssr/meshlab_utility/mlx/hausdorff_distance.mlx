@@ -1,0 +1,14 @@
+<!DOCTYPE FilterScript>
+<FilterScript>
+ <filter name="Hausdorff Distance">
+  <Param name="SampledMesh" value="0" type="RichMesh" tooltip="The mesh whose surface is sampled. For each sample we search the closest point on the Target Mesh." description="Sampled Mesh"/>
+  <Param name="TargetMesh" value="1" type="RichMesh" tooltip="The mesh that is sampled for the comparison." description="Target Mesh"/>
+  <Param name="SaveSample" value="false" type="RichBool" tooltip="Save the position and distance of all the used samples on both the two surfaces, creating two new layers with two point clouds representing the used samples." description="Save Samples"/>
+  <Param name="SampleVert" value="true" type="RichBool" tooltip="For the search of maxima it is useful to sample vertices and edges of the mesh with a greater care. It is quite probably the the farthest points falls along edges or on mesh vertices, and with uniform montecarlo sampling approachesthe probability of taking a sample over a vertex or an edge is theoretically null.&lt;br>On the other hand this kind of sampling could make the overall sampling distribution slightly biased and slightly affects the cumulative results." description="Sample Vertices"/>
+  <Param name="SampleEdge" value="true" type="RichBool" tooltip="See the above comment." description="Sample Edges"/>
+  <Param name="SampleFauxEdge" value="false" type="RichBool" tooltip="See the above comment." description="Sample FauxEdge"/>
+  <Param name="SampleFace" value="true" type="RichBool" tooltip="See the above comment." description="Sample Faces"/>
+  <Param name="SampleNum" value="1017449" type="RichInt" tooltip="The desired number of samples. It can be smaller or larger than the mesh size, and according to the choosed sampling strategy it will try to adapt." description="Number of samples"/>
+  <Param min="0" max="1127.23" name="MaxDist" value="561.667" type="RichAbsPerc" tooltip="Sample points for which we do not find anything within this distance are rejected and not considered neither for averaging nor for max." description="Max Distance"/>
+ </filter>
+</FilterScript>

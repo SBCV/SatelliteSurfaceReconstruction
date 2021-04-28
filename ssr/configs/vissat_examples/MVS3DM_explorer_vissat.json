@@ -1,0 +1,26 @@
+{
+  "dataset_dir": "/path/to/spacenet-dataset/Hosted-Datasets/MVS_dataset/WV3/PAN",
+  "work_dir": "/path/to/workspace/explorer/vissat",
+  "bounding_box": {
+    "zone_number": 21,
+    "hemisphere": "S",
+    "ul_easting": 354052.3651180889,
+    "ul_northing": 6182702.10540914,
+    "width": 712.9748326897388,
+    "height": 651.4791190521792
+  },
+  "steps_to_run": {
+    "clean_data": true,
+    "crop_image": true,
+    "derive_approx": true,
+    "choose_subset": true,
+    "colmap_sfm_perspective": true,
+    "inspect_sfm_perspective": true,
+    "reparam_depth": true,
+    "colmap_mvs": true,
+    "aggregate_2p5d": true,
+    "aggregate_3d": true
+  },
+  "alt_min": -30.0,
+  "alt_max": 120.0
+}
