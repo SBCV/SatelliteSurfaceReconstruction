@@ -39,9 +39,7 @@ def create_path_manager(ssr_config):
         vissat_workspace_dp=ssr_config.get_option_value(
             "workspace_vissat_dp", str
         ),
-        ssr_workspace_dp=ssr_config.get_option_value(
-            "workspace_ssr_dp", str
-        ),
+        ssr_workspace_dp=ssr_config.get_option_value("workspace_ssr_dp", str),
     )
     return pm
 

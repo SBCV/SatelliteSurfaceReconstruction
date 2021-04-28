@@ -14,7 +14,6 @@ from ssr.utility.logging_extension import logger
 
 
 class MeshingStep:
-
     @staticmethod
     def compute_mesh_with_colmap(
         colmap_idp,

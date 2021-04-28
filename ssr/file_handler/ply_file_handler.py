@@ -420,9 +420,7 @@ class PLYFileHandler:
     @staticmethod
     def read_and_write_test(ifp, ofp):
         vertices, faces = PLYFileHandler.parse_ply_file(ifp)
-        PLYFileHandler.write_ply_file(
-            ofp, vertices, faces=faces
-        )
+        PLYFileHandler.write_ply_file(ofp, vertices, faces=faces)
 
 
 if __name__ == "__main__":

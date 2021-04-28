@@ -32,6 +32,7 @@ def perform_pan_sharpening_for_folder(
     # instead of M1BS) so they can directly be used to replace the original
     # PAN images
     mkdir_safely(odp)
+
     def get_correspondence_callback(pan_fn):
         # PAN example name: 0001_WV03_15JAN05_135727-P1BS-500497282040_01_P001.png
         # MSI example name: 0001_WV03_15JAN05_135727-M1BS-500497282040_01_P001.png
