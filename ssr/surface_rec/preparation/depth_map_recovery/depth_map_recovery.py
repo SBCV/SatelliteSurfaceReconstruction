@@ -5,12 +5,12 @@ from ssr.ext.read_dense import read_array
 from ssr.ext.read_write_dense import write_array
 from ssr.file_handler.ply_file_handler import PLYFileHandler
 from ssr.file_handler.colmap_file_handler import ColmapFileHandler
-from ssr.types.point import Point
+from ssr.ssr_types.point import Point
 from ssr.utility.os_extension import mkdir_safely
 
-# from ssr.types.python_cache import PythonCache
+# from ssr.ssr_types.python_cache import PythonCache
 from ssr.utility.logging_extension import logger
-from ssr.types.camera import Camera
+from ssr.ssr_types.camera import Camera
 
 
 def contains_nan(array):

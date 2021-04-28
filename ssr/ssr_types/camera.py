@@ -1,7 +1,7 @@
 import numpy as np
 from ssr.utility.logging_extension import logger
-from ssr.types.extrinsics import Extrinsics
-from ssr.types.intrinsics import Intrinsics
+from ssr.ssr_types.extrinsics import Extrinsics
+from ssr.ssr_types.intrinsics import Intrinsics
 
 
 class Camera(Extrinsics, Intrinsics):

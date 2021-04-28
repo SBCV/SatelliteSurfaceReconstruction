@@ -6,7 +6,7 @@ from lxml import etree
 
 from lib.latlonalt_enu_converter import enu_to_latlonalt
 
-# from ssr.types.python_cache import PythonCache
+# from ssr.ssr_types.python_cache import PythonCache
 from ssr.file_handler.colmap_file_handler import ColmapFileHandler
 
 

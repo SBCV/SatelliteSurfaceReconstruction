@@ -6,7 +6,7 @@ import imageio
 import cv2
 
 from ssr.utility.os_extension import mkdir_safely
-from ssr.types.camera import Camera
+from ssr.ssr_types.camera import Camera
 from ssr.file_handler.colmap_file_handler import ColmapFileHandler
 
 from ssr.surface_rec.preparation.depth_map_recovery.depth_map_recovery import (

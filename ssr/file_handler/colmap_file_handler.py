@@ -14,8 +14,8 @@ from ssr.ext.read_write_model import Camera as ColmapCamera
 from ssr.ext.read_write_model import Image as ColmapImage
 from ssr.ext.read_write_model import Point3D as ColmapPoint3D
 
-from ssr.types.camera import Camera
-from ssr.types.point import Point
+from ssr.ssr_types.camera import Camera
+from ssr.ssr_types.point import Point
 
 from ssr.utility.logging_extension import logger
 

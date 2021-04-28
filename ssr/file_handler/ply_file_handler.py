@@ -1,7 +1,7 @@
 import numpy as np
 from ssr.ext.plyfile import PlyData, PlyElement
 from ssr.utility.logging_extension import logger
-from ssr.types.point import Point, Measurement
+from ssr.ssr_types.point import Point, Measurement
 
 
 class Face:
