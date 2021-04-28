@@ -1,7 +1,7 @@
 import os
 import json
 import configparser
-from neat_eo.utility.logging_extension import logger
+from ssr.utility.logging_extension import logger
 
 
 _config = None
