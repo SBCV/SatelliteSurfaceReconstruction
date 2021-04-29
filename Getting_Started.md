@@ -57,7 +57,7 @@
 - Add [VisSatSatelliteStereo](https://github.com/Kai-46/VisSatSatelliteStereo) to the ```SatelliteSurfaceReconstruction``` project
     - For example in ```Pycharm```
         - Open ```SatelliteSurfaceReconstruction```
-        - Open ```VisSatSatelliteStereo``` and attach
+        - Open ```VisSatSatelliteStereo``` and attach it to ```SatelliteSurfaceReconstruction```
         - Go to ```File / Settings / Project: SatelliteSurfaceReconstruction / Project Dependencies ```
         - Select ```SatelliteSurfaceReconstruction``` and make sure that ```VisSatSatelliteStereo``` is selected
 
