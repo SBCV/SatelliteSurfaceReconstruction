@@ -4,7 +4,7 @@ import os
 from ssr.utility.logging_extension import logger
 import xml.etree.ElementTree as ET
 from ssr.config.ssr_config import SSRConfig
-
+from ssr.utility.os_extension import makedirs_safely
 
 class _MLXFileHandler:
     @staticmethod
@@ -62,6 +62,7 @@ class Meshlab:
             os.path.dirname(os.path.realpath(__file__)),
             os.path.join("mlx", template_fn),
         )
+        makedirs_safely(self.meshlab_temp_dp)
         tmp_file = tempfile.NamedTemporaryFile(
             suffix=".mlx", dir=self.meshlab_temp_dp, delete=False
         )
