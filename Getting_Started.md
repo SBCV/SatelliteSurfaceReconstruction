@@ -59,7 +59,8 @@
         - Open ```SatelliteSurfaceReconstruction```
         - Open ```VisSatSatelliteStereo``` and attach it to ```SatelliteSurfaceReconstruction```
         - Go to ```File / Settings / Project: SatelliteSurfaceReconstruction / Project Dependencies ```
-        - Select ```SatelliteSurfaceReconstruction``` and make sure that ```VisSatSatelliteStereo``` is selected
+            - Select ```SatelliteSurfaceReconstruction```
+            - Make sure that ```VisSatSatelliteStereo``` is selected
 
 
 # Download Satellite Images
