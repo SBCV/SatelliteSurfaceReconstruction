@@ -1,6 +1,12 @@
 # SatelliteSurfaceReconstruction
 3D Surface Reconstruction From Multi-Date Satellite Images
 
+<p float="left" align="middle">
+  <img src="doc/images/gdmr_site_1_textured_view_2_resized_0p5_q_90.jpeg" width="33%" />
+  <img src="doc/images/gdmr_site_2_textured_view_1_resized_0p5_q_90.jpeg" width="33%" />
+  <img src="doc/images/gdmr_site_3_textured_view_1_resized_0p5_q_90.jpeg" width="33%" /> 
+</p>
+
 ## Getting Started
 - [Installation Instructions](Getting_Started.md#installation-instructions-for-ubuntu-1804) 
 - [Download the IARPA MVS3DM Dataset](Getting_Started.md#download-satellite-images) 
