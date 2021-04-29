@@ -1,6 +1,12 @@
 # SatelliteSurfaceReconstruction
 3D Surface Reconstruction From Multi-Date Satellite Images
 
+## Getting Started
+- [Installation Instructions](Getting_Started.md#installation-instructions-for-ubuntu-1804) 
+- [Download the IARPA MVS3DM Dataset](Getting_Started.md#download-satellite-images) 
+- [Run the pipeline](Getting_Started.md#run-the-ssr-pipeline)
+- [Trouble Shooting](Getting_Started.md#trouble-shooting--debugging)
+
 ## Citation
 If you use this project for your research, please cite the following paper:
 
