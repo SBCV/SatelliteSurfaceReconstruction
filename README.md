@@ -2,9 +2,9 @@
 3D Surface Reconstruction From Multi-Date Satellite Images
 
 <p float="left" align="middle">
-  <img src="doc/images/gdmr_site_1_textured_view_2_resized_0p5_q_90.jpeg" width="33%" />
-  <img src="doc/images/gdmr_site_2_textured_view_1_resized_0p5_q_90.jpeg" width="33%" />
-  <img src="doc/images/gdmr_site_3_textured_view_1_resized_0p5_q_90.jpeg" width="33%" /> 
+  <img src="doc/images/gdmr_site_1_textured_view_2_resized_0p5_q_90.jpeg" width="32%" />
+  <img src="doc/images/gdmr_site_2_textured_view_1_resized_0p5_q_90.jpeg" width="32%" />
+  <img src="doc/images/gdmr_site_3_textured_view_1_resized_0p5_q_90.jpeg" width="32%" /> 
 </p>
 
 ## Getting Started
