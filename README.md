@@ -10,7 +10,8 @@
 ## Getting Started
 - [Installation Instructions](Getting_Started.md#installation-instructions-for-ubuntu-1804) 
 - [Download the IARPA MVS3DM Dataset](Getting_Started.md#download-satellite-images) 
-- [Run the pipeline](Getting_Started.md#run-the-ssr-pipeline)
+- [Run the Pipeline](Getting_Started.md#run-the-ssr-pipeline)
+- [Evaluate the Reconstruction Results](https://github.com/SBCV/SatelliteSurfaceReconstructionEvaluation)
 - [Trouble Shooting](Getting_Started.md#trouble-shooting--debugging)
 
 ## Citation
