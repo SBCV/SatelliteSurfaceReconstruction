@@ -47,9 +47,13 @@ class Meshlab:
         self.executable_fp = ssr_config.get_option_value(
             "meshlab_server_fp", str
         )
-        self.meshlab_temp_dp = ssr_config.get_option_value(
+        self.meshlab_temp_dp = ssr_config.get_option_value_or_None(
             "meshlab_temp_dp", str
         )
+        if self.meshlab_temp_dp is not None:
+            if not os.path.isdir(self.meshlab_temp_dp):
+                logger.vinfo("meshlab_temp_dp", self.meshlab_temp_dp)
+                assert False, "Choose a valid path (in the config file) for Meshlab's temp directory"
 
     def _create_lmx_template(self, template_fn):
         assert template_fn in [
