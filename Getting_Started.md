@@ -8,6 +8,7 @@
     - Follow the [install instructions of ColmapForVisSat](https://github.com/Kai-46/ColmapForVisSat)
         - Make sure you have installed a compatible cuda version (e.g. ```Cuda 10.0```)
             - ```Cuda 10.0``` can be installed following [this link](https://developer.nvidia.com/cuda-10.0-download-archive?target_os=Linux&target_arch=x86_64).
+        - To avoid that incorrect libraries are detetected by CMake, consider to disable the active anaconda/miniconda environment with `conda deactivate`
         - Clone the repository
             - ```git clone https://github.com/Kai-46/ColmapForVisSat.git```
         - Execute ``ubuntu1804_install_dependencies.sh``
