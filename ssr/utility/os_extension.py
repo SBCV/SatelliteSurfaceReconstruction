@@ -77,7 +77,7 @@ def get_file_paths_in_dir(
                 ifp for ifp in ifp_s if os.path.splitext(ifp)[1].lower() == ext
             ]
 
-    if target_str_or_list is not None:
+    if target_str_or_list is not None and len(target_str_or_list) > 0:
         if type(target_str_or_list) == str:
             target_str_or_list = [target_str_or_list]
         ifp_s_temp = []
