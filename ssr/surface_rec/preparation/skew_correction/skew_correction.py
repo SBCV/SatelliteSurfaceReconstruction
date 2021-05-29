@@ -24,26 +24,6 @@ from ssr.ext.read_write_model import read_cameras_text
 from ssr.utility.logging_extension import logger
 
 
-def remove_skew_from_images_legazy(pil_image, image_invert_skew_mat):
-    # Own experiments showed that the opencv warping function produced lower
-    # errors than pillow warping method
-
-    # https://pillow.readthedocs.io/en/stable/reference/Image.html
-    # https://stackoverflow.com/questions/17056209/python-pil-affine-transformation
-    #   PIL REQUIRES THE INVERSE MATRIX FOR THE TRANSFORMATION
-
-    skew_mat = np.linalg.inv(image_invert_skew_mat)
-
-    affine_trans_params = list(skew_mat.flatten())[0:6]
-    pil_image_transformed = pil_image.transform(
-        pil_image.size,
-        PILImage.AFFINE,
-        data=affine_trans_params,
-        resample=PILImage.BICUBIC,
-    )
-    return pil_image_transformed
-
-
 def fix_affine_matrix(original_mat):
     # Fix cv2 affine warping matrix offset
     # https://github.com/opencv/opencv/issues/4585
