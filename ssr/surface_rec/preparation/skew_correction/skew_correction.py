@@ -1,7 +1,6 @@
 import os
 import numpy as np
 import copy
-from PIL import Image as PILImage
 import imageio
 import cv2
 
@@ -151,12 +150,12 @@ def compute_skew_free_camera_models(
             )
 
             mat_image = imageio.imread(image_ifp)
-            mat_image_transformed = remove_skew_from_matrix(
+            mat_image_skew_free = remove_skew_from_matrix(
                 mat_image,
                 image_invert_skew_mat,
                 interpolation_type=interpolation_type,
             )
-            imageio.imwrite(mat_image_ofp, mat_image_transformed)
+            imageio.imwrite(mat_image_ofp, mat_image_skew_free)
 
         if color_image_with_skew_idp is not None:
             image_ifp = os.path.join(color_image_with_skew_idp, image_ifn)
@@ -165,12 +164,12 @@ def compute_skew_free_camera_models(
             )
 
             mat_image = imageio.imread(image_ifp)
-            mat_image_transformed = remove_skew_from_matrix(
+            mat_image_skew_free = remove_skew_from_matrix(
                 mat_image,
                 image_invert_skew_mat,
                 interpolation_type=interpolation_type,
             )
-            imageio.imwrite(mat_image_ofp, mat_image_transformed)
+            imageio.imwrite(mat_image_ofp, mat_image_skew_free)
 
         if depth_map_with_skew_idp is not None:
             depth_map_fn = get_corresponding_depth_map_fn(image_ifn)
@@ -190,7 +189,7 @@ def compute_skew_free_camera_models(
         #     logger.info('--------------------- Diffs --------------------')
         #
         #     mat_image_recovered_mat = np.array(
-        #       remove_skew_from_matrix(mat_image_transformed, skew_mat)
+        #       remove_skew_from_matrix(mat_image_skew_free, skew_mat)
         #     )
         #     mat_image_diff_mat = np.abs(mat_image - mat_image_recovered_mat)
         #     mat_image_error_ofp = os.path.join(

@@ -1,7 +1,6 @@
 import os
 from shutil import copyfile
 from ssr.utility.logging_extension import logger
-
 from ssr.path_manager import PathManager
 from ssr.sfm_mvs_rec.vissat_pipeline import VisSatPipeline
 from ssr.surface_rec.preparation.preparation_pipeline import (
