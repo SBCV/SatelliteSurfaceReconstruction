@@ -10,7 +10,6 @@ class PathManager:
         self.vissat_workspace_dp = vissat_workspace_dp
         self.pan_ntf_idp = pan_ntf_idp
         self.msi_ntf_idp = msi_ntf_idp
-        # self.extraction_config_template_ifp = extraction_config_template_ifp
         self.ssr_workspace_dp = ssr_workspace_dp
 
         # === Input Colmap VisSat File Paths ===
