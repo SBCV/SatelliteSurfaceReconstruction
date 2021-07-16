@@ -6,6 +6,7 @@ import xml.etree.ElementTree as ET
 from ssr.config.ssr_config import SSRConfig
 from ssr.utility.os_extension import makedirs_safely
 
+
 class _MLXFileHandler:
     @staticmethod
     def get_value_as_str(mlx_ifp, target_name):
@@ -53,7 +54,9 @@ class Meshlab:
         if self.meshlab_temp_dp is not None:
             if not os.path.isdir(self.meshlab_temp_dp):
                 logger.vinfo("meshlab_temp_dp", self.meshlab_temp_dp)
-                assert False, "Choose a valid path (in the config file) for Meshlab's temp directory"
+                assert (
+                    False
+                ), "Choose a valid path (in the config file) for Meshlab's temp directory"
 
     def _create_lmx_template(self, template_fn):
         assert template_fn in [
