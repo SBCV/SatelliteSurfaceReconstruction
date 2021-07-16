@@ -17,11 +17,15 @@
 ## Citation
 If you use this project for your research, please cite the following paper:
 
-<a href="https://arxiv.org/abs/2102.02502"><img class="image" align="left" width="150px" src="https://github.com/SBCV/SatelliteSurfaceReconstruction/blob/master/doc/images/paper_preview_resized_0p15.png"></a>
-<a href="https://arxiv.org/abs/2102.02502">[arxiv]</a><br>
-@article{Bullinger_2021_ISPRS,<br>
-&nbsp;title={3D Surface Reconstruction From Multi-Date Satellite Images},<br>
-&nbsp;author={Bullinger, Sebastian and Bodensteiner, Christoph and Arens, Michael},<br>
-&nbsp;journal={ISPRS Archives of the Photogrammetry, Remote Sensing and Spatial Information Sciences},<br>
+<a href="https://www.int-arch-photogramm-remote-sens-spatial-inf-sci.net/XLIII-B2-2021/313/2021/"><img class="image" align="left" width="200px" src="https://github.com/SBCV/SatelliteSurfaceReconstruction/blob/master/doc/images/paper_preview_resized_0p15.png"></a>
+<a href="https://www.int-arch-photogramm-remote-sens-spatial-inf-sci.net/XLIII-B2-2021/313/2021/">[paper]</a>&nbsp;<a href="https://arxiv.org/abs/2102.02502">[arxiv]</a><br>
+@article{isprs-archives-XLIII-B2-2021-313-2021,<br>
+&nbsp;author={Bullinger, S. and Bodensteiner, C. and Arens, M.},<br>
+&nbsp;title={3D SURFACE RECONSTRUCTION FROM MULTI-DATE SATELLITE IMAGES},<br>
+&nbsp;journal={The International Archives of the Photogrammetry, Remote Sensing and Spatial Information Sciences},<br>
+&nbsp;volume = {XLIII-B2-2021},<br>
 &nbsp;year={2021}<br>
+&nbsp;pages = {313--320},<br>
+&nbsp;URL = {<a href="https://www.int-arch-photogramm-remote-sens-spatial-inf-sci.net/XLIII-B2-2021/313/2021/">https://www.int-arch-photogramm-remote-sens-spatial-inf-sci.net/XLIII-B2-2021/313/2021/</a>},<br>
+&nbsp;doi = {10.5194/isprs-archives-XLIII-B2-2021-313-2021}<br>
 }<br clear="left"/>
