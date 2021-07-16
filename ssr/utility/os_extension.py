@@ -132,7 +132,12 @@ def get_image_file_paths_in_dir(
 
 
 def get_corresponding_files_in_directories(
-    idp_1, idp_2, ext_1=None, suffix_2="", get_correspondence_callback=None
+    idp_1,
+    idp_2,
+    ext_1=None,
+    suffix_2="",
+    get_correspondence_callback=None,
+    target_str_or_list=None,
 ):
 
     if get_correspondence_callback is None:
@@ -141,7 +146,10 @@ def get_corresponding_files_in_directories(
             return fn_1 + suffix_2
 
     potential_fn_1_list = get_file_paths_in_dir(
-        idp_1, ext=ext_1, base_name_only=True
+        idp_1,
+        ext=ext_1,
+        base_name_only=True,
+        target_str_or_list=target_str_or_list,
     )
     fp_1_list = []
     fp_2_list = []
