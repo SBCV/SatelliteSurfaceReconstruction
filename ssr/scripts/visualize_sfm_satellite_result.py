@@ -134,7 +134,7 @@ def compute_sfm_visualization(
                 bbox_dict, east_value, north_value, up_value
             )
 
-            # NOTE THE CHANGE OF THE ORDER (lon, lat vs lat, lon)
+            # NOTE THE CHANGE OF THE ORDER (lon, lat vs. lat, lon)
             coord_list = [
                 [lon_value, lat_value, alt_value],
                 [lon_observer, lat_observer, alt_observer],
