@@ -58,9 +58,9 @@
 - Make [VisSatSatelliteStereo](https://github.com/Kai-46/VisSatSatelliteStereo) and ```SatelliteSurfaceReconstruction``` available to your python interpreter
     - Option 1: Add `VisSatSatelliteStereo` and `SatelliteSurfaceReconstruction` to the python path
         - Add `ssr` (in the `SatelliteSurfaceReconstruction` directory)
-            - export PYTHONPATH="${PYTHONPATH}:/path/to/SatelliteSurfaceReconstruction"
+            - `export PYTHONPATH="${PYTHONPATH}:/path/to/SatelliteSurfaceReconstruction"`
         - Add `lib` etc. (in the `VisSatSatelliteStereo` directory)
-            - export PYTHONPATH="${PYTHONPATH}:/path/to/VisSatSatelliteStereo"
+            - `export PYTHONPATH="${PYTHONPATH}:/path/to/VisSatSatelliteStereo"`
         - This allows to run your pipeline (later) with
             - `cd /path/to/SatelliteSurfaceReconstruction/ssr`
             - `python run_pipeline.py` (see the section `Run the SSR Pipeline` below)
