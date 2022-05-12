@@ -48,7 +48,7 @@ class SurfaceReconstructionPipeline:
         plain_mesh_ply_ofn = meshing_task.plain_mesh_ply_ofn
         logger.vinfo("mesh_ply_ofn", mesh_ply_ofn)
 
-        if meshing_task.meshing_backend == MeshingBackends.colmap_poisson:
+        if meshing_task.meshing_backend == MeshingBackends.colmap_poisson.name:
             mkdir_safely(meshing_task.mesh_odp)
             MeshingStep.compute_mesh_with_colmap(
                 meshing_task.colmap_idp,
@@ -59,7 +59,10 @@ class SurfaceReconstructionPipeline:
                 poisson_trim_thresh=10,
                 lazy=lazy,
             )
-        elif meshing_task.meshing_backend == MeshingBackends.colmap_delaunay:
+        elif (
+            meshing_task.meshing_backend
+            == MeshingBackends.colmap_delaunay.name
+        ):
             mkdir_safely(meshing_task.mesh_odp)
             MeshingStep.compute_mesh_with_colmap(
                 meshing_task.colmap_idp,
@@ -69,7 +72,7 @@ class SurfaceReconstructionPipeline:
                 "delaunay_mesher",
                 lazy=lazy,
             )
-        elif meshing_task.meshing_backend == MeshingBackends.openmvs:
+        elif meshing_task.meshing_backend == MeshingBackends.openmvs.name:
             mkdir_safely(meshing_task.mesh_odp)
             MeshingStep.compute_mesh_with_openmvs(
                 meshing_task.colmap_idp,
@@ -78,7 +81,7 @@ class SurfaceReconstructionPipeline:
                 plain_mesh_ply_ofn,
                 lazy=lazy,
             )
-        elif meshing_task.meshing_backend == MeshingBackends.mve_fssr:
+        elif meshing_task.meshing_backend == MeshingBackends.mve_fssr.name:
             MeshingStep.compute_mesh_with_mve(
                 meshing_task.colmap_idp,
                 meshing_task.mesh_odp,
@@ -87,7 +90,7 @@ class SurfaceReconstructionPipeline:
                 meshing_algo="fssr",
                 lazy=lazy,
             )
-        elif meshing_task.meshing_backend == MeshingBackends.mve_gdmr:
+        elif meshing_task.meshing_backend == MeshingBackends.mve_gdmr.name:
             MeshingStep.compute_mesh_with_mve(
                 meshing_task.colmap_idp,
                 meshing_task.mesh_odp,
@@ -104,11 +107,11 @@ class SurfaceReconstructionPipeline:
         mkdir_safely(
             os.path.dirname(os.path.dirname(texturing_task.textured_mesh_odp))
         )
-        if texturing_task.texturing_backend == TexturingBackends.openmvs:
+        if texturing_task.texturing_backend == TexturingBackends.openmvs.name:
             TexturingStep.compute_texturing_with_openmvs(
                 texturing_task.colmap_idp, texturing_task.textured_mesh_odp
             )
-        elif texturing_task.texturing_backend == TexturingBackends.mve:
+        elif texturing_task.texturing_backend == TexturingBackends.mve.name:
             TexturingStep.compute_texturing_with_mve(
                 texturing_task.colmap_idp,
                 texturing_task.mesh_ifp,

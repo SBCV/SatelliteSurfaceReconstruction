@@ -134,3 +134,4 @@ dmypy.json
 doc/images/paper.pdf
 .idea/
 ssr/configs/pipeline.cfg
+ssr/configs/pipeline.toml

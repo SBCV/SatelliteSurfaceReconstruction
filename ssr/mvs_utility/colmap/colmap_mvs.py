@@ -7,9 +7,7 @@ from ssr.config.ssr_config import SSRConfig
 class ColmapMVSReconstructor:
     def __init__(self):
         self.ssr_config = SSRConfig.get_instance()
-        self.colmap_exe_dp = self.ssr_config.get_option_value(
-            "colmap_exe_dp", str
-        )
+        self.colmap_exe_dp = self.ssr_config.colmap_exe_dp
 
     def reconstruct_mesh_with_poisson(
         self, point_cloud_ply_ifp, mesh_ply_ofp, poisson_trim_thresh, lazy

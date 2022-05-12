@@ -33,11 +33,11 @@ class BackendManager:
     @staticmethod
     def _check_meshing_backends(meshing_backends):
         valid_backends = [
-            MeshingBackends.colmap_poisson,
-            MeshingBackends.colmap_delaunay,
-            MeshingBackends.openmvs,
-            MeshingBackends.mve_fssr,
-            MeshingBackends.mve_gdmr,
+            MeshingBackends.colmap_poisson.name,
+            MeshingBackends.colmap_delaunay.name,
+            MeshingBackends.openmvs.name,
+            MeshingBackends.mve_fssr.name,
+            MeshingBackends.mve_gdmr.name,
         ]
         for meshing_backend in meshing_backends:
             if not meshing_backend in valid_backends:
@@ -48,8 +48,8 @@ class BackendManager:
     @staticmethod
     def _check_decimation_backends(decimation_backends):
         valid_backends = [
-            DecimationBackends.meshlab,
-            DecimationBackends.openmvs,
+            DecimationBackends.meshlab.name,
+            DecimationBackends.openmvs.name,
         ]
         for decimation_backend in decimation_backends:
             if not decimation_backend in valid_backends:
@@ -60,8 +60,8 @@ class BackendManager:
     @staticmethod
     def _check_texturing_backends(texturing_backends):
         valid_backends = [
-            TexturingBackends.openmvs,
-            TexturingBackends.mve,
+            TexturingBackends.openmvs.name,
+            TexturingBackends.mve.name,
         ]
         for texturing_backend in texturing_backends:
             if not texturing_backend in valid_backends:

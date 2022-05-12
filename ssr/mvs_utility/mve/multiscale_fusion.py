@@ -20,7 +20,7 @@ class MultiScaleReconstructor:
         self.NAME_OCTREE_FILE = "octree"
 
         self.ssr_config = SSRConfig.get_instance()
-        self.gdmr_bin_dp = self.ssr_config.get_option_value("gdmr_bin_dp", str)
+        self.gdmr_bin_dp = self.ssr_config.gdmr_bin_dp
         self.octree_executable_fp = os.path.join(
             self.gdmr_bin_dp, "pointfusion_octree"
         )

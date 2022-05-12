@@ -11,9 +11,7 @@ class MVETexrecon:
 
     def __init__(self):
         self.ssr_config = SSRConfig.get_instance()
-        self.texrecon_apps_dp = self.ssr_config.get_option_value(
-            "texrecon_apps_dp", str
-        )
+        self.texrecon_apps_dp = self.ssr_config.texrecon_apps_dp
         assert self.texrecon_apps_dp is not None
         if platform.system() == "Windows":
             self.texrecon_executable = os.path.join(

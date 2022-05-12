@@ -117,15 +117,15 @@ def create_vissat_config_from_ssr_config(
         dataset_dp=dataset_dp,
         workspace_dp=workspace_dp,
         # Bounding Box Options
-        zone_number=ssr_config.get_option_value("zone_number", int),
-        hemisphere=ssr_config.get_option_value("hemisphere", str),
-        ul_easting=ssr_config.get_option_value("ul_easting", float),
-        ul_northing=ssr_config.get_option_value("ul_northing", float),
-        width=ssr_config.get_option_value("width", float),
-        height=ssr_config.get_option_value("height", float),
+        zone_number=ssr_config.zone_number,
+        hemisphere=ssr_config.hemisphere,
+        ul_easting=ssr_config.ul_easting,
+        ul_northing=ssr_config.ul_northing,
+        width=ssr_config.width,
+        height=ssr_config.height,
         # Altitude
-        alt_min=ssr_config.get_option_value("alt_min", float),
-        alt_max=ssr_config.get_option_value("alt_max", float),
+        alt_min=ssr_config.alt_min,
+        alt_max=ssr_config.alt_max,
         # Steps to Run Options
         clean_data=clean_data,
         crop_image=crop_image,

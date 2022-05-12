@@ -11,20 +11,14 @@ class VisSatPipeline:
     def __init__(self, pm):
         self.pm = pm
         self.ssr_config = SSRConfig.get_instance()
-        colmap_vissat_exe_fp = self.ssr_config.get_option_value(
-            "colmap_vissat_exe_fp", str
-        )
+        colmap_vissat_exe_fp = self.ssr_config.colmap_vissat_exe_fp
         self.colmap_vissat_exe_fp = colmap_vissat_exe_fp
         assert os.path.isfile(colmap_vissat_exe_fp)
         self.colmap_vissat_exe_dp = os.path.dirname(colmap_vissat_exe_fp)
 
     def run(self, reconstruct_sfm_mvs):
-        dataset_dp = self.ssr_config.get_option_value(
-            "satellite_image_pan_dp", str
-        )
-        workspace_dp = self.ssr_config.get_option_value(
-            "workspace_vissat_dp", str
-        )
+        dataset_dp = self.ssr_config.satellite_image_pan_dp
+        workspace_dp = self.ssr_config.workspace_vissat_dp
         mkdir_safely(workspace_dp)
         create_vissat_config_from_ssr_config(
             vissat_config_ofp=self.pm.vissat_config_fp,

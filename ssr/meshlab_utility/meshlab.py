@@ -43,14 +43,9 @@ class _MLXFileHandler:
 class Meshlab:
     """This is an interface to the meshlab command line mode."""
 
-    def __init__(self):
-        ssr_config = SSRConfig.get_instance()
-        self.executable_fp = ssr_config.get_option_value(
-            "meshlab_server_fp", str
-        )
-        self.meshlab_temp_dp = ssr_config.get_option_value_or_None(
-            "meshlab_temp_dp", str
-        )
+    def __init__(self, executable_fp, meshlab_temp_dp):
+        self.executable_fp = executable_fp
+        self.meshlab_temp_dp = meshlab_temp_dp
         if self.meshlab_temp_dp is not None:
             if not os.path.isdir(self.meshlab_temp_dp):
                 logger.vinfo("meshlab_temp_dp", self.meshlab_temp_dp)
@@ -196,8 +191,11 @@ class Meshlab:
 
 
 if __name__ == "__main__":
-
-    meshlab = Meshlab()
+    ssr_config = SSRConfig.get_instance()
+    meshlab = Meshlab(
+        executable_fp=ssr_config.meshlab_server_fp,
+        meshlab_temp_dp=ssr_config.meshlab_temp_dp,
+    )
 
     mesh_ifp = "/path/to/mesh.ply"
     point_cloud_ofp = "/path/to/point_cloud.ply"

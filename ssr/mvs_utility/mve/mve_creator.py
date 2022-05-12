@@ -9,7 +9,7 @@ from ssr.config.ssr_config import SSRConfig
 class MVECreator:
     def __init__(self, workspace_dp=None):
         self.ssr_config = SSRConfig.get_instance()
-        self.mve_apps_dp = self.ssr_config.get_option_value("mve_apps_dp", str)
+        self.mve_apps_dp = self.ssr_config.mve_apps_dp
         self.workspace_folder = workspace_dp
 
         if platform.system() == "windows":

@@ -8,9 +8,7 @@ from ssr.config.ssr_config import SSRConfig
 class OpenMVSReconstructor:
     def __init__(self):
         self.ssr_config = SSRConfig.get_instance()
-        self.openmvs_bin_dp = self.ssr_config.get_option_value(
-            "openmvs_bin_dp", str
-        )
+        self.openmvs_bin_dp = self.ssr_config.openmvs_bin_dp
         self.interface_visualsfm_fp = os.path.join(
             self.openmvs_bin_dp, "InterfaceVisualSFM"
         )

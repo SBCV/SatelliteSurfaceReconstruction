@@ -27,7 +27,7 @@ class TaskManager:
         if reconstruct_mesh:
             for meshing_backend in self.bm.meshing_backends:
                 mesh_odp = os.path.join(
-                    self.pm.mesh_workspace_dp, meshing_backend.name
+                    self.pm.mesh_workspace_dp, meshing_backend
                 )
                 meshing_task = MeshingTask(
                     colmap_idp=self.pm.colmap_workspace_no_skew_dp,
@@ -44,15 +44,22 @@ class TaskManager:
         reduction_tasks = []
         for meshing_backend in self.bm.meshing_backends:
             # Reduction only for: Colmap Poisson Meshes
-            if meshing_backend.name == MeshingBackends.colmap_poisson:
+            if meshing_backend == MeshingBackends.colmap_poisson.name:
                 reduction_odp = os.path.join(
-                    self.pm.mesh_workspace_dp, meshing_backend.name
+                    self.pm.mesh_workspace_dp, meshing_backend
                 )
                 reduction_task = ReductionTask(
                     colmap_idp=self.pm.colmap_workspace_no_skew_dp,
                     mesh_odp=reduction_odp,
                 )
                 reduction_tasks.append(reduction_task)
+            else:
+                assert meshing_backend in [
+                    MeshingBackends.colmap_delaunay.name,
+                    MeshingBackends.openmvs.name,
+                    MeshingBackends.mve_fssr.name,
+                    MeshingBackends.mve_gdmr.name,
+                ]
         return reduction_tasks
 
     def detect_refinement_tasks(self, refine_mesh):
@@ -82,15 +89,15 @@ class TaskManager:
             for meshing_backend in self.bm.meshing_backends:
                 untextured_mesh_ifp = os.path.join(
                     self.pm.mesh_workspace_dp,
-                    meshing_backend.name,
+                    meshing_backend,
                     "plain_mesh.ply",
                 )
 
                 for texturing_backend in self.bm.texturing_backends:
                     textured_mesh_odp = os.path.join(
                         self.pm.texturing_workspace_dp,
-                        texturing_backend.name,
-                        meshing_backend.name,
+                        texturing_backend,
+                        meshing_backend,
                     )
                     texturing_task = TexturingTask(
                         colmap_idp=self.pm.colmap_workspace_no_skew_dp,
