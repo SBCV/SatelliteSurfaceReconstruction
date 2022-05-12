@@ -44,7 +44,6 @@ class SSRConfig(BaseModel):
 
     lazy: Union[bool, int] = False
 
-
     @staticmethod
     def get_instance():
         assert _config is not None
