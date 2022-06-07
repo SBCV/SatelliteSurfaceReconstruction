@@ -86,7 +86,7 @@
 - Download the [IARPA MVS3DM dataset](https://spacenet.ai/iarpa-multi-view-stereo-3d-mapping/) 
     - Note: The dataset location referenced at [IARPA MVS3DM dataset](https://spacenet.ai/iarpa-multi-view-stereo-3d-mapping/) is incorrect
     - Instead you can download the dataset (using [amazon web services](https://aws.amazon.com)) with
-        - ```aws s3 cp s3://spacenet-dataset/Hosted-Datasets/MVS_dataset/ /local/path/to/dataset/```
+        - ```aws s3 cp s3://spacenet-dataset/Hosted-Datasets/MVS_dataset/ /local/path/to/dataset/ --recursive```
     - If you want to inspect the data before downloading you might want to use 
         - ```aws s3 ls s3://spacenet-dataset/Hosted-Datasets/MVS_dataset/```
 
