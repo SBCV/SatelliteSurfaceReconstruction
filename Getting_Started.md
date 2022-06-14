@@ -9,13 +9,13 @@
         - Option 1: ColmapForVisSatPatched (RECOMMENDED)
             - Follow the [install instructions](https://github.com/SBCV/ColmapForVisSatPatched#build-patched-colmap-repository)
                 - sudo apt-get install libmetis-dev
-                - To avoid that incorrect libraries are detetected by CMake, consider to disable the active anaconda/miniconda environment with `conda deactivate`
+                - To avoid that incorrect libraries are detected by CMake, consider to disable the active anaconda/miniconda environment with `conda deactivate`
                 - Follow the official install instructions of [Colmap (for linux)](https://colmap.github.io/install.html#linux)
         - Option 2: ColmapForVisSat 
             - Follow the [install instructions](https://github.com/Kai-46/ColmapForVisSat)
                 - Make sure you have installed a compatible cuda version (e.g. ```Cuda 10.0```)
                     - ```Cuda 10.0``` can be installed following [this link](https://developer.nvidia.com/cuda-10.0-download-archive?target_os=Linux&target_arch=x86_64).
-                - To avoid that incorrect libraries are detetected by CMake, consider to disable the active anaconda/miniconda environment with `conda deactivate`
+                - To avoid that incorrect libraries are detected by CMake, consider to disable the active anaconda/miniconda environment with `conda deactivate`
                 - Clone the repository
                     - ```git clone https://github.com/Kai-46/ColmapForVisSat.git```
                 - Execute ``ubuntu1804_install_dependencies.sh``
@@ -40,13 +40,13 @@
                     - ```numpy-groupies>=0.9.9``` instead of ```numpy-groupies>=0.9.9```
                     - ```pyproj>=2.4.0``` instead of ```pyproj==2.4.0```
                 -->
-        - Make sure to ADJUST the ```--SiftExtraction.num_threads 32``` parameter
+        - Make sure to ADJUST the ```--SiftExtraction.num_threads 32``` parameter in [colmap_sfm_commands.py](https://github.com/Kai-46/VisSatSatelliteStereo/blob/c6cb1b4ca6bfc6f7210707333db3bbd8931a6265/colmap_sfm_commands.py#L54)
             - See [this issue](https://github.com/Kai-46/VisSatSatelliteStereo/issues/1)
    
 - Install at least one of the following MVS & surface reconstruction libraries
     - ColmapForVisSat / Colmap
         - See installation instructions above
-    - [MVE](https://www.gcc.tu-darmstadt.de/media/gcc/papers/Fuhrmann-2014-MVE.pdf) with [FSSR](https://www.gcc.tu-darmstadt.de/media/gcc/papers/Fuhrmann-2014-FSS.pdf)
+    - [MVE](http://www.simonfuhrmann.de/papers/gch2014-mve.pdf) with [FSSR](http://www.simonfuhrmann.de/papers/sg2014-fssr.pdf)
         - Follow the [installation instructions of MVE](https://github.com/simonfuhrmann/mve)
         - Note: FSSR is part of the MVE library 
     - [GDMR](https://lmb.informatik.uni-freiburg.de/Publications/2017/UB17/ummenhofer2017Global.pdf) (requires MVE)
@@ -56,7 +56,7 @@
         - Follow the [installation instructions of OpenMVS](https://github.com/cdcseacave/openMVS)
 
 
-- Install [MVS-Texturing](https://www.gcc.tu-darmstadt.de/media/gcc/papers/Waechter-2014-LTB.pdf) (requires MVE)
+- Install [MVS-Texturing](https://github.com/nmoehrle/mvs-texturing) (requires MVE)
     - Follow the [installation instructions of MVS-Texturing](https://github.com/nmoehrle/mvs-texturing)
    
 - Install [Meshlab](https://github.com/cnr-isti-vclab/meshlab) 
@@ -94,9 +94,9 @@
 # Run the SSR Pipeline
 
 - The starting point of the SSR pipeline is ```ssr/run_pipeline.py```
-- The first time ```ssr/run_pipeline.py``` is executed, it will create a configuration at ```ssr/configs/pipeline.cfg``` using the template located at ```ssr/configs/pipeline_template.cfg```
+- The first time ```ssr/run_pipeline.py``` is executed, it will create a configuration at ```ssr/configs/pipeline.toml``` using the template located at ```ssr/configs/pipeline_template.toml```
 
-- Adjust the paths in the config file ```ssr/configs/pipeline.cfg```
+- Adjust the paths in the config file ```ssr/configs/pipeline.toml```
     - For the executables (```fp = file path```, ```dp = directory path```)
         - ```colmap_vissat_exe_fp```
         - ```mve_apps_dp```
@@ -116,7 +116,7 @@
         - ```meshlab_temp_dp```
 
 - Adjust the list of ```meshing_backends``` according to the installed MVS / Surface reconstruction libraries
-    - For example, uncomment ```Openmvs``` in ```meshing_backends```, if it is not available 
+    - For example, comment ```Openmvs``` in ```meshing_backends```, if it is not available 
 - Run ```ssr/run_pipeline.py```
 
 # Trouble Shooting / Debugging
