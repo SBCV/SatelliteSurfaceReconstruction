@@ -28,7 +28,9 @@ def create_config_from_template(config_template_ifp, config_fp):
 
     if not os.path.isfile(config_fp):
         copyfile(config_template_ifp, config_fp)
-    return SSRConfig.get_from_file(config_fp)
+    ssr_config = SSRConfig.get_from_file(config_fp)
+    ssr_config.check_paths_for_potential_errors()
+    return ssr_config
 
 
 if __name__ == "__main__":

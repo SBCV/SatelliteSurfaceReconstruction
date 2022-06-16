@@ -1,12 +1,15 @@
 import toml
 from pydantic import BaseModel
 from typing import List, Union
+import os
+from ssr.utility.logging_extension import logger
 
 _config = None
 
 
 class SSRConfig(BaseModel):
     colmap_vissat_exe_fp: str
+    colmap_vissat_lib_dp: str
     texrecon_apps_dp: str
     meshlab_server_fp: str
     meshlab_temp_dp: str
@@ -58,3 +61,14 @@ class SSRConfig(BaseModel):
     def get_from_file(cls, toml_ifp):
         config_dict = toml.load(toml_ifp)
         return cls(**config_dict)
+
+    def check_paths_for_potential_errors(self):
+        attrs = vars(self)
+        for name in attrs:
+            if name.endswith("_dp"):
+                if not os.path.isdir(attrs[name]):
+                    logger.vinfo("The following config entry may not have been set correctly", attrs[name])
+            if name.endswith("_fp"):
+                if not os.path.isfile(attrs[name]):
+                    logger.vinfo("The following config entry may not have been set correctly", attrs[name])
+
