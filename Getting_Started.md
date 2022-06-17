@@ -64,8 +64,6 @@
     - Newer versions do not include the required meshlabserver anymore
     - For a list of releases see [here](https://github.com/cnr-isti-vclab/meshlab/releases) 
 
-- Install [](https://lmb.informatik.uni-freiburg.de/people/ummenhof/multiscalefusion/)
-
 - Make [VisSatSatelliteStereo](https://github.com/Kai-46/VisSatSatelliteStereo) and ```SatelliteSurfaceReconstruction``` available to your python interpreter
     - Option 1: Add `VisSatSatelliteStereo` and `SatelliteSurfaceReconstruction` to the python path
         - Add `ssr` (in the `SatelliteSurfaceReconstruction` directory)
