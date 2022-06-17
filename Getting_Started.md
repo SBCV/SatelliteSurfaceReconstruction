@@ -60,7 +60,11 @@
     - Follow the [installation instructions of MVS-Texturing](https://github.com/nmoehrle/mvs-texturing)
    
 - Install [Meshlab](https://github.com/cnr-isti-vclab/meshlab) 
+    - Make sure to install [Meshlab-2020.09](https://github.com/cnr-isti-vclab/meshlab/releases/tag/Meshlab-2020.09) or older
+    - Newer versions do not include the required meshlabserver anymore
     - For a list of releases see [here](https://github.com/cnr-isti-vclab/meshlab/releases) 
+
+- Install [](https://lmb.informatik.uni-freiburg.de/people/ummenhof/multiscalefusion/)
 
 - Make [VisSatSatelliteStereo](https://github.com/Kai-46/VisSatSatelliteStereo) and ```SatelliteSurfaceReconstruction``` available to your python interpreter
     - Option 1: Add `VisSatSatelliteStereo` and `SatelliteSurfaceReconstruction` to the python path
