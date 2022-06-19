@@ -9,6 +9,9 @@
 
 # === VisSat ===
 colmap_vissat_exe_fp = "/path/to/ColmapForVisSat/build/src/exe/colmap"
+# VisSat assumes its libraries are in the 'build/__install__/lib' directory
+# If you have build VisSat differently and the path differs, you can overwrite it below
+colmap_vissat_lib_dp = "/path/to/ColmapForVisSat/build/__install__/lib"
 
 # === MVS, Mesh and Surface Reconstruction Libraries  ===
 mve_apps_dp = "/path/to/mve/mve/apps"

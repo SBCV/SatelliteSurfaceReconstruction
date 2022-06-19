@@ -15,6 +15,15 @@ class VisSatPipeline:
         self.colmap_vissat_exe_fp = colmap_vissat_exe_fp
         assert os.path.isfile(colmap_vissat_exe_fp)
         self.colmap_vissat_exe_dp = os.path.dirname(colmap_vissat_exe_fp)
+        self.colmap_vissat_lib_dp = self.ssr_config.colmap_vissat_lib_dp
+
+        # if the path is not set correctly, try to guess the location of the lib folder
+        if not os.path.isdir(self.colmap_vissat_lib_dp):
+            split = os.path.normpath(self.colmap_vissat_exe_dp).split(os.path.sep)
+            if "build" in split:
+                idx_build = split.index("build") + 1
+                if len(split) > idx_build:
+                    self.colmap_vissat_lib_dp = os.path.join(os.path.sep, *split[:idx_build], "__install__", "lib")
 
     def run(self, reconstruct_sfm_mvs):
         dataset_dp = self.ssr_config.satellite_image_pan_dp
@@ -42,6 +51,8 @@ class VisSatPipeline:
 
             assert os.path.isdir(self.colmap_vissat_exe_dp)
             os.environ["PATH"] += os.pathsep + self.colmap_vissat_exe_dp
+            assert os.path.isdir(self.colmap_vissat_lib_dp)
+            os.environ["LD_LIBRARY_PATH"] = self.colmap_vissat_lib_dp
 
             # see https://github.com/Kai-46/VisSatSatelliteStereo/blob/master/stereo_pipeline.py
             from stereo_pipeline import StereoPipeline as VisSatStereoPipeline
