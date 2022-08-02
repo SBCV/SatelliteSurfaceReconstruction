@@ -18,26 +18,29 @@ class SSRConfig(BaseModel):
     mve_apps_dp: str
     openmvs_bin_dp: str
 
-    satellite_image_pan_dp: str
-    satellite_image_msi_dp: str
+    satellite_image_pan_dp: str = ""
+    satellite_image_msi_dp: str = ""
+    satellite_image_rgb_tif_dp: str = ""
     workspace_vissat_dp: str
     workspace_ssr_dp: str
 
     zone_number: int
     hemisphere: str
-    ul_easting: float
-    ul_northing: float
-    width: float
-    height: float
+    ul_easting: float = None
+    ul_northing: float = None
+    width: float = None
+    height: float = None
     alt_min: float
     alt_max: float
 
     meshing_backends: List[str]
     texturing_backends: List[str]
 
+    dataset_adapter: str
     reconstruct_sfm_mvs: Union[bool, int]
-    extract_pan: Union[bool, int]
-    extract_msi: Union[bool, int]
+    run_input_adapter: Union[bool, int]
+    extract_msi: Union[bool, int] = False
+    extract_pan: Union[bool, int] = False
     pan_sharpening: Union[bool, int]
     depth_map_recovery: Union[bool, int]
     skew_correction: Union[bool, int]
@@ -67,8 +70,8 @@ class SSRConfig(BaseModel):
         for name in attrs:
             if name.endswith("_dp"):
                 if not os.path.isdir(attrs[name]):
-                    logger.vinfo("The following config entry may not have been set correctly", attrs[name])
+                    logger.vinfo("The following config entry may not have been set correctly", f"{name}={attrs[name]}")
             if name.endswith("_fp"):
                 if not os.path.isfile(attrs[name]):
-                    logger.vinfo("The following config entry may not have been set correctly", attrs[name])
+                    logger.vinfo("The following config entry may not have been set correctly", f"{name}={attrs[name]}")
 

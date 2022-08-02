@@ -25,6 +25,12 @@ class VisSatPipeline:
                 if len(split) > idx_build:
                     self.colmap_vissat_lib_dp = os.path.join(os.path.sep, *split[:idx_build], "__install__", "lib")
 
+    def init_vissat(self):
+        assert os.path.isdir(self.colmap_vissat_exe_dp)
+        os.environ["PATH"] += os.pathsep + self.colmap_vissat_exe_dp
+        assert os.path.isdir(self.colmap_vissat_lib_dp)
+        os.environ["LD_LIBRARY_PATH"] = self.colmap_vissat_lib_dp
+
     def run(self, reconstruct_sfm_mvs):
         dataset_dp = self.ssr_config.satellite_image_pan_dp
         workspace_dp = self.ssr_config.workspace_vissat_dp
@@ -34,8 +40,8 @@ class VisSatPipeline:
             dataset_dp=dataset_dp,
             workspace_dp=workspace_dp,
             ssr_config=self.ssr_config,
-            clean_data=True,
-            crop_image=True,
+            clean_data=False,
+            crop_image=False,
             derive_approx=True,
             choose_subset=True,
             colmap_sfm_perspective=True,
@@ -48,11 +54,6 @@ class VisSatPipeline:
 
         if reconstruct_sfm_mvs:
             logger.vinfo("self.pm.vissat_config_fp", self.pm.vissat_config_fp)
-
-            assert os.path.isdir(self.colmap_vissat_exe_dp)
-            os.environ["PATH"] += os.pathsep + self.colmap_vissat_exe_dp
-            assert os.path.isdir(self.colmap_vissat_lib_dp)
-            os.environ["LD_LIBRARY_PATH"] = self.colmap_vissat_lib_dp
 
             # see https://github.com/Kai-46/VisSatSatelliteStereo/blob/master/stereo_pipeline.py
             from stereo_pipeline import StereoPipeline as VisSatStereoPipeline
