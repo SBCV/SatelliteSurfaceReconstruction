@@ -70,8 +70,13 @@ class SSRConfig(BaseModel):
         for name in attrs:
             if name.endswith("_dp"):
                 if not os.path.isdir(attrs[name]):
-                    logger.vinfo("The following config entry may not have been set correctly", f"{name}={attrs[name]}")
+                    logger.vinfo(
+                        "The following config entry may not have been set correctly",
+                        f"{name}={attrs[name]}",
+                    )
             if name.endswith("_fp"):
                 if not os.path.isfile(attrs[name]):
-                    logger.vinfo("The following config entry may not have been set correctly", f"{name}={attrs[name]}")
-
+                    logger.vinfo(
+                        "The following config entry may not have been set correctly",
+                        f"{name}={attrs[name]}",
+                    )

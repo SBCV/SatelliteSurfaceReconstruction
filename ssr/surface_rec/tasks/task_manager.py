@@ -18,7 +18,7 @@ from ssr.surface_rec.backends.mesh_backend import (
 
 class TaskManager:
     def __init__(self, pm, bm):
-        """ pm (path manager) and bm (backend manager) """
+        """pm (path manager) and bm (backend manager)"""
         self.pm = pm
         self.bm = bm
 

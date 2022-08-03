@@ -9,11 +9,9 @@ from stereo_pipeline import StereoPipeline as VisSatStereoPipeline
 
 
 class InputAdapter:
-
     def __init__(self, pm: PathManager):
         self.pm = pm
         self.config = SSRConfig.get_instance()
-
 
     def run(self):
         logger.info("Importing the MVS3DM dataset")
@@ -26,7 +24,7 @@ class InputAdapter:
             vissat_config_ofp=self.pm.vissat_config_fp,
             dataset_dp=dataset_dp,
             workspace_dp=workspace_dp,
-            ssr_config=self.config
+            ssr_config=self.config,
         )
         pipeline = VisSatStereoPipeline(self.pm.vissat_config_fp)
         pipeline.run()

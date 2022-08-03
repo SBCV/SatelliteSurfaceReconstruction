@@ -4,7 +4,12 @@ from ssr.utility.logging_extension import logger
 
 class PathManager:
     def __init__(
-        self, pan_ntf_idp, msi_ntf_idp, rgb_tif_idp, vissat_workspace_dp, ssr_workspace_dp
+        self,
+        pan_ntf_idp,
+        msi_ntf_idp,
+        rgb_tif_idp,
+        vissat_workspace_dp,
+        ssr_workspace_dp,
     ):
 
         self.vissat_workspace_dp = vissat_workspace_dp

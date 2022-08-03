@@ -61,7 +61,7 @@ if __name__ == "__main__":
     input_adapter_pipeline = RunInputAdapterPipeline(pm)
     input_adapter_pipeline.run(
         dataset_adapter=ssr_config.dataset_adapter,
-        run_input_adapter=ssr_config.run_input_adapter
+        run_input_adapter=ssr_config.run_input_adapter,
     )
 
     vissat_pipeline.run(ssr_config.reconstruct_sfm_mvs)
