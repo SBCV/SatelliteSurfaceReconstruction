@@ -101,8 +101,8 @@ texturing_backends = [
 
 # ===== IARPA MVS3DM dataset =====
 dataset_adapter = "ssr.input_adapters.adapter_MVS3DM"
-satellite_image_pan_dp = "/path/to/WV3/PAN"
-satellite_image_msi_dp = "/path/to/WV3/MSI"
+satellite_image_pan_dp = "/path/to/spacenet-dataset/Hosted-Datasets/MVS_dataset/WV3/PAN"
+satellite_image_msi_dp = "/path/to/spacenet-dataset/Hosted-Datasets/MVS_dataset/WV3/MSI"
 run_input_adapter = 1
 extract_msi = 1
 extract_pan = 1
