@@ -88,7 +88,6 @@ texturing_backends = [
 #dataset_adapter = "ssr.input_adapters.adapter_DFC2019"
 #satellite_image_rgb_tif_dp = "path/to/input/tif/files"
 #run_input_adapter = 1
-#pan_sharpening = 0  # the DFC2019 dataset is already pan sharpened
 #depth_map_recovery = 1
 #skew_correction = 1
 

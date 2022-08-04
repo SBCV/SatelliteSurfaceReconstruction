@@ -41,7 +41,7 @@ class SSRConfig(BaseModel):
     run_input_adapter: Union[bool, int]
     extract_msi: Union[bool, int] = False
     extract_pan: Union[bool, int] = False
-    pan_sharpening: Union[bool, int]
+    pan_sharpening: Union[bool, int] = False
     depth_map_recovery: Union[bool, int]
     skew_correction: Union[bool, int]
 
