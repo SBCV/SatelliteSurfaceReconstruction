@@ -85,18 +85,17 @@
 
 # Download Satellite Images
 
-The pipeline can use either the [IARPA MVS3DM dataset](https://spacenet.ai/iarpa-multi-view-stereo-3d-mapping/) or [Data Fusion Contest 2019 (dfc2019) Track 3](https://ieee-dataport.org/open-access/data-fusion-contest-2019-dfc2019)
-dataset
+The pipeline allows to process the [IARPA MVS3DM dataset](https://spacenet.ai/iarpa-multi-view-stereo-3d-mapping/) or the [Data Fusion Contest 2019 (dfc2019) Track 3](https://ieee-dataport.org/open-access/data-fusion-contest-2019-dfc2019) dataset.
 
-- Download either the [IARPA MVS3DM dataset](https://spacenet.ai/iarpa-multi-view-stereo-3d-mapping/) 
+- Option 1: Download the [IARPA MVS3DM dataset](https://spacenet.ai/iarpa-multi-view-stereo-3d-mapping/) 
     - Note: The dataset location referenced at [IARPA MVS3DM dataset](https://spacenet.ai/iarpa-multi-view-stereo-3d-mapping/) is incorrect
     - Instead you can download the dataset (using [amazon web services](https://aws.amazon.com)) with
         - ```aws s3 cp s3://spacenet-dataset/Hosted-Datasets/MVS_dataset/ /local/path/to/dataset/ --recursive```
     - If you want to inspect the data before downloading you might want to use 
         - ```aws s3 ls s3://spacenet-dataset/Hosted-Datasets/MVS_dataset/```
 
-- **OR** Download the [Data Fusion Contest 2019 (dfc2019) Track 3](https://ieee-dataport.org/open-access/data-fusion-contest-2019-dfc2019)
-  - Note: The relevant data is contained inside 
+- Option 2: Download the [Data Fusion Contest 2019 (dfc2019) Track 3](https://ieee-dataport.org/open-access/data-fusion-contest-2019-dfc2019)
+  - Note: The relevant data is contained in
     - ```Track 3 / Training data / RGB images 1/2 Train-Track3-RGB-1.zip```
     - ```Track 3 / Training data / RGB images 2/2 Train-Track3-RGB-1.zip```
     - ```Track 3 / Training data / Reference Train-Track3-Truth.zip```
@@ -121,19 +120,18 @@ dataset
         - ```workspace_ssr_dp```
         - ```meshlab_temp_dp```
 
-    - For the input data based on the dataset used as input uncomment the relevant block in the config
-      - When using the [IARPA MVS3DM dataset](https://spacenet.ai/iarpa-multi-view-stereo-3d-mapping/) 
+    - For the input data uncomment the relevant block in the config (depending on the input dataset)
+      - Option 1: [IARPA MVS3DM dataset](https://spacenet.ai/iarpa-multi-view-stereo-3d-mapping/) 
         - ```dataset_adapter = "ssr.input_adapters.adapter_MVS3DM"```
         - ```satellite_image_pan_dp=/path/to/spacenet-dataset/Hosted-Datasets/MVS_dataset/WV3/PAN```
         - ```satellite_image_msi_dp=/path/to/spacenet-dataset/Hosted-Datasets/MVS_dataset/WV3/MSI```
-      - When using the [Data Fusion Contest 2019 (dfc2019) Track 3 dataset](https://ieee-dataport.org/open-access/data-fusion-contest-2019-dfc2019)
+      - Option 2: [Data Fusion Contest 2019 (dfc2019) Track 3 dataset](https://ieee-dataport.org/open-access/data-fusion-contest-2019-dfc2019)
         - ```dataset_adapter = "ssr.input_adapters.adapter_DFC2019"```
         - ```satellite_image_rgb_tif_dp = "path/to/input/tif/files"```
           - Note: the [dfc2019 Track 3 dataset](https://ieee-dataport.org/open-access/data-fusion-contest-2019-dfc2019)
             contains data for multiple location sites. The SSR pipeline expects ```satellite_image_rgb_tif_dp``` to point to a directory containing
             a subset of the data belonging to the same location (for example ```JAX_004_*_RGB.tif```)
-          - If the relevant .txt from ```Track 3 / Training data / Reference Train-Track3-Truth.zip``` (for example ```JAX_004_DSM.txt``` ) is placed in the same input directory
-            and ```ul_easting, ul_northing, width, height``` are **not** set, they will be calculated based on the .txt
+          - If the relevant ```.txt``` file from ```Track 3 / Training data / Reference Train-Track3-Truth.zip``` (for example ```JAX_004_DSM.txt``` ) is placed in the same input directory and ```ul_easting, ul_northing, width, height``` are **not** set, they will be calculated based on the ```.txt``` file.
 
 - Adjust the list of ```meshing_backends``` according to the installed MVS / Surface reconstruction libraries
     - For example, comment ```Openmvs``` in ```meshing_backends```, if it is not available 
