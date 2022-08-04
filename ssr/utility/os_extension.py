@@ -122,7 +122,7 @@ def get_image_file_paths_in_dir(
 ):
     return get_file_paths_in_dir(
         idp,
-        ext=[".jpg", ".png"],
+        ext=[".jpg", ".png", ".tif"],
         target_str_or_list=target_str_or_list,
         base_name_only=base_name_only,
         without_ext=without_ext,
