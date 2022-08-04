@@ -19,38 +19,32 @@ class InputAdapter:
     def run(self):
         logger.info("Importing the DFC2019 dataset")
         mkdir_safely(self.pm.rec_pan_png_idp)
-        mkdir_safely(self.pm.vissat_metas_idp)
+        mkdir_safely(self.pm.vissat_meta_data_idp)
 
         # extract the images and meta information from the tif files
-        for index, current_file in enumerate(
-            sorted(os.listdir(self.pm.rgb_tif_idp))
-        ):
-            base_name = os.path.basename(current_file)
-            if base_name[-4:] == ".tif":
-                img, meta = self.parse_tif_image(
-                    os.path.join(self.pm.rgb_tif_idp, current_file)
-                )
-                imageio.imwrite(
-                    os.path.join(
-                        self.pm.rec_pan_png_idp,
-                        f"{index}_{base_name[:-4]}.png",
-                    ),
-                    img,
-                )
-                with open(
-                    os.path.join(
-                        self.pm.vissat_metas_idp,
-                        f"{index}_{base_name[:-4]}.json",
-                    ),
-                    "w",
-                ) as fp:
-                    json.dump(meta, fp, indent=2)
-                logger.info(f"Imported {base_name}")
+        for index, ifn in enumerate(sorted(os.listdir(self.pm.rgb_tif_idp))):
+            current_stem, current_ext = os.path.splitext(ifn)
+            if current_ext == ".tif":
+                ifp = os.path.join(self.pm.rgb_tif_idp, ifn)
+                img, meta = self.parse_tif_image(ifp)
 
-            if base_name[-4:] == ".txt":
+                png_ofp = os.path.join(
+                    self.pm.rec_pan_png_idp, f"{index}_{current_stem}.png"
+                )
+                imageio.imwrite(png_ofp, img)
+
+                json_ofp = os.path.join(
+                    self.pm.vissat_meta_data_idp,
+                    f"{index}_{current_stem}.json",
+                )
+                with open(json_ofp, "w") as fp:
+                    json.dump(meta, fp, indent=2)
+                logger.info(f"Imported {ifn}")
+
+            if current_ext == ".txt":
                 # update the config with the correct location metadata based on truth file
                 self.read_location_metadata(
-                    os.path.join(self.pm.rgb_tif_idp, current_file)
+                    os.path.join(self.pm.rgb_tif_idp, ifn)
                 )
 
         # if pan sharpening is not enabled, move the images into the correct folder for the following pipeline steps
@@ -60,7 +54,7 @@ class InputAdapter:
                 self.pm.rec_pan_png_idp, self.pm.sharpened_with_skew_png_dp
             )
 
-    def read_location_metadata(self, path_to_truth_file):
+    def read_location_metadata(self, txt_fp):
         conf = SSRConfig.get_instance()
         if (
             conf.ul_easting is None
@@ -68,9 +62,8 @@ class InputAdapter:
             and conf.width is None
             and conf.height is None
         ):
-            easting, northing, pixels, gsd = np.loadtxt(
-                path_to_truth_file
-            )  # lower left corner
+            # lower left corner
+            easting, northing, pixels, gsd = np.loadtxt(txt_fp)
             conf.ul_easting = easting
             conf.ul_northing = northing + (pixels - 1) * gsd
             conf.width = int(pixels) * gsd
@@ -84,11 +77,11 @@ class InputAdapter:
             logger.info(f"Read location metadata: width={conf.width}")
             logger.info(f"Read location metadata: height={conf.height}")
 
-    def parse_tif_image(self, tiff_fpath):
+    def parse_tif_image(self, tiff_fp):
         """
         Source: https://github.com/Kai-46/SatelliteSfM/blob/7ea9aebba7cbab586792797c3d65a2c6dca51b8b/preprocess/parse_tif_image.py#L7
         """
-        dataset = gdal.Open(tiff_fpath, gdal.GA_ReadOnly)
+        dataset = gdal.Open(tiff_fp, gdal.GA_ReadOnly)
         img = dataset.ReadAsArray()
         assert len(img.shape) == 3 and img.shape[0] == 3
         img = img.transpose((1, 2, 0))  # [c, h, w] --> [h, w, c]
