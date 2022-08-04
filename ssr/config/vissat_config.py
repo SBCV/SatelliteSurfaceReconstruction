@@ -110,7 +110,7 @@ def create_vissat_config_from_ssr_config(
     aggregate_2p5d,
     aggregate_3d,
 ):
-    """ The created config uses the PAN images"""
+    """The created config uses the PAN images"""
 
     create_vissat_config(
         vissat_config_ofp,

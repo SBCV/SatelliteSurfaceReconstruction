@@ -7,6 +7,13 @@
 # Boolean variables (such as "reconstruct_sfm_mvs" or "extract_pan") can be
 # toggled with "1" and "0" or "true" and "false".
 
+
+
+# === === === === ===
+#    Dependencies
+# === === === === ===
+
+
 # === VisSat ===
 colmap_vissat_exe_fp = "/path/to/ColmapForVisSat/build/src/exe/colmap"
 # VisSat assumes its libraries are in the 'build/__install__/lib' directory
@@ -24,22 +31,27 @@ colmap_exe_dp = "/path/to/colmap/build/src/exe"
 # Make sure that Meshlab has access to the "meshlab_temp_dp" directory below
 # For example, the snap installation of Meshlab may have NO access to /tmp
 meshlab_server_fp = "/snap/bin/meshlab.meshlabserver"
+
+
+
+# === === === === ===
+# Pipeline Workspaces
+# === === === === ===
+workspace_vissat_dp = "/some/path/to/a/directory"
+workspace_ssr_dp = "/some/path/to/a/directory"
 meshlab_temp_dp = "/some/path/to/a/directory"
+
+
+
+# === === === === ===
+#  Pipeline settings
+# === === === === ===
 
 # === Computation behavior ===
 lazy = 1
 
 # === SfM / MVS Options ===
 reconstruct_sfm_mvs = 1
-
-# === Preparation Options ===
-extract_pan = 1
-extract_msi = 1
-pan_sharpening = 1
-depth_map_recovery = 1
-skew_correction = 1
-# ===
-
 reconstruct_mesh = 1
 texture_mesh = 1
 
@@ -65,13 +77,40 @@ texturing_backends = [
     "mve"
     ]
 
-# ===== IARPA MVS3DM dataset =====
-satellite_image_pan_dp = ""
-satellite_image_msi_dp = ""
 
-# ===== Site 1 (Used in the VisSat Evaluation) =====
-workspace_vissat_dp = ""
-workspace_ssr_dp = ""
+
+# === === === === ===
+#  Dataset settings
+# === === === === ===
+
+
+# ===== DFC2019 Track3 dataset =====
+#dataset_adapter = "ssr.input_adapters.adapter_DFC2019"
+#satellite_image_rgb_tif_dp = "path/to/input/tif/files"
+#run_input_adapter = 1
+#pan_sharpening = 0  # the DFC2019 dataset is already pan sharpened
+#depth_map_recovery = 1
+#skew_correction = 1
+
+# ===== DFC2019 Site 1 =====
+#zone_number = 17  # JAX is 17, OMA 15
+#hemisphere = "N"
+#alt_min = -20.0
+#alt_max = 100.0
+
+
+# ===== IARPA MVS3DM dataset =====
+dataset_adapter = "ssr.input_adapters.adapter_MVS3DM"
+satellite_image_pan_dp = "/path/to/spacenet-dataset/Hosted-Datasets/MVS_dataset/WV3/PAN"
+satellite_image_msi_dp = "/path/to/spacenet-dataset/Hosted-Datasets/MVS_dataset/WV3/MSI"
+run_input_adapter = 1
+extract_msi = 1
+extract_pan = 1
+pan_sharpening = 1
+depth_map_recovery = 1
+skew_correction = 1
+
+# ===== IARPA MVS3DM Site 1 (Used in the VisSat Evaluation) =====
 zone_number = 21
 hemisphere = "S"
 ul_easting = 354035.0
@@ -81,9 +120,7 @@ height = 682.0
 alt_min = -20.0
 alt_max = 100.0
 
-# ===== Site 2 (Used in the VisSat Evaluation) =====
-# workspace_vissat_dp = ""
-# workspace_ssr_dp = ""
+# ===== IARPA MVS3DM Site 2 (Used in the VisSat Evaluation) =====
 # zone_number = 21
 # hemisphere = "S"
 # ul_easting = 354984.0
@@ -93,9 +130,7 @@ alt_max = 100.0
 # alt_min = -20.0
 # alt_max = 80.0
 
-# ===== Site 3 (Used in the VisSat Evaluation) =====
-# workspace_vissat_dp = ""
-# workspace_ssr_dp = ""
+# ===== IARPA MVS3DM Site 3 (Used in the VisSat Evaluation) =====
 # zone_number = 21
 # hemisphere = "S"
 # ul_easting = 355028.0

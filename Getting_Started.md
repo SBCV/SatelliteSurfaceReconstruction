@@ -85,13 +85,21 @@
 
 # Download Satellite Images
 
-- Download the [IARPA MVS3DM dataset](https://spacenet.ai/iarpa-multi-view-stereo-3d-mapping/) 
+The pipeline can use either the [IARPA MVS3DM dataset](https://spacenet.ai/iarpa-multi-view-stereo-3d-mapping/) or [Data Fusion Contest 2019 (dfc2019) Track 3](https://ieee-dataport.org/open-access/data-fusion-contest-2019-dfc2019)
+dataset
+
+- Download either the [IARPA MVS3DM dataset](https://spacenet.ai/iarpa-multi-view-stereo-3d-mapping/) 
     - Note: The dataset location referenced at [IARPA MVS3DM dataset](https://spacenet.ai/iarpa-multi-view-stereo-3d-mapping/) is incorrect
     - Instead you can download the dataset (using [amazon web services](https://aws.amazon.com)) with
         - ```aws s3 cp s3://spacenet-dataset/Hosted-Datasets/MVS_dataset/ /local/path/to/dataset/ --recursive```
     - If you want to inspect the data before downloading you might want to use 
         - ```aws s3 ls s3://spacenet-dataset/Hosted-Datasets/MVS_dataset/```
 
+- **OR** Download the [Data Fusion Contest 2019 (dfc2019) Track 3](https://ieee-dataport.org/open-access/data-fusion-contest-2019-dfc2019)
+  - Note: The relevant data is contained inside 
+    - ```Track 3 / Training data / RGB images 1/2 Train-Track3-RGB-1.zip```
+    - ```Track 3 / Training data / RGB images 2/2 Train-Track3-RGB-1.zip```
+    - ```Track 3 / Training data / Reference Train-Track3-Truth.zip```
 
 # Run the SSR Pipeline
 
@@ -107,19 +115,30 @@
         - ```openmvs_bin_dp```
         - ```colmap_exe_dp```
         - ```meshlab_server_fp```
-
-    - For the input data
-        - ```satellite_image_pan_dp=/path/to/spacenet-dataset/Hosted-Datasets/MVS_dataset/WV3/PAN```
-        - ```satellite_image_msi_dp=/path/to/spacenet-dataset/Hosted-Datasets/MVS_dataset/WV3/MSI```
         
     - For the reconstruction results (i.e. workspace directories)
         - ```workspace_vissat_dp```
         - ```workspace_ssr_dp```
         - ```meshlab_temp_dp```
 
+    - For the input data based on the dataset used as input uncomment the relevant block in the config
+      - When using the [IARPA MVS3DM dataset](https://spacenet.ai/iarpa-multi-view-stereo-3d-mapping/) 
+        - ```dataset_adapter = "ssr.input_adapters.adapter_MVS3DM"```
+        - ```satellite_image_pan_dp=/path/to/spacenet-dataset/Hosted-Datasets/MVS_dataset/WV3/PAN```
+        - ```satellite_image_msi_dp=/path/to/spacenet-dataset/Hosted-Datasets/MVS_dataset/WV3/MSI```
+      - When using the [Data Fusion Contest 2019 (dfc2019) Track 3 dataset](https://ieee-dataport.org/open-access/data-fusion-contest-2019-dfc2019)
+        - ```dataset_adapter = "ssr.input_adapters.adapter_DFC2019"```
+        - ```satellite_image_rgb_tif_dp = "path/to/input/tif/files"```
+          - Note: the [dfc2019 Track 3 dataset](https://ieee-dataport.org/open-access/data-fusion-contest-2019-dfc2019)
+            contains data for multiple location sites. The SSR pipeline expects ```satellite_image_rgb_tif_dp``` to point to a directory containing
+            a subset of the data belonging to the same location (for example ```JAX_004_*_RGB.tif```)
+          - If the relevant .txt from ```Track 3 / Training data / Reference Train-Track3-Truth.zip``` (for example ```JAX_004_DSM.txt``` ) is placed in the same input directory
+            and ```ul_easting, ul_northing, width, height``` are **not** set, they will be calculated based on the .txt
+
 - Adjust the list of ```meshing_backends``` according to the installed MVS / Surface reconstruction libraries
     - For example, comment ```Openmvs``` in ```meshing_backends```, if it is not available 
 - Run ```ssr/run_pipeline.py```
+- The final output of the pipeline based on the meshing backends chosen can be found in ```workspace_ssr_dp/surface/surface/mve/```
 
 # Trouble Shooting / Debugging
 - If you receive ```ModuleNotFoundError: No module named 'lib'``` at ```from lib.rpc_model import RPCModel```, then the [VisSatSatelliteStereo library](https://github.com/Kai-46/VisSatSatelliteStereo) is not available in your python environment.
@@ -128,6 +147,7 @@
         - ```reconstruct_sfm_mvs = 1```
         - ```extract_pan = 0```
         - ```extract_msi = 0```
+        - ```run_input_adapter = 1```
         - ```pan_sharpening = 0```
         - ```depth_map_recovery = 0```
         - ```skew_correction = 0```

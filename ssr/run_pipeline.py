@@ -12,6 +12,7 @@ from ssr.surface_rec.surface.surface_reconstruction_pipeline import (
 from ssr.surface_rec.backends.backend_manager import (
     BackendManager,
 )
+from ssr.input_adapters.run_input_adapter import RunInputAdapterPipeline
 
 from ssr.config.ssr_config import SSRConfig
 
@@ -45,6 +46,7 @@ if __name__ == "__main__":
     pm = PathManager(
         pan_ntf_idp=ssr_config.satellite_image_pan_dp,
         msi_ntf_idp=ssr_config.satellite_image_msi_dp,
+        rgb_tif_idp=ssr_config.satellite_image_rgb_tif_dp,
         vissat_workspace_dp=ssr_config.workspace_vissat_dp,
         ssr_workspace_dp=ssr_config.workspace_ssr_dp,
     )
@@ -54,6 +56,14 @@ if __name__ == "__main__":
     )
 
     vissat_pipeline = VisSatPipeline(pm)
+    vissat_pipeline.init_vissat()
+
+    input_adapter_pipeline = RunInputAdapterPipeline(pm)
+    input_adapter_pipeline.run(
+        dataset_adapter=ssr_config.dataset_adapter,
+        run_input_adapter=ssr_config.run_input_adapter,
+    )
+
     vissat_pipeline.run(ssr_config.reconstruct_sfm_mvs)
 
     pm.check_rec_pan_png_idp()
