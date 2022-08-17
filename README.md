@@ -8,11 +8,11 @@
 </p>
 
 ## Getting Started
-- [Installation Instructions](Getting_Started.md#installation-instructions-for-ubuntu-1804) 
-- [Download the IARPA MVS3DM Dataset](Getting_Started.md#download-satellite-images) 
-- [Run the Pipeline](Getting_Started.md#run-the-ssr-pipeline)
+- [Installation Instructions](doc/install_instructions.md)
+- [Download the IARPA MVS3DM Dataset or the Data Fusion Contest 2019 Data](doc/download_dataset.md)
+- [Run the Pipeline](doc/run_pipeline.md)
+- [Trouble Shooting](doc/trouble_shooting.md)
 - [Evaluate the Reconstruction Results](https://github.com/SBCV/SatelliteSurfaceReconstructionEvaluation)
-- [Trouble Shooting](Getting_Started.md#trouble-shooting--debugging)
 
 ## Citation
 If you use this project for your research, please cite the following paper:

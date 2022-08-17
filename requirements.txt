@@ -13,3 +13,4 @@ pymap3d==1.7.15
 python-dateutil==2.8.0
 numpy-groupies>=0.9.9
 pyproj>=2.4.0
+tifffile
