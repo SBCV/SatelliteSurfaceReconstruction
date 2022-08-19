@@ -3,7 +3,6 @@ from ssr.path_manager import PathManager
 from ssr.utility.os_extension import mkdir_safely
 from ssr.utility.logging_extension import logger
 import os
-import tifffile
 from osgeo import gdal
 import numpy as np
 import json
@@ -14,9 +13,8 @@ import distutils.dir_util
 class InputAdapter:
     def __init__(self, pm: PathManager):
         self.pm = pm
-        self.config = SSRConfig.get_instance()
 
-    def run(self):
+    def run(self, run_input_adapter=True):
         logger.info("Importing the DFC2019 dataset")
         mkdir_safely(self.pm.rec_pan_png_idp)
         mkdir_safely(self.pm.vissat_meta_data_idp)
@@ -24,12 +22,13 @@ class InputAdapter:
         # extract the images and meta information from the tif files
         for index, ifn in enumerate(sorted(os.listdir(self.pm.rgb_tif_idp))):
             current_stem, current_ext = os.path.splitext(ifn)
-            if current_ext == ".tif":
+            if current_ext == ".tif" and run_input_adapter:
                 ifp = os.path.join(self.pm.rgb_tif_idp, ifn)
                 img, meta = self.parse_tif_image(ifp)
 
                 png_ofp = os.path.join(
                     self.pm.rec_pan_png_idp, f"{index}_{current_stem}.png"
+
                 )
                 imageio.imwrite(png_ofp, img)
 
