@@ -7,9 +7,6 @@
   <img src="doc/images/gdmr_site_3_textured_view_1_resized_0p5_q_90.jpeg" width="32%" /> 
 </p>
 
-An interactive visualization of one of the reconstructed results is available on <a href="https://sbcv.github.io/SatelliteSurfaceReconstructionWebsite">this project page</a>:
-<a href="https://sbcv.github.io/SatelliteSurfaceReconstructionWebsite"><img class="image" align="center" src="https://github.com/SBCV/SatelliteSurfaceReconstruction/blob/master/doc/images/interactive_screen_shot.jpg"></a>
-
 ## Getting Started
 - [Installation Instructions](doc/install_instructions.md)
 - [Download the IARPA MVS3DM Dataset or the Data Fusion Contest 2019 Data](doc/download_dataset.md)
@@ -35,3 +32,7 @@ doi={10.5194/isprs-archives-XLIII-B2-2021-313-2021}
 }
 ```
 <br clear="left"/>
+
+## Interactive Visualization
+An interactive visualization of one of the reconstructed results is available on <a href="https://sbcv.github.io/SatelliteSurfaceReconstructionWebsite">this project page</a>:
+<a href="https://sbcv.github.io/SatelliteSurfaceReconstructionWebsite"><img class="image" align="center" src="https://github.com/SBCV/SatelliteSurfaceReconstruction/blob/master/doc/images/interactive_screen_shot.jpg"></a>
