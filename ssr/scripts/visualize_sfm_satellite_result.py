@@ -86,7 +86,7 @@ def local_to_global(bbox_dict, xx, yy, zz):
     #  the point (latitude0; longitude0; 0).
     lat0, lon0, alt0 = get_observer_point(bbox_dict)
     # ENU = East-North-Up
-    xx, yy, zz = enu_to_latlonalt(xx, yy, zz, lat0, lon0, alt0).format()
+    xx, yy, zz = enu_to_latlonalt(xx, yy, zz, lat0, lon0, alt0)
     return xx, yy, zz
 
 
