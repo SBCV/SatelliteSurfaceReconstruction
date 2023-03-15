@@ -84,9 +84,7 @@ def write_array(array, path):
         data_list = data_1d.tolist()
         endian_character = "<"
         format_char_sequence = "".join(["f"] * len(data_list))
-        byte_data = struct.pack(
-            endian_character + format_char_sequence, *data_list
-        )
+        byte_data = struct.pack(endian_character + format_char_sequence, *data_list)
         fid.write(byte_data)
 
 

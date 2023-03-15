@@ -12,9 +12,7 @@ class PythonCache(object):
     def get_cached_result(self, callback, params, unique_id_or_path):
 
         if type(unique_id_or_path) == int:
-            cache_fp = os.path.join(
-                self.tmp_dir, str(unique_id_or_path) + ".cache"
-            )
+            cache_fp = os.path.join(self.tmp_dir, str(unique_id_or_path) + ".cache")
         elif type(unique_id_or_path) == str:
             cache_fp = unique_id_or_path
         else:

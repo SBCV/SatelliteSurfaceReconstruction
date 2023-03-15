@@ -19,9 +19,7 @@ class VisSatPipeline:
 
         # if the path is not set correctly, try to guess the location of the lib folder
         if not os.path.isdir(self.colmap_vissat_lib_dp):
-            split = os.path.normpath(self.colmap_vissat_exe_dp).split(
-                os.path.sep
-            )
+            split = os.path.normpath(self.colmap_vissat_exe_dp).split(os.path.sep)
             if "build" in split:
                 idx_build = split.index("build") + 1
                 if len(split) > idx_build:
@@ -39,6 +37,7 @@ class VisSatPipeline:
         dataset_dp = self.ssr_config.satellite_image_pan_dp
         workspace_dp = self.ssr_config.workspace_vissat_dp
         mkdir_safely(workspace_dp)
+
         create_vissat_config_from_ssr_config(
             vissat_config_ofp=self.pm.vissat_config_fp,
             dataset_dp=dataset_dp,

@@ -79,9 +79,7 @@ def _lookup_type(type_str):
         try:
             type_str = _data_types[type_str]
         except KeyError:
-            raise ValueError(
-                "field type %r not in %r" % (type_str, _types_list)
-            )
+            raise ValueError("field type %r not in %r" % (type_str, _types_list))
 
     return _data_type_reverse[type_str]
 
@@ -93,9 +91,7 @@ def make2d(array, cols=None, dtype=None):
 
     """
     if (cols is None or dtype is None) and not len(array):
-        raise RuntimeError(
-            "cols and dtype must be specified for empty " "array"
-        )
+        raise RuntimeError("cols and dtype must be specified for empty " "array")
 
     if cols is None:
         cols = len(array[0])
@@ -185,14 +181,10 @@ class _PlyHeaderParser(object):
 
         if fields[0] == "list":
             if len(fields) != 4:
-                self._error(
-                    'expected "property list ' '{len_type} {val_type} {name}"'
-                )
+                self._error('expected "property list ' '{len_type} {val_type} {name}"')
 
             try:
-                properties.append(
-                    PlyListProperty(fields[3], fields[1], fields[2])
-                )
+                properties.append(PlyListProperty(fields[3], fields[1], fields[2]))
             except ValueError as e:
                 self._error(str(e))
 
@@ -431,9 +423,7 @@ class PlyData(object):
         if self.text:
             lines.append("format ascii 1.0")
         else:
-            lines.append(
-                "format " + _byte_order_reverse[self.byte_order] + " 1.0"
-            )
+            lines.append("format " + _byte_order_reverse[self.byte_order] + " 1.0")
 
         # Some information is lost here, since all comments are placed
         # between the 'format' line and the first element.
@@ -463,16 +453,12 @@ class PlyData(object):
         return self.header
 
     def __repr__(self):
-        return (
-            "PlyData(%r, text=%r, byte_order=%r, "
-            "comments=%r, obj_info=%r)"
-            % (
-                self.elements,
-                self.text,
-                self.byte_order,
-                self.comments,
-                self.obj_info,
-            )
+        return "PlyData(%r, text=%r, byte_order=%r, " "comments=%r, obj_info=%r)" % (
+            self.elements,
+            self.text,
+            self.byte_order,
+            self.comments,
+            self.obj_info,
         )
 
 
@@ -517,9 +503,7 @@ class PlyElement(object):
 
         self.comments = comments
 
-        self._have_list = any(
-            isinstance(p, PlyListProperty) for p in self.properties
-        )
+        self._have_list = any(isinstance(p, PlyListProperty) for p in self.properties)
 
     @property
     def count(self):
@@ -560,9 +544,7 @@ class PlyElement(object):
     comments = property(_get_comments, _set_comments)
 
     def _index(self):
-        self._property_lookup = dict(
-            (prop.name, prop) for prop in self._properties
-        )
+        self._property_lookup = dict((prop.name, prop) for prop in self._properties)
         if len(self._property_lookup) != len(self._properties):
             raise ValueError("two properties with same name")
 
@@ -622,9 +604,7 @@ class PlyElement(object):
 
                 if t[1][1] == "O":
                     if len(t) != 2:
-                        raise ValueError(
-                            "non-scalar object fields not " "supported"
-                        )
+                        raise ValueError("non-scalar object fields not " "supported")
 
                 len_str = _data_type_reverse[len_types.get(t[0], "u1")]
                 if t[1][1] == "O":
@@ -688,9 +668,7 @@ class PlyElement(object):
             else:
                 # no list properties, so serialization is
                 # straightforward.
-                self.data.astype(self.dtype(byte_order), copy=False).tofile(
-                    stream
-                )
+                self.data.astype(self.dtype(byte_order), copy=False).tofile(stream)
 
     def _read_txt(self, stream):
         """
@@ -707,13 +685,9 @@ class PlyElement(object):
                 try:
                     self._data[prop.name][k] = prop._from_fields(fields)
                 except StopIteration:
-                    raise PlyElementParseError(
-                        "early end-of-line", self, k, prop
-                    )
+                    raise PlyElementParseError("early end-of-line", self, k, prop)
                 except ValueError:
-                    raise PlyElementParseError(
-                        "malformed input", self, k, prop
-                    )
+                    raise PlyElementParseError("malformed input", self, k, prop)
             try:
                 next(fields)
             except StopIteration:
@@ -754,13 +728,9 @@ class PlyElement(object):
         for k in _range(self.count):
             for prop in self.properties:
                 try:
-                    self._data[prop.name][k] = prop._read_bin(
-                        stream, byte_order
-                    )
+                    self._data[prop.name][k] = prop._read_bin(stream, byte_order)
                 except StopIteration:
-                    raise PlyElementParseError(
-                        "early end-of-file", self, k, prop
-                    )
+                    raise PlyElementParseError("early end-of-file", self, k, prop)
 
     def _write_bin(self, stream, byte_order):
         """

@@ -69,9 +69,7 @@ class PreparationPipeline:
         oft = "png"
         remove_aux_file = False
         apply_tone_mapping = True
-        joint_tone_mapping = (
-            False  # Separate tone mapping yields much better results
-        )
+        joint_tone_mapping = False  # Separate tone mapping yields much better results
         execute_parallel = True
 
         # === Additional options for pan_sharpening === #
@@ -125,7 +123,7 @@ class PreparationPipeline:
                 pm.sharpened_with_skew_png_dp,
                 resampling_algorithm=resampling_algorithm,
             )
-
+        # TODO: remove hardcoded optional parameters
         if depth_map_recovery:
             makedirs_safely(pm.depth_map_real_with_skew_dp)
             recover_depth_maps(
@@ -143,6 +141,13 @@ class PreparationPipeline:
                 depth_map_point_cloud_odp=None,
                 create_depth_map_point_cloud_reference=False,
                 depth_map_point_cloud_reference_odp=None,
+                # check_inv_proj_mat=False,
+                # inv_proj_mat_ifp=None,
+                # check_depth_mat_storing=False,
+                # create_depth_map_point_cloud=True,
+                # depth_map_point_cloud_odp="/mnt/Data-2TB-3/SSR_Output/workspace_ssr/depthmaps",
+                # create_depth_map_point_cloud_reference=True,
+                # depth_map_point_cloud_reference_odp="/mnt/Data-2TB-3/SSR_Output/workspace_ssr/depthmaps_reference",
             )
 
         if skew_correction:
@@ -150,9 +155,7 @@ class PreparationPipeline:
 
             # Copy the original sparse model and overwrite it with the values
             # from the next step
-            copy_tree(
-                pm.sparse_model_with_skew_idp, pm.sparse_model_no_skew_dp
-            )
+            copy_tree(pm.sparse_model_with_skew_idp, pm.sparse_model_no_skew_dp)
 
             compute_skew_free_camera_models(
                 colmap_model_with_skew_idp=pm.sparse_model_with_skew_idp,

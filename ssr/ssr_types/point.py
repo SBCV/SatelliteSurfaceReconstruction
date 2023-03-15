@@ -4,9 +4,7 @@ from pprint import pformat
 
 
 class Measurement:
-    def __init__(
-        self, camera_index, feature_index, x, y, x_y_are_image_coords=None
-    ):
+    def __init__(self, camera_index, feature_index, x, y, x_y_are_image_coords=None):
         self.camera_index = int(camera_index)
         self.feature_index = int(feature_index)
         # Measurement positions are expressed in "computer vision coordinates"

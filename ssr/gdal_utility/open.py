@@ -4,9 +4,7 @@ from osgeo import gdal
 
 # https://gdal.org/python/index.html
 
-BandStatistics = collections.namedtuple(
-    "BandStatistics", ["min", "max", "mean", "std"]
-)
+BandStatistics = collections.namedtuple("BandStatistics", ["min", "max", "mean", "std"])
 
 
 def get_image_statistics_per_band(ifp):

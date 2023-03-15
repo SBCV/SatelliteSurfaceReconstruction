@@ -20,11 +20,7 @@ class MVEMVSReconstructor:
         self, ifp_or_idp, mve_workspace, downscale_level=-1, lazy=False
     ):
         views_folder = os.path.join(mve_workspace, "views")
-        if (
-            os.path.isdir(mve_workspace)
-            and os.path.isdir(views_folder)
-            and lazy
-        ):
+        if os.path.isdir(mve_workspace) and os.path.isdir(views_folder) and lazy:
             return
         mve_creator = MVECreator(workspace_dp=mve_workspace)
         mve_creator.create_scene_from_sfm_result(ifp_or_idp, downscale_level)
@@ -132,13 +128,9 @@ class MVEMVSReconstructor:
     ):
 
         if mesh_cleaned_ply_ifp is None:
-            mesh_cleaned_ply_ifp = os.path.join(
-                mve_workspace, "mve_mesh_cleaned.ply"
-            )
+            mesh_cleaned_ply_ifp = os.path.join(mve_workspace, "mve_mesh_cleaned.ply")
         if mesh_textured_odp is None:
-            mesh_textured_odp = os.path.join(
-                mve_workspace, "mve_mesh_textured"
-            )
+            mesh_textured_odp = os.path.join(mve_workspace, "mve_mesh_textured")
 
         texrecon = MVETexrecon()
         texrecon.create_textured_mesh(
@@ -162,7 +154,5 @@ class MVEMVSReconstructor:
             mve_creator.create_scene_from_sfm_result(nvm_ifp)
 
         texrecon = MVETexrecon()
-        texrecon.create_textured_mesh(
-            mve_workspace, untextured_mesh_ifp, texture_odp
-        )
+        texrecon.create_textured_mesh(mve_workspace, untextured_mesh_ifp, texture_odp)
         logger.info("create_textured_mesh_from_nvm: Done")

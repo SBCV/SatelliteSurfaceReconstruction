@@ -27,9 +27,7 @@ class Camera(Extrinsics, Intrinsics):
 
         # Differentiate between view/image index and reconstruction index
         self.view_index = None  # This is the index w.r.t. to the input images
-        self.camera_index = (
-            None  # This is the index w.r.t the reconstructed cameras
-        )
+        self.camera_index = None  # This is the index w.r.t the reconstructed cameras
 
         self.depth_map_fp = None
         self.depth_map_callback = None
@@ -43,12 +41,7 @@ class Camera(Extrinsics, Intrinsics):
         if file_name is None:
             file_name = "None"
         return str(
-            "Camera: "
-            + file_name
-            + " "
-            + str(self._center)
-            + " "
-            + str(self.normal)
+            "Camera: " + file_name + " " + str(self._center) + " " + str(self.normal)
         )
 
     def get_file_name(self):
@@ -77,9 +70,7 @@ class Camera(Extrinsics, Intrinsics):
             logger.info("x_step_size " + str(x_step_size))
             logger.info("y_step_size " + str(y_step_size))
 
-        fx, fy, skew, cx, cy = self.split_intrinsic_mat(
-            self.get_calibration_mat()
-        )
+        fx, fy, skew, cx, cy = self.split_intrinsic_mat(self.get_calibration_mat())
         logger.vinfo("fx, fy, skew, cx, cy: ", str([fx, fy, skew, cx, cy]))
 
         indices = np.indices((height, width))
@@ -131,22 +122,14 @@ class Camera(Extrinsics, Intrinsics):
             z_coords_canonical_filtered = z_coords_canonical_filtered[
                 ::depth_map_display_sparsity
             ]
-            depth_values_filtered = depth_values_filtered[
-                ::depth_map_display_sparsity
-            ]
+            depth_values_filtered = depth_values_filtered[::depth_map_display_sparsity]
 
         if depth_map_semantic == Camera.DEPTH_MAP_WRT_CANONICAL_VECTORS:
             # In this case, the depth values are defined w.r.t. the canonical
             # vectors. This kind of depth data is used by Colmap.
-            x_coords_filtered = (
-                x_coords_canonical_filtered * depth_values_filtered
-            )
-            y_coords_filtered = (
-                y_coords_canonical_filtered * depth_values_filtered
-            )
-            z_coords_filtered = (
-                z_coords_canonical_filtered * depth_values_filtered
-            )
+            x_coords_filtered = x_coords_canonical_filtered * depth_values_filtered
+            y_coords_filtered = y_coords_canonical_filtered * depth_values_filtered
+            z_coords_filtered = z_coords_canonical_filtered * depth_values_filtered
 
         elif depth_map_semantic == Camera.DEPTH_MAP_WRT_UNIT_VECTORS:
             # In this case the depth values are defined w.r.t. the normalized

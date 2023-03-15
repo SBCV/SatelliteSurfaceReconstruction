@@ -66,9 +66,7 @@ def process_clean_data_item_general(item, dataset_dir, out_dir, tmp_dir, ift):
             os.path.join(dataset_dir, item),
             os.path.join(out_dir, "{}.NTF".format(img_name)),
         )
-        tar = tarfile.open(
-            os.path.join(dataset_dir, "{}.tar".format(item[:-4]))
-        )
+        tar = tarfile.open(os.path.join(dataset_dir, "{}.tar".format(item[:-4])))
         tar.extractall(os.path.join(tmp_dir, img_name))
 
         subfolder = "DVD_VOL_1"
@@ -77,9 +75,7 @@ def process_clean_data_item_general(item, dataset_dir, out_dir, tmp_dir, ift):
                 subfolder = x
                 break
 
-        des_folder = os.path.join(
-            tmp_dir, img_name, order_id, subfolder, order_id
-        )
+        des_folder = os.path.join(tmp_dir, img_name, order_id, subfolder, order_id)
 
         if ift.lower() == "pan":
             suffix = "PAN"
@@ -106,9 +102,7 @@ def process_clean_data_item_general(item, dataset_dir, out_dir, tmp_dir, ift):
         rpc_file = os.path.join(out_dir, "{}.XML".format(img_name))
         with open(rpc_file, encoding="utf-8", errors="ignore") as fp:
             content = fp.read()
-        content = "".join(
-            [ch for ch in content if unicodedata.category(ch)[0] != "C"]
-        )
+        content = "".join([ch for ch in content if unicodedata.category(ch)[0] != "C"])
         with open(rpc_file, "w") as fp:
             fp.write(content)
         return True
@@ -120,9 +114,7 @@ def clean_data_general(dataset_dirs, out_dir, pairing=None, ift="PAN"):
     if not os.path.exists(out_dir):
         os.mkdir(out_dir)
 
-    dataset_dirs = [
-        os.path.abspath(dataset_dir) for dataset_dir in dataset_dirs
-    ]
+    dataset_dirs = [os.path.abspath(dataset_dir) for dataset_dir in dataset_dirs]
     logging.info("dataset path: {}".format(dataset_dirs))
     logging.info("will save files to folder: {}".format(out_dir))
     logging.info(

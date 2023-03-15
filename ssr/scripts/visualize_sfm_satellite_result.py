@@ -112,15 +112,11 @@ def compute_sfm_visualization(
     #     params=[colmap_model_idp, None],
     #     unique_id_or_path=1,
     # )
-    cameras, _ = ColmapFileHandler.parse_colmap_model_folder(
-        colmap_model_idp, None
-    )
+    cameras, _ = ColmapFileHandler.parse_colmap_model_folder(colmap_model_idp, None)
 
     with open(bbox_json_ifp) as bbox_json:
         bbox_dict = json.load(bbox_json)
-        lat_observer, lon_observer, alt_observer = get_observer_point(
-            bbox_dict
-        )
+        lat_observer, lon_observer, alt_observer = get_observer_point(bbox_dict)
         kml_file_descr = compute_kml_file_description()
         for camera in cameras:
             camera_center = camera.get_camera_center()
@@ -158,9 +154,7 @@ def compute_sfm_visualization(
 
 if __name__ == "__main__":
 
-    bbox_json_ifp = (
-        "/path/to/MVS3D_site_1_mvs/approx_camera/bbx_latlonalt.json"
-    )
+    bbox_json_ifp = "/path/to/MVS3D_site_1_mvs/approx_camera/bbx_latlonalt.json"
     colmap_model_idp = "/path/to/MVS3D_site_1_mesh/colmap/sparse"
     kml_ofp = "/path/to/workspace/MVS3D_site_1/sfm_visualization.kml"
 

@@ -75,16 +75,12 @@ def split_msi(in_png, r_out_png, g_out_png, b_out_png, target_dtype=np.uint8):
     imageio.imwrite(b_out_png, im[:, :, 2].astype(dtype=target_dtype))
 
 
-def combine_msi(
-    b_out_png, g_out_png, r_out_png, out_png, target_dtype=np.uint8
-):
+def combine_msi(b_out_png, g_out_png, r_out_png, out_png, target_dtype=np.uint8):
     image_b = imageio.imread(b_out_png)
     image_g = imageio.imread(g_out_png)
     image_r = imageio.imread(r_out_png)
 
-    combined_np = np.dstack(
-        (np.array(image_r), np.array(image_g), np.array(image_b))
-    )
+    combined_np = np.dstack((np.array(image_r), np.array(image_g), np.array(image_b)))
 
     imageio.imwrite(out_png, combined_np.astype(dtype=target_dtype))
 
@@ -101,14 +97,10 @@ def tone_map_channel(channel, percentile=0.5, exp=1.0 / 2.2):
     tone_mapped_channel = np.power(channel, exp)
 
     # cut off the small values
-    below_thres = np.percentile(
-        tone_mapped_channel.reshape((-1, 1)), percentile
-    )
+    below_thres = np.percentile(tone_mapped_channel.reshape((-1, 1)), percentile)
     tone_mapped_channel[tone_mapped_channel < below_thres] = below_thres
     # cut off the big values
-    above_thres = np.percentile(
-        tone_mapped_channel.reshape((-1, 1)), 100 - percentile
-    )
+    above_thres = np.percentile(tone_mapped_channel.reshape((-1, 1)), 100 - percentile)
     tone_mapped_channel[tone_mapped_channel > above_thres] = above_thres
 
     # Put in range 0 - 255
@@ -141,9 +133,7 @@ def tone_map_separate(im, percentile=0.5, exp=1.0 / 2.2):
 def rgb_2_gray(rgb):
     weights = get_rgb_2_gray_weights()
     return (
-        weights[0] * rgb[..., 0]
-        + weights[1] * rgb[..., 1]
-        + weights[2] * rgb[..., 2]
+        weights[0] * rgb[..., 0] + weights[1] * rgb[..., 1] + weights[2] * rgb[..., 2]
     )
 
 

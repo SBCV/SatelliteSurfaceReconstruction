@@ -56,13 +56,11 @@ class SurfaceReconstructionPipeline:
                 mesh_ply_ofn,
                 plain_mesh_ply_ofn,
                 "poisson_mesher",
-                poisson_trim_thresh=10,
+                # poisson_trim_thresh=10,
+                poisson_trim_thresh=5,
                 lazy=lazy,
             )
-        elif (
-            meshing_task.meshing_backend
-            == MeshingBackends.colmap_delaunay.name
-        ):
+        elif meshing_task.meshing_backend == MeshingBackends.colmap_delaunay.name:
             mkdir_safely(meshing_task.mesh_odp)
             MeshingStep.compute_mesh_with_colmap(
                 meshing_task.colmap_idp,
@@ -104,9 +102,7 @@ class SurfaceReconstructionPipeline:
 
     def process_texturing_task(self, texturing_task, lazy):
         # Ensure that "<parent_folder>/surface" exists
-        mkdir_safely(
-            os.path.dirname(os.path.dirname(texturing_task.textured_mesh_odp))
-        )
+        mkdir_safely(os.path.dirname(os.path.dirname(texturing_task.textured_mesh_odp)))
         if texturing_task.texturing_backend == TexturingBackends.openmvs.name:
             TexturingStep.compute_texturing_with_openmvs(
                 texturing_task.colmap_idp, texturing_task.textured_mesh_odp

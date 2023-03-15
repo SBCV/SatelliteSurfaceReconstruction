@@ -51,6 +51,9 @@ class ColmapMVSReconstructor:
         if not os.path.isfile(mesh_ply_ofp) or not lazy:
             os.environ["PATH"] += os.pathsep + self.colmap_exe_dp
 
+            # TODO REMOVE THIS DEBUG LINE
+            reconstruction_idp = os.path.join(reconstruction_idp, "sparse")
+
             dense_mesher_call = [
                 "colmap",
                 "delaunay_mesher",
@@ -59,7 +62,7 @@ class ColmapMVSReconstructor:
                 "--output_path",
                 mesh_ply_ofp,
                 "--input_type",
-                "dense",
+                "sparse",
             ]
 
             if max_proj_dist is not None:

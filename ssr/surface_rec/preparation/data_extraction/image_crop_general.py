@@ -199,9 +199,7 @@ def image_crop_worker_general(
 
         if apply_tone_mapping:
             if oft.lower() == "png":
-                tone_map_hdr_to_ldr_general(
-                    out_png, out_png, joint_tone_mapping
-                )
+                tone_map_hdr_to_ldr_general(out_png, out_png, joint_tone_mapping)
             else:
                 # If we do not perform tone mapping here, the ratio test below
                 # would remove many images!
@@ -274,9 +272,7 @@ def image_crop_general(
 
         utm_bbx_file = os.path.join(work_dir, "aoi.json")
         out_dir = tmp_dir
-        result_file = os.path.join(
-            tmp_dir, "image_crop_result_{}.json".format(i)
-        )
+        result_file = os.path.join(tmp_dir, "image_crop_result_{}.json".format(i))
         result_file_list.append(result_file)
 
         if execute_parallel:
@@ -346,9 +342,7 @@ def image_crop_general(
         idx = img_file.rfind(":")
         sensor = sensor_ids[img_file]
         time = img_file[idx + 1 : idx + 8]
-        target_img_name = "{:04d}_{}_{}_{}".format(
-            i, sensor, time, img_file[idx + 8 :]
-        )
+        target_img_name = "{:04d}_{}_{}_{}".format(i, sensor, time, img_file[idx + 8 :])
 
         idx = meta_file.rfind(":")
         time = img_file[idx + 1 : idx + 8]

@@ -91,10 +91,7 @@ class Intrinsics:
         return self._radial_distortion
 
     def has_radial_distortion(self):
-        return (
-            self._radial_distortion is not None
-            and self._radial_distortion != 0.0
-        )
+        return self._radial_distortion is not None and self._radial_distortion != 0.0
 
     @staticmethod
     def split_intrinsic_mat(intrinsic_mat):
@@ -108,16 +105,12 @@ class Intrinsics:
     @staticmethod
     def compute_intrinsic_skew_decomposition(intrinsic_mat):
 
-        f_x, f_y, skew, p_x, p_y = Intrinsics.split_intrinsic_mat(
-            intrinsic_mat
-        )
+        f_x, f_y, skew, p_x, p_y = Intrinsics.split_intrinsic_mat(intrinsic_mat)
         intrinsic_mat_wo_skew = np.array(
             [[f_x, 0, p_x - skew * p_y / f_y], [0, f_y, p_y], [0, 0, 1]],
             dtype=float,
         )
-        skew_mat = np.array(
-            [[1, skew / f_y, 0], [0, 1, 0], [0, 0, 1]], dtype=float
-        )
+        skew_mat = np.array([[1, skew / f_y, 0], [0, 1, 0], [0, 0, 1]], dtype=float)
         if not np.allclose(intrinsic_mat, skew_mat @ intrinsic_mat_wo_skew):
             err_mat = intrinsic_mat - skew_mat @ intrinsic_mat_wo_skew
             logger.vinfo("err_mat\n", err_mat)
@@ -126,13 +119,9 @@ class Intrinsics:
         return skew_mat, intrinsic_mat_wo_skew
 
     @staticmethod
-    def compute_intrinsic_transformation(
-        intrinsic_1, intrinsic_2, check_result=True
-    ):
+    def compute_intrinsic_transformation(intrinsic_1, intrinsic_2, check_result=True):
         f_x, f_y, s, p_x, p_y = Intrinsics.split_intrinsic_mat(intrinsic_1)
-        f_x_, f_y_, s_, p_x_, p_y_ = Intrinsics.split_intrinsic_mat(
-            intrinsic_2
-        )
+        f_x_, f_y_, s_, p_x_, p_y_ = Intrinsics.split_intrinsic_mat(intrinsic_2)
         trans_mat_2_to_1 = np.asarray(
             [
                 [
@@ -170,13 +159,9 @@ if __name__ == "__main__":
     p_x_ = 1600
     p_y_ = 800
 
-    intrinsic_1 = np.array(
-        [[f_x, s, p_x], [0, f_y, p_y], [0, 0, 1]], dtype=float
-    )
+    intrinsic_1 = np.array([[f_x, s, p_x], [0, f_y, p_y], [0, 0, 1]], dtype=float)
 
-    intrinsic_2 = np.array(
-        [[f_x_, s_, p_x_], [0, f_y_, p_y_], [0, 0, 1]], dtype=float
-    )
+    intrinsic_2 = np.array([[f_x_, s_, p_x_], [0, f_y_, p_y_], [0, 0, 1]], dtype=float)
 
     trans_mat_2_to_1 = Intrinsics.compute_intrinsic_transformation(
         intrinsic_1, intrinsic_2, check_result=True

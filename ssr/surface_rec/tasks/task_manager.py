@@ -26,9 +26,7 @@ class TaskManager:
         meshing_tasks = []
         if reconstruct_mesh:
             for meshing_backend in self.bm.meshing_backends:
-                mesh_odp = os.path.join(
-                    self.pm.mesh_workspace_dp, meshing_backend
-                )
+                mesh_odp = os.path.join(self.pm.mesh_workspace_dp, meshing_backend)
                 meshing_task = MeshingTask(
                     colmap_idp=self.pm.colmap_workspace_no_skew_dp,
                     mesh_odp=mesh_odp,
@@ -45,9 +43,7 @@ class TaskManager:
         for meshing_backend in self.bm.meshing_backends:
             # Reduction only for: Colmap Poisson Meshes
             if meshing_backend == MeshingBackends.colmap_poisson.name:
-                reduction_odp = os.path.join(
-                    self.pm.mesh_workspace_dp, meshing_backend
-                )
+                reduction_odp = os.path.join(self.pm.mesh_workspace_dp, meshing_backend)
                 reduction_task = ReductionTask(
                     colmap_idp=self.pm.colmap_workspace_no_skew_dp,
                     mesh_odp=reduction_odp,

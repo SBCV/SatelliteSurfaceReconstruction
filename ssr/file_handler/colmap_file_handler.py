@@ -118,9 +118,7 @@ def compose_params(camera_model_name, calib_mat):
 
 class ColmapFileHandler(object):
     @staticmethod
-    def convert_colmap_cams_to_cams(
-        id_to_col_cameras, id_to_col_images, image_dp
-    ):
+    def convert_colmap_cams_to_cams(id_to_col_cameras, id_to_col_images, image_dp):
         # From ssr\ext\read_write_model.py
         #   CameraModel = collections.namedtuple(
         #       "CameraModel", ["model_id", "model_name", "num_params"])
@@ -134,9 +132,7 @@ class ColmapFileHandler(object):
             current_camera = Camera()
             current_camera.id = col_image.id
             current_camera.set_quaternion(col_image.qvec)
-            current_camera.set_camera_translation_vector_after_rotation(
-                col_image.tvec
-            )
+            current_camera.set_camera_translation_vector_after_rotation(col_image.tvec)
 
             current_camera.image_dp = image_dp
             current_camera.file_name = col_image.name
@@ -179,20 +175,12 @@ class ColmapFileHandler(object):
         ifp_s = os.listdir(model_idp)
 
         if (
-            len(
-                set(ifp_s).intersection(
-                    ["cameras.txt", "images.txt", "points3D.txt"]
-                )
-            )
+            len(set(ifp_s).intersection(["cameras.txt", "images.txt", "points3D.txt"]))
             == 3
         ):
             ext = ".txt"
         elif (
-            len(
-                set(ifp_s).intersection(
-                    ["cameras.bin", "images.bin", "points3D.bin"]
-                )
-            )
+            len(set(ifp_s).intersection(["cameras.bin", "images.bin", "points3D.bin"]))
             == 3
         ):
             ext = ".bin"
@@ -207,9 +195,7 @@ class ColmapFileHandler(object):
         cameras = ColmapFileHandler.convert_colmap_cams_to_cams(
             id_to_col_cameras, id_to_col_images, image_idp
         )
-        points3D = ColmapFileHandler.convert_colmap_points_to_points(
-            id_to_col_points3D
-        )
+        points3D = ColmapFileHandler.convert_colmap_points_to_points(id_to_col_points3D)
 
         return cameras, points3D
 
@@ -229,9 +215,7 @@ class ColmapFileHandler(object):
             id_to_col_cameras = read_cameras_text(
                 os.path.join(model_idp, "cameras" + ext)
             )
-            id_to_col_images = read_images_text(
-                os.path.join(model_idp, "images" + ext)
-            )
+            id_to_col_images = read_images_text(os.path.join(model_idp, "images" + ext))
 
         elif ext == ".bin":
             id_to_col_cameras = read_cameras_binary(
@@ -258,9 +242,7 @@ class ColmapFileHandler(object):
         for cam in cameras:
 
             cam.get_calibration_mat()
-            param_list = create_camera_param_list(
-                cam, colmap_camera_model_name
-            )
+            param_list = create_camera_param_list(cam, colmap_camera_model_name)
 
             colmap_cam = ColmapCamera(
                 id=cam.id,
@@ -326,13 +308,9 @@ class ColmapFileHandler(object):
             cameras, colmap_camera_model_name
         )
 
-        colmap_points3D = ColmapFileHandler.convert_points_to_colmap_points(
-            points
-        )
+        colmap_points3D = ColmapFileHandler.convert_points_to_colmap_points(points)
 
-        write_model(
-            colmap_cams, colmap_images, colmap_points3D, odp, ext=".txt"
-        )
+        write_model(colmap_cams, colmap_images, colmap_points3D, odp, ext=".txt")
 
     @staticmethod
     def write_colmap_cameras(
@@ -349,6 +327,4 @@ class ColmapFileHandler(object):
         if ext == ".txt":
             write_cameras_text(colmap_cams, os.path.join(odp, "cameras" + ext))
         elif ext == ".bin":
-            write_cameras_binary(
-                colmap_cams, os.path.join(odp, "cameras" + ext)
-            )
+            write_cameras_binary(colmap_cams, os.path.join(odp, "cameras" + ext))

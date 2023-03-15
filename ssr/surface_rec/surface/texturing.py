@@ -35,9 +35,7 @@ class TexturingStep:
         # )
 
     @staticmethod
-    def compute_texturing_with_mve(
-        colmap_idp, mesh_ifp, texturing_odp, lazy=True
-    ):
+    def compute_texturing_with_mve(colmap_idp, mesh_ifp, texturing_odp, lazy=True):
         logger.info("compute_texturing_with_mve: ...")
         logger.info(f"colmap_idp: {colmap_idp}")
         logger.info(f"mesh_ifp: {mesh_ifp}")

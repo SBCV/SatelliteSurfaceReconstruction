@@ -28,7 +28,6 @@ class InputAdapter:
 
                 png_ofp = os.path.join(
                     self.pm.rec_pan_png_idp, f"{index}_{current_stem}.png"
-
                 )
                 imageio.imwrite(png_ofp, img)
 
@@ -42,12 +41,10 @@ class InputAdapter:
 
             if current_ext == ".txt":
                 # update the config with the correct location metadata based on truth file
-                self.read_location_metadata(
-                    os.path.join(self.pm.rgb_tif_idp, ifn)
-                )
+                self.read_location_metadata(os.path.join(self.pm.rgb_tif_idp, ifn))
 
         # if pan sharpening is not enabled, move the images into the correct folder for the following pipeline steps
-        if not SSRConfig.get_instance().pan_sharpening:
+        if not SSRConfig.get_instance().pan_sharpening and run_input_adapter:
             mkdir_safely(self.pm.sharpened_with_skew_png_dp)
             distutils.dir_util.copy_tree(
                 self.pm.rec_pan_png_idp, self.pm.sharpened_with_skew_png_dp
@@ -67,12 +64,8 @@ class InputAdapter:
             conf.ul_northing = northing + (pixels - 1) * gsd
             conf.width = int(pixels) * gsd
             conf.height = int(pixels) * gsd
-            logger.info(
-                f"Read location metadata: ul_easting={conf.ul_easting}"
-            )
-            logger.info(
-                f"Read location metadata: ul_northing={conf.ul_northing}"
-            )
+            logger.info(f"Read location metadata: ul_easting={conf.ul_easting}")
+            logger.info(f"Read location metadata: ul_northing={conf.ul_northing}")
             logger.info(f"Read location metadata: width={conf.width}")
             logger.info(f"Read location metadata: height={conf.height}")
 
