@@ -32,3 +32,7 @@ doi={10.5194/isprs-archives-XLIII-B2-2021-313-2021}
 }
 ```
 <br clear="left"/>
+
+## Interactive Visualization
+An interactive visualization of one of the reconstructed results is available on <a href="https://sbcv.github.io/SatelliteSurfaceReconstructionWebsite">this project page</a>:
+<a href="https://sbcv.github.io/SatelliteSurfaceReconstructionWebsite"><img class="image" align="center" src="https://github.com/SBCV/SatelliteSurfaceReconstruction/blob/master/doc/images/interactive_screen_shot.jpg"></a>
