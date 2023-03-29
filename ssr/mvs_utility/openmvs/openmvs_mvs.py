@@ -65,18 +65,9 @@ class OpenMVSReconstructor:
 
         # logger.info('convert_colmap_to_openMVS: ...')
 
-        # copy images into 'meshing/openmvs/images'
-        image_idp = os.path.join(colmap_dense_idp, "images")
-        openmvs_workspace_images_dp = os.path.join(openmvs_workspace_dp, "images")
-        os.makedirs(openmvs_workspace_images_dp, exist_ok=True)
-        for possible_img_file in os.listdir(image_idp):
-            img_ifp = os.path.join(image_idp, possible_img_file)
-            img_ofp = os.path.join(openmvs_workspace_images_dp, possible_img_file)
-
-            if os.path.isfile(img_ifp) and not os.path.isfile(img_ofp):
-                shutil.copyfile(img_ifp, img_ofp)
-
         openmvs_ofp = os.path.join(openmvs_workspace_dp, openmvs_ofn)
+        # the image folder for openmvs has to be given as a relative path
+        image_folder = os.path.relpath(image_folder, start=openmvs_workspace_dp)
 
         if not os.path.isfile(openmvs_ofp) or not lazy:
             colmap_to_openmvs_call = [

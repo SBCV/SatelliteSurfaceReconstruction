@@ -74,6 +74,7 @@ class SurfaceReconstructionPipeline:
             mkdir_safely(meshing_task.mesh_odp)
             MeshingStep.compute_mesh_with_openmvs(
                 meshing_task.colmap_idp,
+                self.pm.sharpened_no_skew_png_dp,
                 meshing_task.mesh_odp,
                 mesh_ply_ofn,
                 plain_mesh_ply_ofn,

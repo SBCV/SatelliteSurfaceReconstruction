@@ -61,7 +61,7 @@ class MeshingStep:
 
     @staticmethod
     def compute_mesh_with_openmvs(
-        colmap_idp, odp, mesh_ply_ofn, plain_mesh_ply_ofn, lazy=False
+        colmap_idp, images_idp, odp, mesh_ply_ofn, plain_mesh_ply_ofn, lazy=False
     ):
 
         logger.info("compute_mesh_with_openmvs: ...")
@@ -83,7 +83,7 @@ class MeshingStep:
             colmap_dense_idp=colmap_idp,
             openmvs_workspace_dp=odp,
             openmvs_ofn=interface_mvs_fn,
-            image_folder="images/",
+            image_folder=images_idp,
             lazy=lazy,
         )
 
