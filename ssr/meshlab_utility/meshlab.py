@@ -76,7 +76,9 @@ class Meshlab:
 
     def create_mesh(self, point_cloud_ifp, mesh_ofp):
 
-        template_fp_1 = self._create_lmx_template("compute_normals_for_point_sets.mlx")
+        template_fp_1 = self._create_lmx_template(
+            "compute_normals_for_point_sets.mlx"
+        )
         template_fp_2 = self._create_lmx_template(
             "surface_reconstruction_screened_poisson.mlx"
         )
@@ -136,7 +138,9 @@ class Meshlab:
         # Remove the file from the file system
         os.unlink(template_fp)
 
-    def sample_mesh(self, mesh_ifp, point_cloud_ofp, num_vertices, sampling_method):
+    def sample_mesh(
+        self, mesh_ifp, point_cloud_ofp, num_vertices, sampling_method
+    ):
         # While meshlab provides a variety of sampling methods,
         # Cloudcompare provides only a single method that randomly samples
         # points.
@@ -154,12 +158,16 @@ class Meshlab:
         #       Requires the definition of number of samples
         #       Results look better than Monte Carlo Sampling
 
-        template_fp = self._create_lmx_template(sampling_method + "_sampling.mlx")
+        template_fp = self._create_lmx_template(
+            sampling_method + "_sampling.mlx"
+        )
         logger.vinfo("template_fp", template_fp)
         assert os.path.isfile(template_fp)
 
         _MLXFileHandler.set_value(template_fp, "SampleNum", num_vertices)
-        num_vertices_str = _MLXFileHandler.get_value_as_str(template_fp, "SampleNum")
+        num_vertices_str = _MLXFileHandler.get_value_as_str(
+            template_fp, "SampleNum"
+        )
         assertion_msg = f"{num_vertices_str} vs {num_vertices}"
         assert int(num_vertices_str) == num_vertices, assertion_msg
 

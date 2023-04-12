@@ -21,7 +21,9 @@ class MultiScaleReconstructor:
 
         self.ssr_config = SSRConfig.get_instance()
         self.gdmr_bin_dp = self.ssr_config.gdmr_bin_dp
-        self.octree_executable_fp = os.path.join(self.gdmr_bin_dp, "pointfusion_octree")
+        self.octree_executable_fp = os.path.join(
+            self.gdmr_bin_dp, "pointfusion_octree"
+        )
         assert os.path.isfile(self.octree_executable_fp)
 
         self.surface_executable_fp = os.path.join(
@@ -57,5 +59,7 @@ class MultiScaleReconstructor:
         surface_options = ["--lambda1=" + str(lambda1)]
         surface_options += ["--lambda2=" + str(lambda2)]
         subprocess.call(
-            [self.surface_executable_fp, "-o", mesh_ofp] + surface_options + [octree_fp]
+            [self.surface_executable_fp, "-o", mesh_ofp]
+            + surface_options
+            + [octree_fp]
         )

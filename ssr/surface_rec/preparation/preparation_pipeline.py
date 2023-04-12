@@ -69,7 +69,9 @@ class PreparationPipeline:
         oft = "png"
         remove_aux_file = False
         apply_tone_mapping = True
-        joint_tone_mapping = False  # Separate tone mapping yields much better results
+        joint_tone_mapping = (
+            False  # Separate tone mapping yields much better results
+        )
         execute_parallel = True
 
         # === Additional options for pan_sharpening === #
@@ -155,7 +157,9 @@ class PreparationPipeline:
 
             # Copy the original sparse model and overwrite it with the values
             # from the next step
-            copy_tree(pm.sparse_model_with_skew_idp, pm.sparse_model_no_skew_dp)
+            copy_tree(
+                pm.sparse_model_with_skew_idp, pm.sparse_model_no_skew_dp
+            )
 
             compute_skew_free_camera_models(
                 colmap_model_with_skew_idp=pm.sparse_model_with_skew_idp,

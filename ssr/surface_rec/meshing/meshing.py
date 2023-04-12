@@ -61,7 +61,12 @@ class MeshingStep:
 
     @staticmethod
     def compute_mesh_with_openmvs(
-        colmap_idp, images_idp, odp, mesh_ply_ofn, plain_mesh_ply_ofn, lazy=False
+        colmap_idp,
+        images_idp,
+        odp,
+        mesh_ply_ofn,
+        plain_mesh_ply_ofn,
+        lazy=False,
     ):
 
         logger.info("compute_mesh_with_openmvs: ...")

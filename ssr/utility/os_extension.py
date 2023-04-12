@@ -24,7 +24,9 @@ def delete_files_in_dir(
 
 def natural_key(some_string):
     # See http://www.codinghorror.com/blog/archives/001018.html
-    return [int(s) if s.isdigit() else s for s in re.split(r"(\d+)", some_string)]
+    return [
+        int(s) if s.isdigit() else s for s in re.split(r"(\d+)", some_string)
+    ]
 
 
 def check_ext(ext):
@@ -65,18 +67,24 @@ def get_file_paths_in_dir(
         if isinstance(ext, list):
             ext = [ele.lower() for ele in ext]
             check_ext(ext)
-            ifp_s = [ifp for ifp in ifp_s if os.path.splitext(ifp)[1].lower() in ext]
+            ifp_s = [
+                ifp for ifp in ifp_s if os.path.splitext(ifp)[1].lower() in ext
+            ]
         else:
             ext = ext.lower()
             check_ext(ext)
-            ifp_s = [ifp for ifp in ifp_s if os.path.splitext(ifp)[1].lower() == ext]
+            ifp_s = [
+                ifp for ifp in ifp_s if os.path.splitext(ifp)[1].lower() == ext
+            ]
 
     if target_str_or_list is not None and len(target_str_or_list) > 0:
         if type(target_str_or_list) == str:
             target_str_or_list = [target_str_or_list]
         ifp_s_temp = []
         for target_str in target_str_or_list:
-            ifp_s_temp += [ifp for ifp in ifp_s if target_str in os.path.basename(ifp)]
+            ifp_s_temp += [
+                ifp for ifp in ifp_s if target_str in os.path.basename(ifp)
+            ]
         ifp_s = ifp_s_temp
 
     if ignore_str_or_list is not None:
@@ -165,7 +173,9 @@ def get_subdirs(idp, base_name_only=False, recursive=False):
                 sub_dps += [os.path.join(root, sub_dn) for sub_dn in dirs]
     else:
         sub_dns = [
-            name for name in os.listdir(idp) if os.path.isdir(os.path.join(idp, name))
+            name
+            for name in os.listdir(idp)
+            if os.path.isdir(os.path.join(idp, name))
         ]
         if base_name_only:
             sub_dps = sub_dns
@@ -202,7 +212,9 @@ def ensure_trailing_slash(some_path):
 def get_first_valid_path(list_of_paths):
     first_valid_path = None
     for path in list_of_paths:
-        if first_valid_path is None and (os.path.isdir(path) or os.path.isfile(path)):
+        if first_valid_path is None and (
+            os.path.isdir(path) or os.path.isfile(path)
+        ):
             first_valid_path = path
     return first_valid_path
 

@@ -145,7 +145,9 @@ def compute_skew_free_camera_models(
         if gray_image_with_skew_idp is not None:
 
             image_ifp = os.path.join(gray_image_with_skew_idp, image_ifn)
-            mat_image_ofp = os.path.join(gray_image_no_skew_odp, image_stem + ext)
+            mat_image_ofp = os.path.join(
+                gray_image_no_skew_odp, image_stem + ext
+            )
 
             mat_image = imageio.imread(image_ifp)
             mat_image_skew_free = remove_skew_from_matrix(
@@ -157,7 +159,9 @@ def compute_skew_free_camera_models(
 
         if color_image_with_skew_idp is not None:
             image_ifp = os.path.join(color_image_with_skew_idp, image_ifn)
-            mat_image_ofp = os.path.join(color_image_no_skew_odp, image_stem + ext)
+            mat_image_ofp = os.path.join(
+                color_image_no_skew_odp, image_stem + ext
+            )
 
             mat_image = imageio.imread(image_ifp)
             mat_image_skew_free = remove_skew_from_matrix(
@@ -225,7 +229,9 @@ def compute_skew_free_camera_models(
         #     #     patt_count += 1
 
         skew_free_camera = copy.copy(camera)
-        skew_free_camera.set_calibration(intrinsic_mat_wo_skew, radial_distortion=False)
+        skew_free_camera.set_calibration(
+            intrinsic_mat_wo_skew, radial_distortion=False
+        )
         skew_free_camera_list.append(skew_free_camera)
 
     if perform_warping_evaluation:

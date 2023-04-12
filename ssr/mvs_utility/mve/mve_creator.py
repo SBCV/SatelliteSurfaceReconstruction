@@ -24,13 +24,21 @@ class MVECreator:
             self.make_scene_fp = os.path.join(
                 self.mve_apps_dp, "makescene", "makescene"
             )
-            self.sfm_recon_fp = os.path.join(self.mve_apps_dp, "sfmrecon", "sfmrecon")
-            self.dm_recon_fp = os.path.join(self.mve_apps_dp, "dmrecon", "dmrecon")
+            self.sfm_recon_fp = os.path.join(
+                self.mve_apps_dp, "sfmrecon", "sfmrecon"
+            )
+            self.dm_recon_fp = os.path.join(
+                self.mve_apps_dp, "dmrecon", "dmrecon"
+            )
             self.scene2pset_fp = os.path.join(
                 self.mve_apps_dp, "scene2pset", "scene2pset"
             )
-            self.fssrecon_fp = os.path.join(self.mve_apps_dp, "fssrecon", "fssrecon")
-            self.meshclean_fp = os.path.join(self.mve_apps_dp, "meshclean", "meshclean")
+            self.fssrecon_fp = os.path.join(
+                self.mve_apps_dp, "fssrecon", "fssrecon"
+            )
+            self.meshclean_fp = os.path.join(
+                self.mve_apps_dp, "meshclean", "meshclean"
+            )
 
         assert os.path.isfile(self.make_scene_fp)
         assert os.path.isfile(self.dm_recon_fp)
@@ -165,7 +173,9 @@ class MVECreator:
 
             logger.info("Perform Create Scene Task: ...")
             self.workspace_folder = mve_create_scene_task.mve_model_dir
-            self.create_scene_from_sfm_result(mve_create_scene_task.model_file_path)
+            self.create_scene_from_sfm_result(
+                mve_create_scene_task.model_file_path
+            )
             logger.info("Perform Create Scene Task: Done")
 
             mve_point_cloud_ply_ofp = os.path.join(
@@ -173,4 +183,6 @@ class MVECreator:
                 mve_create_scene_task.mve_point_cloud_name,
             )
 
-            self.compute_dense_point_cloud_from_depth_maps(mve_point_cloud_ply_ofp)
+            self.compute_dense_point_cloud_from_depth_maps(
+                mve_point_cloud_ply_ofp
+            )

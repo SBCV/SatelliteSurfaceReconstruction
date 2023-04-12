@@ -55,7 +55,9 @@ class PLYFileHandler:
             for value_key in value_keys
             if not value_key in non_scalar_value_keys
         ]
-        logger.info("Found the following vertex properties: " + str(value_keys))
+        logger.info(
+            "Found the following vertex properties: " + str(value_keys)
+        )
 
         logger.info("Found " + str(len(ply_data["vertex"].data)) + " vertices")
         for point_index, line in enumerate(ply_data["vertex"].data):
@@ -68,7 +70,9 @@ class PLYFileHandler:
             current_point.id = point_index
 
             for scalar_value_key in scalar_value_keys:
-                current_point.scalars[scalar_value_key] = line[scalar_value_key]
+                current_point.scalars[scalar_value_key] = line[
+                    scalar_value_key
+                ]
 
             if "measurements" in line.dtype.names:
                 elements_per_measurement = 4
@@ -80,7 +84,9 @@ class PLYFileHandler:
                     slice = line["measurements"][
                         array_idx : array_idx + elements_per_measurement
                     ]
-                    current_point.measurements.append(Measurement.init_from_list(slice))
+                    current_point.measurements.append(
+                        Measurement.init_from_list(slice)
+                    )
 
             vertices.append(current_point)
 
@@ -100,12 +106,18 @@ class PLYFileHandler:
             logger.info("Found " + str(len(ply_data["face"].data)) + " faces")
             for line in ply_data["face"].data["vertex_indices"]:
                 current_face = Face()
-                current_face.vertex_indices = np.array([line[0], line[1], line[2]])
+                current_face.vertex_indices = np.array(
+                    [line[0], line[1], line[2]]
+                )
                 faces.append(current_face)
 
             ply_data_face_data_type = [("vertex_indices", "i4", (3,))]
             face_names = ply_data["face"].data.dtype.names
-            if "red" in face_names and "green" in face_names and "blue" in face_names:
+            if (
+                "red" in face_names
+                and "green" in face_names
+                and "blue" in face_names
+            ):
                 ply_data_face_data_type = [
                     ("vertex_indices", "i4", (3,)),
                     ("red", "u1"),
@@ -116,7 +128,9 @@ class PLYFileHandler:
         return faces, ply_data_face_type, ply_data_face_data_type
 
     @staticmethod
-    def __vertices_to_ply_vertex_element(point_list, ply_data_vertex_data_dtype_list):
+    def __vertices_to_ply_vertex_element(
+        point_list, ply_data_vertex_data_dtype_list
+    ):
 
         ply_data_vertex_data_dtype = np.dtype(ply_data_vertex_data_dtype_list)
 
@@ -162,7 +176,9 @@ class PLYFileHandler:
                 vertex_output_array[index]["nz"] = point.normal[2]
 
             for scalar_key in point.scalars:
-                vertex_output_array[index][scalar_key] = point.scalars[scalar_key]
+                vertex_output_array[index][scalar_key] = point.scalars[
+                    scalar_key
+                ]
 
             if with_measurements:
                 measurements = []
@@ -197,14 +213,18 @@ class PLYFileHandler:
             ] = face.vertex_indices  # face.vertex_indices is a np.array
             face_output_array[index] = row
 
-        output_ply_data_face_element = PlyElement.describe(face_output_array, "face")
+        output_ply_data_face_element = PlyElement.describe(
+            face_output_array, "face"
+        )
 
         return output_ply_data_face_element
 
     @staticmethod
     def __cameras_2_ply_vertex_element(camera_list, property_type_list):
 
-        camera_output_array = np.empty(len(camera_list), dtype=property_type_list)
+        camera_output_array = np.empty(
+            len(camera_list), dtype=property_type_list
+        )
 
         for index, camera in enumerate(camera_list):
 
@@ -261,7 +281,9 @@ class PLYFileHandler:
         logger.vinfo("ifp", ifp)
         ply_data = PlyData.read(ifp)
 
-        vertices, _, _ = PLYFileHandler.__ply_data_vertices_to_vetex_list(ply_data)
+        vertices, _, _ = PLYFileHandler.__ply_data_vertices_to_vetex_list(
+            ply_data
+        )
         faces, _, _ = PLYFileHandler.__ply_data_faces_to_face_list(ply_data)
 
         logger.info("Parse PLY File: Done")
@@ -276,7 +298,9 @@ class PLYFileHandler:
         PLYFileHandler.write_ply_file(ofp, vertices)
 
     @staticmethod
-    def build_type_list(vertices, with_colors, with_normals, with_measurements):
+    def build_type_list(
+        vertices, with_colors, with_normals, with_measurements
+    ):
         ply_data_vertex_data_dtype_list = [
             ("x", "<f4"),
             ("y", "<f4"),
@@ -321,7 +345,9 @@ class PLYFileHandler:
             vertices, with_colors, with_normals, with_measurements
         )
 
-        logger.vinfo("ply_data_vertex_data_dtype_list", ply_data_vertex_data_dtype_list)
+        logger.vinfo(
+            "ply_data_vertex_data_dtype_list", ply_data_vertex_data_dtype_list
+        )
 
         output_ply_data_vertex_element = (
             PLYFileHandler.__vertices_to_ply_vertex_element(
@@ -343,8 +369,10 @@ class PLYFileHandler:
             # we do not define colors for faces,
             # since we use the vertex colors to colorize the face
 
-            output_ply_data_face_element = PLYFileHandler.__faces_to_ply_face_element(
-                faces, ply_data_face_data_type
+            output_ply_data_face_element = (
+                PLYFileHandler.__faces_to_ply_face_element(
+                    faces, ply_data_face_data_type
+                )
             )
             output_data = PlyData(
                 [output_ply_data_vertex_element, output_ply_data_face_element],
@@ -374,14 +402,18 @@ class PLYFileHandler:
 
         ply_data_vertex_data_dtype = np.dtype(ply_data_vertex_data_dtype_list)
 
-        output_ply_data_vertex_element = PLYFileHandler.__cameras_2_ply_vertex_element(
-            cameras, ply_data_vertex_data_dtype
+        output_ply_data_vertex_element = (
+            PLYFileHandler.__cameras_2_ply_vertex_element(
+                cameras, ply_data_vertex_data_dtype
+            )
         )
 
         # [('x', '<f4'), ('y', '<f4'), ('z', '<f4'), ('red', 'u1'), ('green', 'u1'), ('blue', 'u1')]
 
         logger.info("Write (Camera) File With Vertices Only (no faces)")
-        output_data = PlyData([output_ply_data_vertex_element], text=plain_text_output)
+        output_data = PlyData(
+            [output_ply_data_vertex_element], text=plain_text_output
+        )
 
         output_data.write(ofp)
 

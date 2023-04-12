@@ -76,7 +76,9 @@ class ExtractionPipeline(object):
         if self.config["steps_to_run"]["clean_data"]:
             start_time = datetime.now()
             self.clean_data_general(ift)
-            duration = (datetime.now() - start_time).total_seconds() / 60.0  # minutes
+            duration = (
+                datetime.now() - start_time
+            ).total_seconds() / 60.0  # minutes
             per_step_time.append((True, "clean_data", duration))
             print("step clean_data:\tfinished in {} minutes".format(duration))
         else:
@@ -93,14 +95,18 @@ class ExtractionPipeline(object):
                 apply_tone_mapping,
                 joint_tone_mapping,
             )
-            duration = (datetime.now() - start_time).total_seconds() / 60.0  # minutes
+            duration = (
+                datetime.now() - start_time
+            ).total_seconds() / 60.0  # minutes
             per_step_time.append((True, "crop_image", duration))
             print("step crop_image:\tfinished in {} minutes".format(duration))
         else:
             per_step_time.append((False, "crop_image", 0.0))
             print("step crop_image:\tskipped")
 
-        with open(os.path.join(self.config["work_dir"], "runtime.txt"), "w") as fp:
+        with open(
+            os.path.join(self.config["work_dir"], "runtime.txt"), "w"
+        ) as fp:
             fp.write("step_name, status, duration (minutes)\n")
             total = 0.0
             for (has_run, step_name, duration) in per_step_time:
@@ -159,7 +165,9 @@ class ExtractionPipeline(object):
             "alt_max": self.config["alt_max"],
         }
 
-        with open(os.path.join(self.config["work_dir"], "aoi.json"), "w") as fp:
+        with open(
+            os.path.join(self.config["work_dir"], "aoi.json"), "w"
+        ) as fp:
             json.dump(aoi_dict, fp, indent=2)
 
     def clean_data_general(self, ift):
@@ -180,7 +188,9 @@ class ExtractionPipeline(object):
         os.mkdir(cleaned_data_dir)
 
         # check if dataset_dir is a list or tuple
-        if not (isinstance(dataset_dir, list) or isinstance(dataset_dir, tuple)):
+        if not (
+            isinstance(dataset_dir, list) or isinstance(dataset_dir, tuple)
+        ):
             dataset_dir = [
                 dataset_dir,
             ]

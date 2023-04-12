@@ -19,7 +19,9 @@ class VisSatPipeline:
 
         # if the path is not set correctly, try to guess the location of the lib folder
         if not os.path.isdir(self.colmap_vissat_lib_dp):
-            split = os.path.normpath(self.colmap_vissat_exe_dp).split(os.path.sep)
+            split = os.path.normpath(self.colmap_vissat_exe_dp).split(
+                os.path.sep
+            )
             if "build" in split:
                 idx_build = split.index("build") + 1
                 if len(split) > idx_build:

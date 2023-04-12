@@ -119,7 +119,9 @@ class Extrinsics:
 
         assert self.is_rotation_mat_valid(self._rotation_mat)
         self._translation_vec = translation_vector
-        self._center = -np.dot(self._rotation_mat.transpose(), translation_vector)
+        self._center = -np.dot(
+            self._rotation_mat.transpose(), translation_vector
+        )
 
     def get_quaternion(self):
         return self._quaternion
@@ -145,7 +147,9 @@ class Extrinsics:
 
         homogeneous_mat = np.identity(4, dtype=float)
         homogeneous_mat[0:3, 0:3] = self.get_rotation_mat()
-        homogeneous_mat[0:3, 3] = -self.get_rotation_mat().dot(self.get_camera_center())
+        homogeneous_mat[0:3, 3] = -self.get_rotation_mat().dot(
+            self.get_camera_center()
+        )
         return homogeneous_mat
 
     def set_4x4_cam_to_world_mat(self, cam_to_world_mat):
@@ -180,6 +184,8 @@ class Extrinsics:
         num_coords = cam_coords.shape[0]
         hom_entries = np.ones(num_coords).reshape((num_coords, 1))
         cam_coords_hom = np.hstack((cam_coords, hom_entries))
-        world_coords_hom = self.get_4x4_cam_to_world_mat().dot(cam_coords_hom.T).T
+        world_coords_hom = (
+            self.get_4x4_cam_to_world_mat().dot(cam_coords_hom.T).T
+        )
         world_coords = np.delete(world_coords_hom, 3, 1)
         return world_coords

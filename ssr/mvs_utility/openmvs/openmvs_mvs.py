@@ -12,12 +12,16 @@ class OpenMVSReconstructor:
         self.interface_visualsfm_fp = os.path.join(
             self.openmvs_bin_dp, "InterfaceVisualSFM"
         )
-        self.interface_colmap_fp = os.path.join(self.openmvs_bin_dp, "InterfaceCOLMAP")
+        self.interface_colmap_fp = os.path.join(
+            self.openmvs_bin_dp, "InterfaceCOLMAP"
+        )
         self.densify_point_cloud_fp = os.path.join(
             self.openmvs_bin_dp,
             "DensifyPointCloud",
         )
-        self.reconstruct_mesh_fp = os.path.join(self.openmvs_bin_dp, "ReconstructMesh")
+        self.reconstruct_mesh_fp = os.path.join(
+            self.openmvs_bin_dp, "ReconstructMesh"
+        )
         self.refine_mesh_fp = os.path.join(self.openmvs_bin_dp, "RefineMesh")
         self.texture_mesh_fp = os.path.join(self.openmvs_bin_dp, "TextureMesh")
 
@@ -67,7 +71,9 @@ class OpenMVSReconstructor:
 
         openmvs_ofp = os.path.join(openmvs_workspace_dp, openmvs_ofn)
         # the image folder for openmvs has to be given as a relative path
-        image_folder = os.path.relpath(image_folder, start=openmvs_workspace_dp)
+        image_folder = os.path.relpath(
+            image_folder, start=openmvs_workspace_dp
+        )
 
         if not os.path.isfile(openmvs_ofp) or not lazy:
             colmap_to_openmvs_call = [
@@ -301,7 +307,10 @@ class OpenMVSReconstructor:
                 openmvs_workspace_temp=openmvs_workspace_temp,
                 openmvs_ofp=openmvs_ifp,
             )
-        elif os.path.splitext(ifp)[1] == ".bin" or os.path.splitext(ifp)[1] == ".json":
+        elif (
+            os.path.splitext(ifp)[1] == ".bin"
+            or os.path.splitext(ifp)[1] == ".json"
+        ):
             logger.info("OpenMVG file detected")
             assert image_idp is not None
             openmvs_ifp = os.path.splitext(ifp)[0] + ".mvs"
@@ -321,7 +330,9 @@ class OpenMVSReconstructor:
         )
         mesh_mvs_fn = "dense_mesh.mvs"
         mesh_mvs_fp = os.path.join(openmvs_workspace, mesh_mvs_fn)
-        self.reconstruct_mesh(dense_mvs_fp, openmvs_workspace_temp, mesh_mvs_fp, lazy)
+        self.reconstruct_mesh(
+            dense_mvs_fp, openmvs_workspace_temp, mesh_mvs_fp, lazy
+        )
         texture_mvs_fn = "dense_mesh_texture.mvs"
         texture_mvs_fp = os.path.join(openmvs_workspace, texture_mvs_fn)
         export_type = "obj"
@@ -332,7 +343,9 @@ class OpenMVSReconstructor:
             export_type,
             lazy,
         )
-        texture_ply_fp = os.path.splitext(texture_mvs_fp)[0] + "." + export_type
+        texture_ply_fp = (
+            os.path.splitext(texture_mvs_fp)[0] + "." + export_type
+        )
 
         shutil.copyfile(texture_ply_fp, openmvs_ofp)
 

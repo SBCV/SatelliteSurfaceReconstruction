@@ -59,7 +59,9 @@ class MVETexrecon:
         # reset the working directory
         os.chdir(current_working_dir)
 
-    def process_mve_create_textured_mesh_tasks(self, mve_create_textured_mesh_tasks):
+    def process_mve_create_textured_mesh_tasks(
+        self, mve_create_textured_mesh_tasks
+    ):
         for mve_create_textured_mesh_task in mve_create_textured_mesh_tasks:
             self.create_textured_mesh(
                 mve_create_textured_mesh_task.mve_scene_path,

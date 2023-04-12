@@ -21,7 +21,9 @@ def latlon_to_utm(lat, lon):
     else:
         south = True
     _, _, zone_number, _ = utm.from_latlon(lat_arr[0, 0], lon_arr[0, 0])
-    proj = pyproj.Proj(proj="utm", ellps="WGS84", zone=zone_number, south=south)
+    proj = pyproj.Proj(
+        proj="utm", ellps="WGS84", zone=zone_number, south=south
+    )
     east_arr, north_arr = proj(lon_arr, lat_arr)
     if south:
         hemisphere = "S"
@@ -41,7 +43,9 @@ def utm_to_latlon(east, north, zone_number, hemisphere):
     south = hemisphere != "N"
     east_arr = np.array([east]).reshape((1, 1))
     north_arr = np.array([north]).reshape((1, 1))
-    proj = pyproj.Proj(proj="utm", ellps="WGS84", zone=zone_number, south=south)
+    proj = pyproj.Proj(
+        proj="utm", ellps="WGS84", zone=zone_number, south=south
+    )
     lon_arr, lat_arr = proj(east_arr, north_arr, inverse=True)
     lon = lon_arr[0][0]
     lat = lat_arr[0][0]
@@ -59,7 +63,9 @@ def convert_vissat_config_json_to_geojson(vissat_config_json_ifp, geojson_ofp):
     ul_easting = bbx_utm["ul_easting"]
     ul_northing = bbx_utm["ul_northing"]
 
-    logger.info("utm: {}".format(([ul_easting, ul_northing, zone_number, hemisphere])))
+    logger.info(
+        "utm: {}".format(([ul_easting, ul_northing, zone_number, hemisphere]))
+    )
 
     # See write_aoi() in stereo_pipeline.py
     lr_easting = ul_easting + bbx_utm["width"]
@@ -184,9 +190,13 @@ def convert_geojson_to_vissat_config_json(geojson_ifp, vissat_config_json_ofp):
     lon_min = min(lon_list)
     lon_max = max(lon_list)
 
-    east_min, north_min, zone_number, hemisphere = latlon_to_utm(lat_min, lon_min)
+    east_min, north_min, zone_number, hemisphere = latlon_to_utm(
+        lat_min, lon_min
+    )
 
-    east_max, north_max, zone_number, hemisphere = latlon_to_utm(lat_max, lon_max)
+    east_max, north_max, zone_number, hemisphere = latlon_to_utm(
+        lat_max, lon_max
+    )
     width = east_max - east_min
     height = north_max - north_min
 
@@ -218,7 +228,9 @@ if __name__ == "__main__":
     custom_vissat_json_ofp = "/path/to/custom_vissat.json"
     custom_bbox_geojson_ofp = "/path/to/custom_bbox.geojson"
 
-    convert_geojson_to_vissat_config_json(custom_geojson_ifp, custom_vissat_json_ofp)
+    convert_geojson_to_vissat_config_json(
+        custom_geojson_ifp, custom_vissat_json_ofp
+    )
     convert_vissat_config_json_to_geojson(
         custom_vissat_json_ofp, custom_bbox_geojson_ofp
     )

@@ -20,5 +20,7 @@ if __name__ == "__main__":
     config_fp = "/path/to/vissat_config.json"
     python_fp = "/path/to/bin/python3"
     # https://github.com/Kai-46/VisSatSatelliteStereo/blob/master/stereo_pipeline.py
-    vissat_stereo_pipeline_fp = "/path/to/VisSatSatelliteStereo/stereo_pipeline.py"
+    vissat_stereo_pipeline_fp = (
+        "/path/to/VisSatSatelliteStereo/stereo_pipeline.py"
+    )
     run_vissat_as_subprocess(config_fp, vissat_stereo_pipeline_fp, python_fp)

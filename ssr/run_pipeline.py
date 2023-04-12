@@ -44,7 +44,9 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         ssr_config_fp = sys.argv[1]
 
-    ssr_config = create_config_from_template(ssr_config_template_ifp, ssr_config_fp)
+    ssr_config = create_config_from_template(
+        ssr_config_template_ifp, ssr_config_fp
+    )
     SSRConfig.set_instance(ssr_config)
 
     pm = PathManager(

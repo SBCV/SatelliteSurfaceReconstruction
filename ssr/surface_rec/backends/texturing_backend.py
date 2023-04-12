@@ -37,5 +37,7 @@ class TexturingBackends(Enum):
     @classmethod
     def convert_str_to_backend(cls, backend_str_list):
         str_to_backend = cls.get_str_to_backend_map()
-        backend_list = [str_to_backend[backend_str] for backend_str in backend_str_list]
+        backend_list = [
+            str_to_backend[backend_str] for backend_str in backend_str_list
+        ]
         return backend_list

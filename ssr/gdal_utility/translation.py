@@ -31,7 +31,9 @@ def compute_src_win(in_ntf, bbx_size, ntf_size):
                 ul_col, ul_row, width, height
             )
         )
-        scrwin_string = "-srcwin {} {} {} {}".format(ul_col, ul_row, width, height)
+        scrwin_string = "-srcwin {} {} {} {}".format(
+            ul_col, ul_row, width, height
+        )
     else:
         scrwin_string = None
 

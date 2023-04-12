@@ -5,7 +5,9 @@ from ssr.utility.os_extension import get_corresponding_files_in_directories
 from ssr.utility.os_extension import mkdir_safely
 
 
-def perform_pan_sharpening(pan_ifp, msi_ifp, ofp, resampling_algorithm="cubic"):
+def perform_pan_sharpening(
+    pan_ifp, msi_ifp, ofp, resampling_algorithm="cubic"
+):
     # https://gdal.org/programs/gdal_pansharpen.html
     # https://gis.stackexchange.com/questions/270476/pansharpening-using-gdal-tools
     #   GDAL pan sharpening algorithm = weighted Brovey algorithm

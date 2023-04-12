@@ -46,7 +46,9 @@ def parse_inv_proj_mats(inv_proj_mat_ifp):
         for line in fp.readlines():
             tmp = line.split(" ")
             img_name = tmp[0]
-            mats = np.array([float(tmp[i]) for i in range(1, 17)]).reshape((4, 4))
+            mats = np.array([float(tmp[i]) for i in range(1, 17)]).reshape(
+                (4, 4)
+            )
             inv_proj_mats[img_name] = mats
     return inv_proj_mats
 
@@ -72,7 +74,9 @@ def compute_extended_proj_and_inv_proj_mat(camera, last_row, value_range=10):
     if value_range is not None:
         inv_proj_scaling_factor = value_range / np.amax(inv_proj_mat_4_x_4)
         inv_proj_mat_4_x_4 = inv_proj_mat_4_x_4 * inv_proj_scaling_factor
-        overall_inv_proj_scaling_factor = inv_proj_scaling_factor / proj_scaling_factor
+        overall_inv_proj_scaling_factor = (
+            inv_proj_scaling_factor / proj_scaling_factor
+        )
 
     return (
         proj_mat_4_x_4,
@@ -138,7 +142,9 @@ def convert_reparameterized_depth_map_to_real_depth_map(
     # Project from depth values to scene space, following the c++ fusion code
     #   https://github.com/Kai-46/ColmapForVisSat/blob/master/src/mvs/fusion.cc#L429
     # The next line is consistent with the left vector in eq. (8) on page 5
-    uv1m = np.vstack((col, row, np.ones((1, width * height)), depth_map_reparam_1d))
+    uv1m = np.vstack(
+        (col, row, np.ones((1, width * height)), depth_map_reparam_1d)
+    )
     # P^{-1} [u, v, 1, m]^T = [x/Z, y/Z, z/Z, 1/Z]^T
     hom_world_points = np.dot(inv_proj_mat, uv1m)
 
@@ -251,17 +257,23 @@ def recover_depth_maps(
             )
 
         # Positions with invalid depth values contain nan
-        depth_map_reparam_with_skew = parse_depth_map(depth_map_reparam_with_skew_ifp)
+        depth_map_reparam_with_skew = parse_depth_map(
+            depth_map_reparam_with_skew_ifp
+        )
 
-        depth_map_real_with_skew = convert_reparameterized_depth_map_to_real_depth_map(
-            depth_map_reparam_with_skew,
-            extended_inv_proj_mat_4_x_4,
-            inv_proj_scaling_factor,
+        depth_map_real_with_skew = (
+            convert_reparameterized_depth_map_to_real_depth_map(
+                depth_map_reparam_with_skew,
+                extended_inv_proj_mat_4_x_4,
+                inv_proj_scaling_factor,
+            )
         )
 
         write_depth_map(depth_map_real_with_skew, depth_map_real_with_skew_ofp)
 
-        depth_map_real_with_skew_loaded = parse_depth_map(depth_map_real_with_skew_ofp)
+        depth_map_real_with_skew_loaded = parse_depth_map(
+            depth_map_real_with_skew_ofp
+        )
         if check_depth_mat_storing:
             np.testing.assert_allclose(
                 depth_map_real_with_skew, depth_map_real_with_skew_loaded
@@ -277,14 +289,20 @@ def recover_depth_maps(
                 shift_to_pixel_center=False,  # Must be false
                 depth_map_display_sparsity=100,
             )
-            logger.vinfo("cam_to_world_mat: ", camera.get_4x4_cam_to_world_mat())
-            world_coords = camera.cam_to_world_coord_multiple_coords(cam_coords)
+            logger.vinfo(
+                "cam_to_world_mat: ", camera.get_4x4_cam_to_world_mat()
+            )
+            world_coords = camera.cam_to_world_coord_multiple_coords(
+                cam_coords
+            )
             points = Point.get_points_from_coords(world_coords)
             PLYFileHandler.write_ply_file(depth_map_point_cloud_ofp, points)
 
         if create_depth_map_point_cloud_reference:
-            coords_reference = convert_reparameterized_depth_map_to_world_points(
-                depth_map_reparam_with_skew, extended_inv_proj_mat_4_x_4
+            coords_reference = (
+                convert_reparameterized_depth_map_to_world_points(
+                    depth_map_reparam_with_skew, extended_inv_proj_mat_4_x_4
+                )
             )
             points_reference = Point.get_points_from_coords(coords_reference)
             PLYFileHandler.write_ply_file(
