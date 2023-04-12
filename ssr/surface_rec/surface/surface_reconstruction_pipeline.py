@@ -56,8 +56,7 @@ class SurfaceReconstructionPipeline:
                 mesh_ply_ofn,
                 plain_mesh_ply_ofn,
                 "poisson_mesher",
-                # poisson_trim_thresh=10,
-                poisson_trim_thresh=5,
+                poisson_trim_thresh=10,
                 lazy=lazy,
             )
         elif (

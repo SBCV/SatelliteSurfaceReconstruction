@@ -125,7 +125,7 @@ class PreparationPipeline:
                 pm.sharpened_with_skew_png_dp,
                 resampling_algorithm=resampling_algorithm,
             )
-        # TODO: remove hardcoded optional parameters
+
         if depth_map_recovery:
             makedirs_safely(pm.depth_map_real_with_skew_dp)
             recover_depth_maps(
@@ -143,13 +143,6 @@ class PreparationPipeline:
                 depth_map_point_cloud_odp=None,
                 create_depth_map_point_cloud_reference=False,
                 depth_map_point_cloud_reference_odp=None,
-                # check_inv_proj_mat=False,
-                # inv_proj_mat_ifp=None,
-                # check_depth_mat_storing=False,
-                # create_depth_map_point_cloud=True,
-                # depth_map_point_cloud_odp="/mnt/Data-2TB-3/SSR_Output/workspace_ssr/depthmaps",
-                # create_depth_map_point_cloud_reference=True,
-                # depth_map_point_cloud_reference_odp="/mnt/Data-2TB-3/SSR_Output/workspace_ssr/depthmaps_reference",
             )
 
         if skew_correction:
