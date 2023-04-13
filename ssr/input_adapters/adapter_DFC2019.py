@@ -28,7 +28,6 @@ class InputAdapter:
 
                 png_ofp = os.path.join(
                     self.pm.rec_pan_png_idp, f"{index}_{current_stem}.png"
-
                 )
                 imageio.imwrite(png_ofp, img)
 
@@ -47,7 +46,7 @@ class InputAdapter:
                 )
 
         # if pan sharpening is not enabled, move the images into the correct folder for the following pipeline steps
-        if not SSRConfig.get_instance().pan_sharpening:
+        if not SSRConfig.get_instance().pan_sharpening and run_input_adapter:
             mkdir_safely(self.pm.sharpened_with_skew_png_dp)
             distutils.dir_util.copy_tree(
                 self.pm.rec_pan_png_idp, self.pm.sharpened_with_skew_png_dp

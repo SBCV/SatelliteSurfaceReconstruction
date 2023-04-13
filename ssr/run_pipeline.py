@@ -1,4 +1,5 @@
 import os
+import sys
 from shutil import copyfile
 from ssr.utility.logging_extension import logger
 from ssr.path_manager import PathManager
@@ -38,6 +39,11 @@ if __name__ == "__main__":
 
     ssr_config_template_ifp = "./configs/pipeline_template.toml"
     ssr_config_fp = "./configs/pipeline.toml"
+
+    # check if a config was optionally passed as command line argument
+    if len(sys.argv) > 1:
+        ssr_config_fp = sys.argv[1]
+
     ssr_config = create_config_from_template(
         ssr_config_template_ifp, ssr_config_fp
     )

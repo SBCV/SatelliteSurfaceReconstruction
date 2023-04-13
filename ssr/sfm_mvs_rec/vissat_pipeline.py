@@ -39,6 +39,7 @@ class VisSatPipeline:
         dataset_dp = self.ssr_config.satellite_image_pan_dp
         workspace_dp = self.ssr_config.workspace_vissat_dp
         mkdir_safely(workspace_dp)
+
         create_vissat_config_from_ssr_config(
             vissat_config_ofp=self.pm.vissat_config_fp,
             dataset_dp=dataset_dp,
