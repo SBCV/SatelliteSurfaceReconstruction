@@ -25,7 +25,6 @@ class SSRConfig(BaseModel):
     colmap_vissat_lib_dp: str
     texrecon_apps_dp: str
     meshlab_server_fp: str
-    meshlab_temp_dp: str
     colmap_exe_dp: str
     gdmr_bin_dp: str
     mve_apps_dp: str
@@ -36,6 +35,7 @@ class SSRConfig(BaseModel):
     satellite_image_rgb_tif_dp: str = ""
     workspace_vissat_dp: str
     workspace_ssr_dp: str
+    meshlab_temp_dp: str
 
     zone_number: int
     hemisphere: str
