@@ -85,7 +85,7 @@ texturing_backends = [
 
 
 # ===== DFC2019 Track3 dataset =====
-#dataset_adapter = "ssr.input_adapters.adapter_DFC2019"
+#dataset_adapter = "adapter_DFC2019"
 #satellite_image_rgb_tif_dp = "path/to/input/tif/files"
 #run_input_adapter = 1
 #depth_map_recovery = 1
@@ -99,7 +99,7 @@ texturing_backends = [
 
 
 # ===== IARPA MVS3DM dataset =====
-dataset_adapter = "ssr.input_adapters.adapter_MVS3DM"
+dataset_adapter = "adapter_MVS3DM"
 satellite_image_pan_dp = "/path/to/spacenet-dataset/Hosted-Datasets/MVS_dataset/WV3/PAN"
 satellite_image_msi_dp = "/path/to/spacenet-dataset/Hosted-Datasets/MVS_dataset/WV3/MSI"
 run_input_adapter = 1
