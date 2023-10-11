@@ -138,3 +138,18 @@ alt_max = 100.0
 # height = 397.0
 # alt_min = -20.0
 # alt_max = 90.0
+
+
+### For debug purposes ###
+# [vis_sat_config]
+#
+# clean_data = false
+# crop_image = false
+# derive_approx = true
+# choose_subset = true
+# colmap_sfm_perspective = true
+# inspect_sfm_perspective = true
+# reparam_depth = true
+# colmap_mvs = true
+# aggregate_2p5d = true
+# aggregate_3d = true
