@@ -68,6 +68,7 @@
    
 - Install [Meshlab](https://github.com/cnr-isti-vclab/meshlab) 
     - Make sure to install [Meshlab-2020.09](https://github.com/cnr-isti-vclab/meshlab/releases/tag/Meshlab-2020.09) or older
+      - For example download ```MeshLab2020.09-linux.snap``` and execute ```snap install ./MeshLab2020.09-linux.snap --dangerous``` 
     - Newer versions do not include the required meshlabserver anymore
     - For a list of releases see [here](https://github.com/cnr-isti-vclab/meshlab/releases) 
 
