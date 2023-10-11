@@ -7,6 +7,19 @@ from ssr.utility.logging_extension import logger
 _config = None
 
 
+class VisSatConfig(BaseModel):
+    clean_data: Union[bool, int] = False
+    crop_image: Union[bool, int] = False
+    derive_approx: Union[bool, int] = True
+    choose_subset: Union[bool, int] = True
+    colmap_sfm_perspective: Union[bool, int] = True
+    inspect_sfm_perspective: Union[bool, int] = True
+    reparam_depth: Union[bool, int] = True
+    colmap_mvs: Union[bool, int] = True
+    aggregate_2p5d: Union[bool, int] = True
+    aggregate_3d: Union[bool, int] = True
+
+
 class SSRConfig(BaseModel):
     colmap_vissat_exe_fp: str
     colmap_vissat_lib_dp: str
@@ -49,6 +62,8 @@ class SSRConfig(BaseModel):
     texture_mesh: Union[bool, int]
 
     lazy: Union[bool, int] = False
+
+    vis_sat_config: VisSatConfig = VisSatConfig()
 
     @staticmethod
     def get_instance():
