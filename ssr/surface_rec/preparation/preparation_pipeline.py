@@ -2,7 +2,7 @@ from distutils.dir_util import copy_tree
 from distutils.file_util import copy_file
 from ssr.utility.os_extension import mkdir_safely
 from ssr.utility.os_extension import makedirs_safely
-from ssr.utility.os_extension import are_dirs_equal
+from ssr.utility.os_extension import assert_dirs_equal
 
 
 from ssr.surface_rec.preparation.data_extraction.extraction_pipeline import (
@@ -97,7 +97,7 @@ class PreparationPipeline:
                 joint_tone_mapping=joint_tone_mapping,
             )
 
-            assert are_dirs_equal(pm.pan_png_idp, pm.rec_pan_png_idp)
+            assert_dirs_equal(pm.pan_png_idp, pm.rec_pan_png_idp)
 
         if extract_msi:
             mkdir_safely(pm.msi_workspace_dp)
@@ -118,7 +118,7 @@ class PreparationPipeline:
             )
 
         if pan_sharpening:
-            assert are_dirs_equal(pm.pan_png_idp, pm.rec_pan_png_idp)
+            assert_dirs_equal(pm.pan_png_idp, pm.rec_pan_png_idp)
             perform_pan_sharpening_for_folder(
                 pm.rec_pan_png_idp,
                 pm.msi_png_idp,

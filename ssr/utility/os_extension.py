@@ -247,3 +247,10 @@ def are_dirs_equal(idp_1, idp_2):
     fp_2_list = get_file_paths_in_dir(idp_2, base_name_only=True)
 
     return fp_1_list == fp_2_list
+
+
+def assert_dirs_equal(idp_1, idp_2):
+    fp_1_list = get_file_paths_in_dir(idp_1, base_name_only=True)
+    fp_2_list = get_file_paths_in_dir(idp_2, base_name_only=True)
+    msg = f"{fp_1_list} vs {fp_2_list}"
+    assert fp_1_list == fp_2_list, msg
