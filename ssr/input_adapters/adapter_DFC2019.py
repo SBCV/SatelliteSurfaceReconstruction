@@ -46,29 +46,6 @@ class InputAdapter:
                 self.pm.rec_pan_png_idp, self.pm.sharpened_with_skew_png_dp
             )
 
-    def read_location_metadata(self, txt_fp):
-        conf = SSRConfig.get_instance()
-        if (
-            conf.ul_easting is None
-            and conf.ul_northing is None
-            and conf.width is None
-            and conf.height is None
-        ):
-            # lower left corner
-            easting, northing, pixels, gsd = np.loadtxt(txt_fp)
-            conf.ul_easting = easting
-            conf.ul_northing = northing + (pixels - 1) * gsd
-            conf.width = int(pixels) * gsd
-            conf.height = int(pixels) * gsd
-            logger.info(
-                f"Read location metadata: ul_easting={conf.ul_easting}"
-            )
-            logger.info(
-                f"Read location metadata: ul_northing={conf.ul_northing}"
-            )
-            logger.info(f"Read location metadata: width={conf.width}")
-            logger.info(f"Read location metadata: height={conf.height}")
-
     def parse_tif_image(self, tiff_fp):
         """
         Source: https://github.com/Kai-46/SatelliteSfM/blob/7ea9aebba7cbab586792797c3d65a2c6dca51b8b/preprocess/parse_tif_image.py#L7
