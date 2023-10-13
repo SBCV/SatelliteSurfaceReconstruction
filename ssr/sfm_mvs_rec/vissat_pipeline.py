@@ -49,16 +49,6 @@ class VisSatPipeline:
             dataset_dp=dataset_dp,
             workspace_dp=workspace_dp,
             ssr_config=self.ssr_config,
-            clean_data=False,
-            crop_image=False,
-            derive_approx=True,
-            choose_subset=True,
-            colmap_sfm_perspective=True,
-            inspect_sfm_perspective=True,
-            reparam_depth=True,
-            colmap_mvs=True,
-            aggregate_2p5d=True,
-            aggregate_3d=True,
         )
 
         if reconstruct_sfm_mvs:
