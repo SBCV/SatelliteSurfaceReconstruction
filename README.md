@@ -10,7 +10,7 @@
 ## Getting Started
 - [Project Page](https://sbcv.github.io/projects/satellite_surface_reconstruction)
 - [Installation Instructions](doc/install_instructions.md)
-- [Download the IARPA MVS3DM Dataset or the Data Fusion Contest 2019 Data](doc/download_dataset.md)
+- [Download and Prepare Satellite Data](doc/download_dataset.md)
 - [Run the Pipeline](doc/run_pipeline.md)
 - [Trouble Shooting](doc/trouble_shooting.md)
 - [Evaluate the Reconstruction Results](https://github.com/SBCV/SatelliteSurfaceReconstructionEvaluation)
