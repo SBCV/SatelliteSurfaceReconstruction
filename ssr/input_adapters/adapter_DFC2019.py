@@ -37,7 +37,11 @@ class InputAdapter:
                 )
                 with open(json_ofp, "w") as fp:
                     json.dump(meta, fp, indent=2)
-                logger.info(f"Imported {ifn}")
+                logger.info(f"Convert tif to png and json ...")
+                logger.info(f"  {ifp}")
+                logger.info(f"  ->")
+                logger.info(f"  {png_ofp}")
+                logger.info(f"  {json_ofp}")
 
         # if pan sharpening is not enabled, move the images into the correct
         # folder for the following pipeline steps
