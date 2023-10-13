@@ -3,7 +3,12 @@
 - Install Python 3.6, 3.7 or 3.8
     - We have tested the pipeline with Python 3.8
     - The library versions in ```SatelliteSurfaceReconstruction/requirements.txt``` might differ for Python 3.6 and 3.7
-
+- Install the freeimage plugin for imageio
+  - Activate your conda environment (e.g. ```conda activate <ssr_conda_environment_name>```)
+  - Start an interactive python session (i.e. by typing ```python```)
+  - Download and install the freeimage plugin
+    - ```>>> import imageio``` 
+    - ```>>> imageio.plugins.freeimage.download()```
 - Install [VisSat](https://openaccess.thecvf.com/content_ICCVW_2019/html/3DRW/Zhang_Leveraging_Vision_Reconstruction_Pipelines_for_Satellite_Imagery_ICCVW_2019_paper.html)
     - Install [ColmapForVisSat](https://github.com/Kai-46/ColmapForVisSat) or [ColmapForVisSatPatched](https://github.com/SBCV/ColmapForVisSatPatched)
         - Option 1: ColmapForVisSatPatched (RECOMMENDED)
