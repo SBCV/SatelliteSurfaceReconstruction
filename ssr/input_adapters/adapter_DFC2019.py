@@ -39,8 +39,12 @@ class InputAdapter:
                     json.dump(meta, fp, indent=2)
                 logger.info(f"Imported {ifn}")
 
-        # if pan sharpening is not enabled, move the images into the correct folder for the following pipeline steps
+        # if pan sharpening is not enabled, move the images into the correct
+        # folder for the following pipeline steps
         if not SSRConfig.get_instance().pan_sharpening:
+            msg = "No pan/sharpening required, copying files:"
+            msg += f" {self.pm.rec_pan_png_idp} to {self.pm.sharpened_with_skew_png_dp}"
+            logger.info(msg)
             mkdir_safely(self.pm.sharpened_with_skew_png_dp)
             distutils.dir_util.copy_tree(
                 self.pm.rec_pan_png_idp, self.pm.sharpened_with_skew_png_dp
