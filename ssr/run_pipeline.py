@@ -18,6 +18,18 @@ from ssr.input_adapters.run_input_adapter import RunInputAdapterPipeline
 from ssr.config.ssr_config import SSRConfig
 
 
+def check_imageio_freeimage_plugin_installation():
+    import imageio
+
+    try:
+        # https://github.com/imageio/imageio/blob/master/imageio/plugins/_freeimage.py
+        imageio.plugins._freeimage.get_freeimage_lib()
+    except imageio.core.NeedDownloadError:
+        msg = "Imageio can not find the Freeimage plugin."
+        msg += " See instructions above for installation."
+        assert False, msg
+
+
 def check_vissat_workspace(self, pm):
     if not os.path.isdir(pm.rec_pan_png_idp):
         logger.vinfo("pm.rec_pan_png_idp", pm.rec_pan_png_idp)
@@ -36,6 +48,8 @@ def create_config_from_template(config_template_ifp, config_fp):
 
 
 if __name__ == "__main__":
+
+    check_imageio_freeimage_plugin_installation()
 
     ssr_config_template_ifp = "./configs/pipeline_template.toml"
     ssr_config_fp = "./configs/pipeline.toml"
