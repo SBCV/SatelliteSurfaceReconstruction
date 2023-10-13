@@ -39,12 +39,6 @@ class InputAdapter:
                     json.dump(meta, fp, indent=2)
                 logger.info(f"Imported {ifn}")
 
-            if current_ext == ".txt":
-                # update the config with the correct location metadata based on truth file
-                self.read_location_metadata(
-                    os.path.join(self.pm.rgb_tif_idp, ifn)
-                )
-
         # if pan sharpening is not enabled, move the images into the correct folder for the following pipeline steps
         if not SSRConfig.get_instance().pan_sharpening and run_input_adapter:
             mkdir_safely(self.pm.sharpened_with_skew_png_dp)
