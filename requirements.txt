@@ -6,6 +6,7 @@ numba==0.41.0
 Pillow==5.3.0
 scipy>=1.1
 utm==0.4.2
+# Download and install the freeimage plugin with: imageio.plugins.freeimage.download()
 imageio==2.5.0
 opencv-python>=4.0
 pyquaternion==0.9.5
