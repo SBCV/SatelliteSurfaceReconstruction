@@ -1,3 +1,4 @@
+import os
 from distutils.dir_util import copy_tree
 from distutils.file_util import copy_file
 from ssr.utility.os_extension import mkdir_safely
@@ -82,11 +83,13 @@ class PreparationPipeline:
         if extract_pan:
             mkdir_safely(pm.pan_workspace_dp)
             create_vissat_extraction_config(
-                pm.pan_config_fp,
-                pm.pan_ntf_idp,
-                pm.pan_workspace_dp,
-                self.ssr_config,
+                vissat_config_ofp=pm.pan_config_fp,
+                dataset_dp=pm.pan_ntf_idp,
+                workspace_dp=pm.pan_workspace_dp,
+                ssr_config=self.ssr_config,
             )
+            assert os.path.isfile(pm.pan_config_fp)
+
             PreparationPipeline.extract_files(
                 pm.pan_config_fp,
                 ift="PAN",
