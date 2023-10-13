@@ -37,12 +37,14 @@ class SSRConfig(BaseModel):
     workspace_ssr_dp: str
     meshlab_temp_dp: str
 
+    aoi_specific_dn: str = ""
     zone_number: int
     hemisphere: str
     ul_easting: float = None
     ul_northing: float = None
     width: float = None
     height: float = None
+    aoi_data_fn: str = None
     alt_min: float
     alt_max: float
 

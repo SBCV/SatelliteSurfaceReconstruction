@@ -91,12 +91,45 @@ texturing_backends = [
 #depth_map_recovery = 1
 #skew_correction = 1
 
-# ===== DFC2019 Site 1 =====
-#zone_number = 17  # JAX is 17, OMA 15
+# ===== DFC2019 JAX 004 =====
+#aoi_specific_dn = "JAX_004"
+#zone_number = 17
 #hemisphere = "N"
+#aoi_data_fn = "JAX_004_DSM.txt"
 #alt_min = -20.0
 #alt_max = 100.0
 
+# ===== DFC2019 JAX 068 =====
+#aoi_specific_dn = "JAX_068"
+#zone_number = 17
+#hemisphere = "N"
+#aoi_data_fn = "JAX_068_DSM.txt"
+#alt_min = -20.0
+#alt_max = 100.0
+
+# ===== DFC2019 JAX 214 =====
+#aoi_specific_dn = "JAX_214"
+#zone_number = 17
+#hemisphere = "N"
+#aoi_data_fn = "JAX_214_DSM.txt"
+#alt_min = -20.0
+#alt_max = 100.0
+
+# ===== DFC2019 JAX 260 =====
+#aoi_specific_dn = "JAX_260"
+#zone_number = 17
+#hemisphere = "N"
+#aoi_data_fn = "JAX_260_DSM.txt"
+#alt_min = -20.0
+#alt_max = 100.0
+
+# ===== DFC2019 OMA 342 =====
+#aoi_specific_dn = "OMA_342"
+#zone_number = 15
+#hemisphere = "N"
+#aoi_data_fn = "JAX_342_DSM.txt"
+#alt_min = -20.0
+#alt_max = 100.0
 
 # ===== IARPA MVS3DM dataset =====
 dataset_adapter = "adapter_MVS3DM"
