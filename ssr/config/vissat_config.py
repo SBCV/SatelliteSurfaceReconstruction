@@ -145,8 +145,8 @@ def create_vissat_extraction_config(
         height=ssr_config.height,
         alt_min=ssr_config.alt_min,
         alt_max=ssr_config.alt_max,
-        clean_data=True,                            # Required for extraction
-        crop_image=True,                            # Required for extraction
+        clean_data=True,  # Required for extraction
+        crop_image=True,  # Required for extraction
         derive_approx=False,
         choose_subset=False,
         colmap_sfm_perspective=False,
