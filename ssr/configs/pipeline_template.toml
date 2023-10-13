@@ -37,9 +37,9 @@ meshlab_server_fp = "/snap/bin/meshlab.meshlabserver"
 # === === === === ===
 # Pipeline Workspaces
 # === === === === ===
-workspace_vissat_dp = "/some/path/to/a/directory"
-workspace_ssr_dp = "/some/path/to/a/directory"
-meshlab_temp_dp = "/some/path/to/a/directory"
+workspace_vissat_root_dp = "/some/path/to/a/directory"
+workspace_ssr_root_dp = "/some/path/to/a/directory"
+meshlab_temp_root_dp = "/some/path/to/a/directory"
 
 
 

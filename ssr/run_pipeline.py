@@ -14,7 +14,7 @@ from ssr.surface_rec.backends.backend_manager import (
     BackendManager,
 )
 from ssr.input_adapters.run_input_adapter import RunInputAdapterPipeline
-
+from ssr.utility.os_extension import makedirs_safely
 from ssr.config.ssr_config import SSRConfig
 
 
@@ -68,13 +68,25 @@ if __name__ == "__main__":
         pan_ntf_idp=ssr_config.satellite_image_pan_dp,
         msi_ntf_idp=ssr_config.satellite_image_msi_dp,
         rgb_tif_idp=ssr_config.satellite_image_rgb_tif_dp,
-        vissat_workspace_dp=ssr_config.workspace_vissat_dp,
-        ssr_workspace_dp=ssr_config.workspace_ssr_dp,
+        aoi_specific_idn=ssr_config.aoi_specific_idn,
+        vissat_workspace_root_dp=ssr_config.workspace_vissat_root_dp,
+        ssr_workspace_root_dp=ssr_config.workspace_ssr_root_dp,
+        meshlab_temp_root_dp=ssr_config.meshlab_temp_root_dp,
+        adapter=ssr_config.dataset_adapter,
+        aoi_name=ssr_config.aoi_name,
+        zone_number=ssr_config.zone_number,
+        hemisphere=ssr_config.hemisphere,
+        ul_easting=ssr_config.ul_easting,
+        ul_northing=ssr_config.ul_northing,
     )
     bm = BackendManager(
         meshing_backends=ssr_config.meshing_backends,
         texturing_backends=ssr_config.texturing_backends,
     )
+
+    makedirs_safely(pm.vissat_workspace_dp)
+    makedirs_safely(pm.ssr_workspace_dp)
+    makedirs_safely(pm.meshlab_temp_dp)
 
     input_adapter_pipeline = RunInputAdapterPipeline(pm)
     input_adapter_pipeline.run(

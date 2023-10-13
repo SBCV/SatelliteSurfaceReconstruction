@@ -40,8 +40,8 @@ class VisSatPipeline:
         os.environ["LD_LIBRARY_PATH"] = self.colmap_vissat_lib_dp
 
     def run(self, reconstruct_sfm_mvs):
-        dataset_dp = self.ssr_config.satellite_image_pan_dp
-        workspace_dp = self.ssr_config.workspace_vissat_dp
+        dataset_dp = self.pm.pan_ntf_idp
+        workspace_dp = self.pm.vissat_workspace_dp
         mkdir_safely(workspace_dp)
 
         create_vissat_config_from_ssr_config(

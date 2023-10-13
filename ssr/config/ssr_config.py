@@ -35,11 +35,15 @@ class SSRConfig(BaseModel):
     satellite_image_msi_dp: str = ""
     satellite_image_rgb_tif_dp: str = ""
     satellite_aoi_data_dp: str = ""
-    workspace_vissat_dp: str
-    workspace_ssr_dp: str
-    meshlab_temp_dp: str
 
-    aoi_specific_dn: str = ""
+    aoi_specific_idn: str = ""
+
+    workspace_vissat_root_dp: str
+    workspace_ssr_root_dp: str
+    meshlab_temp_root_dp: str
+
+    dataset_adapter: str
+    aoi_name: str = ""
     zone_number: int
     hemisphere: str
     ul_easting: float = None
@@ -53,7 +57,6 @@ class SSRConfig(BaseModel):
     meshing_backends: List[str]
     texturing_backends: List[str]
 
-    dataset_adapter: str
     reconstruct_sfm_mvs: Union[bool, int]
     run_input_adapter: Union[bool, int]
     extract_msi: Union[bool, int] = False
@@ -120,7 +123,7 @@ class SSRConfig(BaseModel):
             easting, northing, pixels, gsd = np.loadtxt(
                 os.path.join(
                     self.satellite_aoi_data_dp,
-                    self.aoi_specific_dn,
+                    self.aoi_specific_idn,
                     self.aoi_data_fn,
                 )
             )

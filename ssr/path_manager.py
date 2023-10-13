@@ -8,15 +8,65 @@ class PathManager:
         pan_ntf_idp,
         msi_ntf_idp,
         rgb_tif_idp,
-        vissat_workspace_dp,
-        ssr_workspace_dp,
+        aoi_specific_idn,
+        vissat_workspace_root_dp,
+        ssr_workspace_root_dp,
+        meshlab_temp_root_dp,
+        adapter,
+        aoi_name,
+        zone_number,
+        hemisphere,
+        ul_easting,
+        ul_northing,
     ):
+        self.pan_ntf_idp = os.path.join(pan_ntf_idp, aoi_specific_idn).rstrip(
+            os.sep
+        )
+        self.msi_ntf_idp = os.path.join(msi_ntf_idp, aoi_specific_idn).rstrip(
+            os.sep
+        )
+        self.rgb_tif_idp = os.path.join(rgb_tif_idp, aoi_specific_idn).rstrip(
+            os.sep
+        )
 
-        self.vissat_workspace_dp = vissat_workspace_dp
-        self.pan_ntf_idp = pan_ntf_idp
-        self.msi_ntf_idp = msi_ntf_idp
-        self.rgb_tif_idp = rgb_tif_idp
-        self.ssr_workspace_dp = ssr_workspace_dp
+        self.vissat_workspace_root_dp = vissat_workspace_root_dp
+        self.ssr_workspace_root_dp = ssr_workspace_root_dp
+        self.meshlab_temp_root_dp = meshlab_temp_root_dp
+
+        # === Specific directories ===
+        self.vissat_workspace_dp = os.path.join(
+            self.vissat_workspace_root_dp,
+            self._get_relative_dp(
+                adapter,
+                aoi_name,
+                zone_number,
+                hemisphere,
+                ul_easting,
+                ul_northing,
+            ),
+        )
+        self.ssr_workspace_dp = os.path.join(
+            self.ssr_workspace_root_dp,
+            self._get_relative_dp(
+                adapter,
+                aoi_name,
+                zone_number,
+                hemisphere,
+                ul_easting,
+                ul_northing,
+            ),
+        )
+        self.meshlab_temp_dp = os.path.join(
+            self.meshlab_temp_root_dp,
+            self._get_relative_dp(
+                adapter,
+                aoi_name,
+                zone_number,
+                hemisphere,
+                ul_easting,
+                ul_northing,
+            ),
+        )
 
         # === Input Colmap VisSat File Paths ===
         self.vissat_config_fp = os.path.join(
@@ -148,6 +198,27 @@ class PathManager:
         self.texturing_open3d_workspace_dp = os.path.join(
             self.texturing_workspace_dp, "open3d"
         )
+
+    @staticmethod
+    def _get_relative_dp(
+        full_dataset_adapter_str,
+        aoi_name,
+        zone_number,
+        hemisphere,
+        ul_easting,
+        ul_northing,
+    ):
+        dn = f"{aoi_name}_{zone_number}_{hemisphere}"
+        if ul_easting is not None or ul_northing is not None:
+            assert ul_easting is not None
+            assert ul_northing is not None
+            dn += f"_ul_easting_{ul_easting}_ul_northing_{ul_northing}"
+
+        assert full_dataset_adapter_str.startswith("adapter_")
+        dataset_str = full_dataset_adapter_str[len("adapter_") :]
+
+        relative_dp = os.path.join(dataset_str, dn)
+        return relative_dp
 
     def check_vissat_workspace(self):
         if not os.path.isdir(self.vissat_workspace_dp):
