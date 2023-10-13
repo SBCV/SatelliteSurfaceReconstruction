@@ -33,6 +33,7 @@ class SSRConfig(BaseModel):
     satellite_image_pan_dp: str = ""
     satellite_image_msi_dp: str = ""
     satellite_image_rgb_tif_dp: str = ""
+    satellite_aoi_data_dp: str = ""
     workspace_vissat_dp: str
     workspace_ssr_dp: str
     meshlab_temp_dp: str

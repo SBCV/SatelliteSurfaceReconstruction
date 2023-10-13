@@ -87,6 +87,7 @@ texturing_backends = [
 # ===== DFC2019 Track3 dataset =====
 #dataset_adapter = "adapter_DFC2019"
 #satellite_image_rgb_tif_dp = "path/to/input/tif/files"
+#satellite_aoi_data_dp = "path/to/input/DSM.txt/files"
 #run_input_adapter = 1
 #depth_map_recovery = 1
 #skew_correction = 1
