@@ -85,16 +85,17 @@ class SSRConfig(BaseModel):
 
     def check_paths_for_potential_errors(self):
         attrs = vars(self)
+        potential_invalid_paths = []
         for name in attrs:
             if name.endswith("_dp"):
                 if not os.path.isdir(attrs[name]):
-                    logger.vinfo(
-                        "The following config entry may not have been set correctly",
-                        f"{name}={attrs[name]}",
-                    )
+                    potential_invalid_paths.append(name)
             if name.endswith("_fp"):
                 if not os.path.isfile(attrs[name]):
-                    logger.vinfo(
-                        "The following config entry may not have been set correctly",
-                        f"{name}={attrs[name]}",
-                    )
+                    potential_invalid_paths.append(name)
+
+        logger.info(
+            "The following config entry may not have been set correctly:"
+        )
+        for name in potential_invalid_paths:
+            logger.info(f"  {name} = {attrs[name]}")
