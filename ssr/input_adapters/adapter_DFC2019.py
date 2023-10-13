@@ -14,7 +14,7 @@ class InputAdapter:
     def __init__(self, pm: PathManager):
         self.pm = pm
 
-    def run(self, run_input_adapter=True):
+    def run(self):
         logger.info("Importing the DFC2019 dataset")
         mkdir_safely(self.pm.rec_pan_png_idp)
         mkdir_safely(self.pm.vissat_meta_data_idp)
@@ -22,7 +22,7 @@ class InputAdapter:
         # extract the images and meta information from the tif files
         for index, ifn in enumerate(sorted(os.listdir(self.pm.rgb_tif_idp))):
             current_stem, current_ext = os.path.splitext(ifn)
-            if current_ext == ".tif" and run_input_adapter:
+            if current_ext == ".tif":
                 ifp = os.path.join(self.pm.rgb_tif_idp, ifn)
                 img, meta = self.parse_tif_image(ifp)
 
@@ -40,7 +40,7 @@ class InputAdapter:
                 logger.info(f"Imported {ifn}")
 
         # if pan sharpening is not enabled, move the images into the correct folder for the following pipeline steps
-        if not SSRConfig.get_instance().pan_sharpening and run_input_adapter:
+        if not SSRConfig.get_instance().pan_sharpening:
             mkdir_safely(self.pm.sharpened_with_skew_png_dp)
             distutils.dir_util.copy_tree(
                 self.pm.rec_pan_png_idp, self.pm.sharpened_with_skew_png_dp
