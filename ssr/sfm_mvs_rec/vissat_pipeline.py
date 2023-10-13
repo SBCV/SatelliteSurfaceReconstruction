@@ -30,9 +30,13 @@ class VisSatPipeline:
                     )
 
     def init_vissat(self):
-        assert os.path.isdir(self.colmap_vissat_exe_dp)
+        assert os.path.isdir(
+            self.colmap_vissat_exe_dp
+        ), self.colmap_vissat_exe_dp
         os.environ["PATH"] += os.pathsep + self.colmap_vissat_exe_dp
-        assert os.path.isdir(self.colmap_vissat_lib_dp)
+        assert os.path.isdir(
+            self.colmap_vissat_lib_dp
+        ), self.colmap_vissat_lib_dp
         os.environ["LD_LIBRARY_PATH"] = self.colmap_vissat_lib_dp
 
     def run(self, reconstruct_sfm_mvs):
