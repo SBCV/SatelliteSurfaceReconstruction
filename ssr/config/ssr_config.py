@@ -99,3 +99,36 @@ class SSRConfig(BaseModel):
         )
         for name in potential_invalid_paths:
             logger.info(f"  {name} = {attrs[name]}")
+
+    def read_missing_aoi_data(self):
+        if (
+            self.ul_easting is None
+            and self.ul_northing is None
+            and self.width is None
+            and self.height is None
+        ):
+            msg = (
+                "Either provide the variables ul_easting, ul_northing, "
+                "width and height or satellite_aoi_data_dp and "
+                "aoi_data_fn in the config file."
+            )
+            assert self.satellite_aoi_data_dp is not None, msg
+            assert self.aoi_data_fn is not None, msg
+
+            # lower left corner
+            easting, northing, pixels, gsd = np.loadtxt(
+                os.path.join(
+                    self.satellite_aoi_data_dp,
+                    self.aoi_specific_dn,
+                    self.aoi_data_fn,
+                )
+            )
+            self.ul_easting = easting
+            self.ul_northing = northing + (pixels - 1) * gsd
+            self.width = int(pixels) * gsd
+            self.height = int(pixels) * gsd
+            logger.info(f"Read location metadata:")
+            logger.info(f"  ul_easting = {self.ul_easting}")
+            logger.info(f"  ul_northing = {self.ul_northing}")
+            logger.info(f"  width = {self.width}")
+            logger.info(f"  height = {self.height}")
