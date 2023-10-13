@@ -76,15 +76,14 @@ if __name__ == "__main__":
         texturing_backends=ssr_config.texturing_backends,
     )
 
-    vissat_pipeline = VisSatPipeline(pm)
-    vissat_pipeline.init_vissat()
-
     input_adapter_pipeline = RunInputAdapterPipeline(pm)
     input_adapter_pipeline.run(
         dataset_adapter=ssr_config.dataset_adapter,
         run_input_adapter=ssr_config.run_input_adapter,
     )
 
+    vissat_pipeline = VisSatPipeline(pm)
+    vissat_pipeline.init_vissat()
     vissat_pipeline.run(ssr_config.reconstruct_sfm_mvs)
 
     pm.check_rec_pan_png_idp()
