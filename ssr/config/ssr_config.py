@@ -120,13 +120,14 @@ class SSRConfig(BaseModel):
             assert self.aoi_data_fn is not None, msg
 
             # lower left corner
-            easting, northing, pixels, gsd = np.loadtxt(
-                os.path.join(
-                    self.satellite_aoi_data_dp,
-                    self.aoi_specific_idn,
-                    self.aoi_data_fn,
-                )
+            txt_ifp = os.path.join(
+                self.satellite_aoi_data_dp,
+                self.aoi_specific_idn,
+                self.aoi_data_fn
             )
+
+            assert os.path.isfile(txt_ifp), txt_ifp
+            easting, northing, pixels, gsd = np.loadtxt(txt_ifp)
             self.ul_easting = easting
             self.ul_northing = northing + (pixels - 1) * gsd
             self.width = int(pixels) * gsd
