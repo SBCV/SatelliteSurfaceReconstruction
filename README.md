@@ -1,12 +1,6 @@
 # SatelliteSurfaceReconstruction
 3D Surface Reconstruction From Multi-Date Satellite Images
 
-<p float="left" align="middle">
-  <img src="doc/images/gdmr_site_1_textured_view_2_resized_0p5_q_90.jpeg" width="32%" />
-  <img src="doc/images/gdmr_site_2_textured_view_1_resized_0p5_q_90.jpeg" width="32%" />
-  <img src="doc/images/gdmr_site_3_textured_view_1_resized_0p5_q_90.jpeg" width="32%" /> 
-</p>
-
 ## Getting Started
 - [Project Page](https://sbcv.github.io/projects/satellite_surface_reconstruction)
 - [Installation Instructions](doc/install_instructions.md)
@@ -33,6 +27,23 @@ doi={10.5194/isprs-archives-XLIII-B2-2021-313-2021}
 }
 ```
 <br clear="left"/>
+
+## Example Results
+
+IARPA MVS3DM:
+<p float="left" align="middle">
+  <img src="doc/images/gdmr_site_1_textured_view_2_resized_0p5_q_90.jpeg" width="32%" />
+  <img src="doc/images/gdmr_site_2_textured_view_1_resized_0p5_q_90.jpeg" width="32%" />
+  <img src="doc/images/gdmr_site_3_textured_view_1_resized_0p5_q_90.jpeg" width="32%" /> 
+</p>
+
+DFC 2019:
+<p float="left" align="middle">
+  <img src="doc/images/dfc_2019_004_resized_0p5.jpg" width="24%" />
+  <img src="doc/images/dfc_2019_068_resized_0p5.jpg" width="24%" />
+  <img src="doc/images/dfc_2019_214_resized_0p5.jpg" width="24%" /> 
+  <img src="doc/images/dfc_2019_260_resized_0p5.jpg" width="24%" /> 
+</p>
 
 ## Interactive Visualization
 An interactive visualization of one of the reconstructed results is available on <a href="https://sbcv.github.io/SatelliteSurfaceReconstructionWebsite">this project page</a>:
