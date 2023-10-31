@@ -22,6 +22,7 @@ class MeshingStep:
         mesh_ply_ofn,
         plain_mesh_ply_ofn,
         meshing_algo,
+        temp_dp,
         poisson_trim_thresh=10,
         lazy=False,
     ):
@@ -53,7 +54,7 @@ class MeshingStep:
         ssr_config = SSRConfig.get_instance()
         meshlab = Meshlab(
             executable_fp=ssr_config.meshlab_server_fp,
-            meshlab_temp_dp=ssr_config.meshlab_temp_dp,
+            meshlab_temp_dp=temp_dp,
         )
         meshlab.remove_color(mesh_ply_ofp, plain_mesh_ply_ofp)
 
@@ -61,7 +62,13 @@ class MeshingStep:
 
     @staticmethod
     def compute_mesh_with_openmvs(
-        colmap_idp, odp, mesh_ply_ofn, plain_mesh_ply_ofn, lazy=False
+        colmap_idp,
+        images_idp,
+        odp,
+        mesh_ply_ofn,
+        plain_mesh_ply_ofn,
+        temp_dp,
+        lazy=False,
     ):
 
         logger.info("compute_mesh_with_openmvs: ...")
@@ -83,7 +90,7 @@ class MeshingStep:
             colmap_dense_idp=colmap_idp,
             openmvs_workspace_dp=odp,
             openmvs_ofn=interface_mvs_fn,
-            image_folder="images/",
+            image_folder=images_idp,
             lazy=lazy,
         )
 
@@ -111,7 +118,7 @@ class MeshingStep:
         ssr_config = SSRConfig.get_instance()
         meshlab = Meshlab(
             executable_fp=ssr_config.meshlab_server_fp,
-            meshlab_temp_dp=ssr_config.meshlab_temp_dp,
+            meshlab_temp_dp=temp_dp,
         )
         meshlab.remove_color(mesh_ply_ofp, plain_mesh_ply_ofp)
 
@@ -124,6 +131,7 @@ class MeshingStep:
         mesh_ply_ofn,
         plain_mesh_ply_ofn,
         meshing_algo,
+        temp_dp,
         lazy=False,
     ):
         logger.info("compute_mesh_with_mve: ...")
@@ -145,7 +153,7 @@ class MeshingStep:
         ssr_config = SSRConfig.get_instance()
         meshlab = Meshlab(
             executable_fp=ssr_config.meshlab_server_fp,
-            meshlab_temp_dp=ssr_config.meshlab_temp_dp,
+            meshlab_temp_dp=temp_dp,
         )
         if meshing_algo == "fssr":
             mve_mvs_reconstructor.compute_fssr_reconstruction(

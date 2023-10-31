@@ -7,10 +7,12 @@ class RunInputAdapterPipeline:
         self.pm = pm
 
     def run(self, dataset_adapter, run_input_adapter=True):
-        logger.vinfo(
-            "Running dataset preprocessing using the following adapter",
-            dataset_adapter,
-        )
-        adapter_file = importlib.import_module(dataset_adapter)
-        adapter = getattr(adapter_file, "InputAdapter")(self.pm)
-        adapter.run(run_input_adapter)
+        if run_input_adapter:
+            logger.vinfo(
+                "Running dataset preprocessing using the following adapter",
+                dataset_adapter,
+            )
+            dataset_adapter = f"ssr.input_adapters.{dataset_adapter}"
+            adapter_file = importlib.import_module(dataset_adapter)
+            adapter = getattr(adapter_file, "InputAdapter")(self.pm)
+            adapter.run()

@@ -68,7 +68,13 @@ class OpenMVSReconstructor:
     ):
 
         # logger.info('convert_colmap_to_openMVS: ...')
+
         openmvs_ofp = os.path.join(openmvs_workspace_dp, openmvs_ofn)
+        # the image folder for openmvs has to be given as a relative path
+        image_folder = os.path.relpath(
+            image_folder, start=openmvs_workspace_dp
+        )
+
         if not os.path.isfile(openmvs_ofp) or not lazy:
             colmap_to_openmvs_call = [
                 self.interface_colmap_fp,
@@ -141,7 +147,7 @@ class OpenMVSReconstructor:
         #         Delaunay tetrahedras weighting completed: ...
         #         Delaunay tetrahedras graph-cut completed ...
 
-        # logger.info('reconstruct_mesh: ...')
+        logger.info("reconstruct_mesh: ...")
         if (
             not os.path.isfile(os.path.join(openmvs_workspace_dp, openmvs_ofn))
             or not lazy
@@ -182,7 +188,7 @@ class OpenMVSReconstructor:
             reconstruct_proc = subprocess.Popen(reconstruct_mesh_call)
             reconstruct_proc.wait()
 
-        # logger.info('reconstruct_mesh: Done')
+        logger.info("reconstruct_mesh: Done")
 
     def refine_mesh(
         self,

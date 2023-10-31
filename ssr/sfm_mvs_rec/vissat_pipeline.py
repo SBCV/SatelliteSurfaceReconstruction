@@ -30,30 +30,25 @@ class VisSatPipeline:
                     )
 
     def init_vissat(self):
-        assert os.path.isdir(self.colmap_vissat_exe_dp)
+        assert os.path.isdir(
+            self.colmap_vissat_exe_dp
+        ), self.colmap_vissat_exe_dp
         os.environ["PATH"] += os.pathsep + self.colmap_vissat_exe_dp
-        assert os.path.isdir(self.colmap_vissat_lib_dp)
+        assert os.path.isdir(
+            self.colmap_vissat_lib_dp
+        ), self.colmap_vissat_lib_dp
         os.environ["LD_LIBRARY_PATH"] = self.colmap_vissat_lib_dp
 
     def run(self, reconstruct_sfm_mvs):
-        dataset_dp = self.ssr_config.satellite_image_pan_dp
-        workspace_dp = self.ssr_config.workspace_vissat_dp
+        dataset_dp = self.pm.pan_ntf_idp
+        workspace_dp = self.pm.vissat_workspace_dp
         mkdir_safely(workspace_dp)
+
         create_vissat_config_from_ssr_config(
             vissat_config_ofp=self.pm.vissat_config_fp,
             dataset_dp=dataset_dp,
             workspace_dp=workspace_dp,
             ssr_config=self.ssr_config,
-            clean_data=False,
-            crop_image=False,
-            derive_approx=True,
-            choose_subset=True,
-            colmap_sfm_perspective=True,
-            inspect_sfm_perspective=True,
-            reparam_depth=True,
-            colmap_mvs=True,
-            aggregate_2p5d=True,
-            aggregate_3d=True,
         )
 
         if reconstruct_sfm_mvs:
@@ -88,6 +83,10 @@ class VisSatPipeline:
             #               creates the folder "mvs_results/aggregate_3d"
             #                   with a 3d point cloud and corresponding images
             #                   and a geo-registered geo-tiff file
+
+            # Make sure the GDAL environment has been correctly installed
+            assert os.path.isdir(os.environ["GDAL_DATA"])
+            assert os.path.isdir(os.environ["PROJ_LIB"])
 
             pipeline = VisSatStereoPipeline(self.pm.vissat_config_fp)
             # Logs are created in the working_directory/logs folder

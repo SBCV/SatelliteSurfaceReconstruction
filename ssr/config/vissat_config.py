@@ -99,16 +99,6 @@ def create_vissat_config_from_ssr_config(
     dataset_dp,
     workspace_dp,
     ssr_config,
-    clean_data,
-    crop_image,
-    derive_approx,
-    choose_subset,
-    colmap_sfm_perspective,
-    inspect_sfm_perspective,
-    reparam_depth,
-    colmap_mvs,
-    aggregate_2p5d,
-    aggregate_3d,
 ):
     """The created config uses the PAN images"""
 
@@ -127,29 +117,36 @@ def create_vissat_config_from_ssr_config(
         alt_min=ssr_config.alt_min,
         alt_max=ssr_config.alt_max,
         # Steps to Run Options
-        clean_data=clean_data,
-        crop_image=crop_image,
-        derive_approx=derive_approx,
-        choose_subset=choose_subset,
-        colmap_sfm_perspective=colmap_sfm_perspective,
-        inspect_sfm_perspective=inspect_sfm_perspective,
-        reparam_depth=reparam_depth,
-        colmap_mvs=colmap_mvs,
-        aggregate_2p5d=aggregate_2p5d,
-        aggregate_3d=aggregate_3d,
+        clean_data=ssr_config.vis_sat_config.clean_data,
+        crop_image=ssr_config.vis_sat_config.crop_image,
+        derive_approx=ssr_config.vis_sat_config.derive_approx,
+        choose_subset=ssr_config.vis_sat_config.choose_subset,
+        colmap_sfm_perspective=ssr_config.vis_sat_config.colmap_sfm_perspective,
+        inspect_sfm_perspective=ssr_config.vis_sat_config.inspect_sfm_perspective,
+        reparam_depth=ssr_config.vis_sat_config.reparam_depth,
+        colmap_mvs=ssr_config.vis_sat_config.colmap_mvs,
+        aggregate_2p5d=ssr_config.vis_sat_config.aggregate_2p5d,
+        aggregate_3d=ssr_config.vis_sat_config.aggregate_3d,
     )
 
 
 def create_vissat_extraction_config(
     vissat_config_ofp, dataset_dp, workspace_dp, ssr_config
 ):
-    create_vissat_config_from_ssr_config(
+    create_vissat_config(
         vissat_config_ofp=vissat_config_ofp,
         dataset_dp=dataset_dp,
         workspace_dp=workspace_dp,
-        ssr_config=ssr_config,
-        clean_data=True,
-        crop_image=True,
+        zone_number=ssr_config.zone_number,
+        hemisphere=ssr_config.hemisphere,
+        ul_easting=ssr_config.ul_easting,
+        ul_northing=ssr_config.ul_northing,
+        width=ssr_config.width,
+        height=ssr_config.height,
+        alt_min=ssr_config.alt_min,
+        alt_max=ssr_config.alt_max,
+        clean_data=True,  # Required for extraction
+        crop_image=True,  # Required for extraction
         derive_approx=False,
         choose_subset=False,
         colmap_sfm_perspective=False,
@@ -167,9 +164,9 @@ if __name__ == "__main__":
     workspace_dp = "/path/to/workspace"
 
     create_vissat_config(
-        vissat_config_ofp,
-        dataset_dp,
-        workspace_dp,
+        vissat_config_ofp=vissat_config_ofp,
+        dataset_dp=dataset_dp,
+        workspace_dp=workspace_dp,
         # Bounding Box Options
         zone_number=21,
         hemisphere="S",

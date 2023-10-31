@@ -1,6 +1,6 @@
 from ssr.config.ssr_config import SSRConfig
 from ssr.path_manager import PathManager
-from ssr.utility.os_extension import mkdir_safely
+from ssr.utility.os_extension import mkdir_safely, get_file_paths_in_dir
 from ssr.utility.logging_extension import logger
 import os
 from osgeo import gdal
@@ -14,67 +14,46 @@ class InputAdapter:
     def __init__(self, pm: PathManager):
         self.pm = pm
 
-    def run(self, run_input_adapter=True):
+    def run(self):
         logger.info("Importing the DFC2019 dataset")
         mkdir_safely(self.pm.rec_pan_png_idp)
         mkdir_safely(self.pm.vissat_meta_data_idp)
 
         # extract the images and meta information from the tif files
-        for index, ifn in enumerate(sorted(os.listdir(self.pm.rgb_tif_idp))):
+        tif_files = get_file_paths_in_dir(self.pm.rgb_tif_idp, ext=".tif")
+        for index, ifp in enumerate(tif_files):
+            ifn = os.path.basename(ifp)
             current_stem, current_ext = os.path.splitext(ifn)
-            if current_ext == ".tif" and run_input_adapter:
-                ifp = os.path.join(self.pm.rgb_tif_idp, ifn)
-                img, meta = self.parse_tif_image(ifp)
+            ifp = os.path.join(self.pm.rgb_tif_idp, ifn)
+            img, meta = self.parse_tif_image(ifp)
 
-                png_ofp = os.path.join(
-                    self.pm.rec_pan_png_idp, f"{index}_{current_stem}.png"
+            png_ofp = os.path.join(
+                self.pm.rec_pan_png_idp, f"{index}_{current_stem}.png"
+            )
+            imageio.imwrite(png_ofp, img)
 
-                )
-                imageio.imwrite(png_ofp, img)
+            json_ofp = os.path.join(
+                self.pm.vissat_meta_data_idp,
+                f"{index}_{current_stem}.json",
+            )
+            with open(json_ofp, "w") as fp:
+                json.dump(meta, fp, indent=2)
+            logger.info(f"Convert tif to png and json ...")
+            logger.info(f"  {ifp}")
+            logger.info(f"  ->")
+            logger.info(f"  {png_ofp}")
+            logger.info(f"  {json_ofp}")
 
-                json_ofp = os.path.join(
-                    self.pm.vissat_meta_data_idp,
-                    f"{index}_{current_stem}.json",
-                )
-                with open(json_ofp, "w") as fp:
-                    json.dump(meta, fp, indent=2)
-                logger.info(f"Imported {ifn}")
-
-            if current_ext == ".txt":
-                # update the config with the correct location metadata based on truth file
-                self.read_location_metadata(
-                    os.path.join(self.pm.rgb_tif_idp, ifn)
-                )
-
-        # if pan sharpening is not enabled, move the images into the correct folder for the following pipeline steps
+        # if pan sharpening is not enabled, move the images into the correct
+        # folder for the following pipeline steps
         if not SSRConfig.get_instance().pan_sharpening:
+            msg = "No pan/sharpening required, copying files:"
+            msg += f" {self.pm.rec_pan_png_idp} to {self.pm.sharpened_with_skew_png_dp}"
+            logger.info(msg)
             mkdir_safely(self.pm.sharpened_with_skew_png_dp)
             distutils.dir_util.copy_tree(
                 self.pm.rec_pan_png_idp, self.pm.sharpened_with_skew_png_dp
             )
-
-    def read_location_metadata(self, txt_fp):
-        conf = SSRConfig.get_instance()
-        if (
-            conf.ul_easting is None
-            and conf.ul_northing is None
-            and conf.width is None
-            and conf.height is None
-        ):
-            # lower left corner
-            easting, northing, pixels, gsd = np.loadtxt(txt_fp)
-            conf.ul_easting = easting
-            conf.ul_northing = northing + (pixels - 1) * gsd
-            conf.width = int(pixels) * gsd
-            conf.height = int(pixels) * gsd
-            logger.info(
-                f"Read location metadata: ul_easting={conf.ul_easting}"
-            )
-            logger.info(
-                f"Read location metadata: ul_northing={conf.ul_northing}"
-            )
-            logger.info(f"Read location metadata: width={conf.width}")
-            logger.info(f"Read location metadata: height={conf.height}")
 
     def parse_tif_image(self, tiff_fp):
         """

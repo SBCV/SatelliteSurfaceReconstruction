@@ -13,19 +13,18 @@ class InputAdapter:
         self.pm = pm
         self.config = SSRConfig.get_instance()
 
-    def run(self, run_input_adapter=True):
-        if run_input_adapter:
-            logger.info("Importing the MVS3DM dataset")
+    def run(self):
+        logger.info("Importing the MVS3DM dataset")
 
-            # execute the first two steps of the vissat pipeline to prepare the dataset
-            dataset_dp = self.config.satellite_image_pan_dp
-            workspace_dp = self.config.workspace_vissat_dp
-            mkdir_safely(workspace_dp)
-            create_vissat_extraction_config(
-                vissat_config_ofp=self.pm.vissat_config_fp,
-                dataset_dp=dataset_dp,
-                workspace_dp=workspace_dp,
-                ssr_config=self.config,
-            )
-            pipeline = VisSatStereoPipeline(self.pm.vissat_config_fp)
-            pipeline.run()
+        # execute the first two steps of the vissat pipeline to prepare the dataset
+        dataset_dp = self.config.satellite_image_pan_dp
+        workspace_dp = self.pm.vissat_workspace_dp
+        mkdir_safely(workspace_dp)
+        create_vissat_extraction_config(
+            vissat_config_ofp=self.pm.vissat_config_fp,
+            dataset_dp=dataset_dp,
+            workspace_dp=workspace_dp,
+            ssr_config=self.config,
+        )
+        pipeline = VisSatStereoPipeline(self.pm.vissat_config_fp)
+        pipeline.run()

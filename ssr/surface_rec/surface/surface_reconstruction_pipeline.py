@@ -47,6 +47,7 @@ class SurfaceReconstructionPipeline:
         mesh_ply_ofn = meshing_task.mesh_ply_ofn
         plain_mesh_ply_ofn = meshing_task.plain_mesh_ply_ofn
         logger.vinfo("mesh_ply_ofn", mesh_ply_ofn)
+        temp_dp = self.pm.meshlab_temp_dp
 
         if meshing_task.meshing_backend == MeshingBackends.colmap_poisson.name:
             mkdir_safely(meshing_task.mesh_odp)
@@ -55,7 +56,8 @@ class SurfaceReconstructionPipeline:
                 meshing_task.mesh_odp,
                 mesh_ply_ofn,
                 plain_mesh_ply_ofn,
-                "poisson_mesher",
+                meshing_algo="poisson_mesher",
+                temp_dp=temp_dp,
                 poisson_trim_thresh=10,
                 lazy=lazy,
             )
@@ -69,16 +71,19 @@ class SurfaceReconstructionPipeline:
                 meshing_task.mesh_odp,
                 mesh_ply_ofn,
                 plain_mesh_ply_ofn,
-                "delaunay_mesher",
+                meshing_algo="delaunay_mesher",
+                temp_dp=temp_dp,
                 lazy=lazy,
             )
         elif meshing_task.meshing_backend == MeshingBackends.openmvs.name:
             mkdir_safely(meshing_task.mesh_odp)
             MeshingStep.compute_mesh_with_openmvs(
                 meshing_task.colmap_idp,
+                self.pm.sharpened_no_skew_png_dp,
                 meshing_task.mesh_odp,
                 mesh_ply_ofn,
                 plain_mesh_ply_ofn,
+                temp_dp=temp_dp,
                 lazy=lazy,
             )
         elif meshing_task.meshing_backend == MeshingBackends.mve_fssr.name:
@@ -88,6 +93,7 @@ class SurfaceReconstructionPipeline:
                 mesh_ply_ofn,
                 plain_mesh_ply_ofn,
                 meshing_algo="fssr",
+                temp_dp=temp_dp,
                 lazy=lazy,
             )
         elif meshing_task.meshing_backend == MeshingBackends.mve_gdmr.name:
@@ -97,6 +103,7 @@ class SurfaceReconstructionPipeline:
                 mesh_ply_ofn,
                 plain_mesh_ply_ofn,
                 meshing_algo="gdmr",
+                temp_dp=temp_dp,
                 lazy=lazy,
             )
         else:
