@@ -123,7 +123,7 @@ class SSRConfig(BaseModel):
             txt_ifp = os.path.join(
                 self.satellite_aoi_data_dp,
                 self.aoi_specific_idn,
-                self.aoi_data_fn
+                self.aoi_data_fn,
             )
 
             assert os.path.isfile(txt_ifp), txt_ifp
