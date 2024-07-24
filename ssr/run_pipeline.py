@@ -30,12 +30,6 @@ def check_imageio_freeimage_plugin_installation():
         assert False, msg
 
 
-def check_vissat_workspace(self, pm):
-    if not os.path.isdir(pm.rec_pan_png_idp):
-        logger.vinfo("pm.rec_pan_png_idp", pm.rec_pan_png_idp)
-        assert False
-
-
 def create_config_from_template(config_template_ifp, config_fp):
     config_template_ifp = os.path.abspath(config_template_ifp)
     config_fp = os.path.abspath(config_fp)
@@ -61,6 +55,7 @@ if __name__ == "__main__":
     ssr_config = create_config_from_template(
         ssr_config_template_ifp, ssr_config_fp
     )
+
     SSRConfig.set_instance(ssr_config)
     ssr_config.read_missing_aoi_data()
 
@@ -88,7 +83,8 @@ if __name__ == "__main__":
     makedirs_safely(pm.ssr_workspace_dp)
     makedirs_safely(pm.meshlab_temp_dp)
 
-    input_adapter_pipeline = RunInputAdapterPipeline(pm)
+    preparation_pipeline = PreparationPipeline(pm)
+    input_adapter_pipeline = RunInputAdapterPipeline(pm, preparation_pipeline)
     input_adapter_pipeline.run(
         dataset_adapter=ssr_config.dataset_adapter,
         run_input_adapter=ssr_config.run_input_adapter,
@@ -98,11 +94,7 @@ if __name__ == "__main__":
     vissat_pipeline.init_vissat()
     vissat_pipeline.run(ssr_config.reconstruct_sfm_mvs)
 
-    pm.check_rec_pan_png_idp()
-    preparation_pipeline = PreparationPipeline(pm)
     preparation_pipeline.run(
-        extract_pan=ssr_config.extract_pan,
-        extract_msi=ssr_config.extract_msi,
         pan_sharpening=ssr_config.pan_sharpening,
         depth_map_recovery=ssr_config.depth_map_recovery,
         skew_correction=ssr_config.skew_correction,

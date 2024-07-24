@@ -59,8 +59,7 @@ class SSRConfig(BaseModel):
 
     reconstruct_sfm_mvs: Union[bool, int]
     run_input_adapter: Union[bool, int]
-    extract_msi: Union[bool, int] = False
-    extract_pan: Union[bool, int] = False
+    extract_msi_pan_image_pairs: Union[bool, int] = False
     pan_sharpening: Union[bool, int] = False
     depth_map_recovery: Union[bool, int]
     skew_correction: Union[bool, int]

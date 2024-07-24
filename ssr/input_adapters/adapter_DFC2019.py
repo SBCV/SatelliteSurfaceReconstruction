@@ -11,12 +11,12 @@ import distutils.dir_util
 
 
 class InputAdapter:
-    def __init__(self, pm: PathManager):
+    def __init__(self, pm: PathManager, preparation_pipeline=None):
         self.pm = pm
 
     def run(self):
         logger.info("Importing the DFC2019 dataset")
-        mkdir_safely(self.pm.rec_pan_png_idp)
+        mkdir_safely(self.pm.pan_png_idp)
         mkdir_safely(self.pm.vissat_meta_data_idp)
 
         # extract the images and meta information from the tif files
@@ -28,7 +28,7 @@ class InputAdapter:
             img, meta = self.parse_tif_image(ifp)
 
             png_ofp = os.path.join(
-                self.pm.rec_pan_png_idp, f"{index}_{current_stem}.png"
+                self.pm.pan_png_idp, f"{index}_{current_stem}.png"
             )
             imageio.imwrite(png_ofp, img)
 
@@ -48,12 +48,13 @@ class InputAdapter:
         # folder for the following pipeline steps
         if not SSRConfig.get_instance().pan_sharpening:
             msg = "No pan/sharpening required, copying files:"
-            msg += f" {self.pm.rec_pan_png_idp} to {self.pm.sharpened_with_skew_png_dp}"
+            msg += f" {self.pm.pan_png_idp} to {self.pm.sharpened_with_skew_png_dp}"
             logger.info(msg)
             mkdir_safely(self.pm.sharpened_with_skew_png_dp)
             distutils.dir_util.copy_tree(
-                self.pm.rec_pan_png_idp, self.pm.sharpened_with_skew_png_dp
+                self.pm.pan_png_idp, self.pm.sharpened_with_skew_png_dp
             )
+
 
     def parse_tif_image(self, tiff_fp):
         """

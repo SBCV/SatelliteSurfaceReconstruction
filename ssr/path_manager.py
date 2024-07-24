@@ -34,17 +34,6 @@ class PathManager:
         self.meshlab_temp_root_dp = meshlab_temp_root_dp
 
         # === Specific directories ===
-        self.vissat_workspace_dp = os.path.join(
-            self.vissat_workspace_root_dp,
-            self._get_relative_dp(
-                adapter,
-                aoi_name,
-                zone_number,
-                hemisphere,
-                ul_easting,
-                ul_northing,
-            ),
-        )
         self.ssr_workspace_dp = os.path.join(
             self.ssr_workspace_root_dp,
             self._get_relative_dp(
@@ -69,12 +58,12 @@ class PathManager:
         )
 
         # === Input Colmap VisSat File Paths ===
+        self.vissat_workspace_dp = os.path.join(self.ssr_workspace_dp, "pan")
         self.vissat_config_fp = os.path.join(
             self.vissat_workspace_dp,
             "VisSat.json",
         )
 
-        self.rec_pan_png_idp = os.path.join(self.vissat_workspace_dp, "images")
         # The name of the meta data in the vissat_workspace_dp (i.e. "metas")
         # is hardcoded in the VisSatSatelliteStereo library
         self.vissat_meta_data_idp = os.path.join(
@@ -224,8 +213,3 @@ class PathManager:
         if not os.path.isdir(self.vissat_workspace_dp):
             logger.vinfo("self.vissat_workspace_dp", self.vissat_workspace_dp)
             assert False, "Vissat output directory missing"
-
-    def check_rec_pan_png_idp(self):
-        if not os.path.isdir(self.rec_pan_png_idp):
-            logger.vinfo("self.rec_pan_png_idp", self.rec_pan_png_idp)
-            assert False

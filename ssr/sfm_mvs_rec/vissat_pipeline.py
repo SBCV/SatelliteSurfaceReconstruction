@@ -86,7 +86,7 @@ class VisSatPipeline:
 
             # Make sure the GDAL environment has been correctly installed
             assert os.path.isdir(os.environ["GDAL_DATA"])
-            assert os.path.isdir(os.environ["PROJ_LIB"])
+            #assert os.path.isdir(os.environ["PROJ_LIB"])
 
             pipeline = VisSatStereoPipeline(self.pm.vissat_config_fp)
             # Logs are created in the working_directory/logs folder

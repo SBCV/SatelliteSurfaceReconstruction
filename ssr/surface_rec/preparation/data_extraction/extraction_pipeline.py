@@ -68,7 +68,9 @@ class ExtractionPipeline(object):
         remove_aux_file,
         apply_tone_mapping,
         joint_tone_mapping,
+        geo_crop_coordinates=None
     ):
+        used_geo_coordinates = []
         self.write_aoi()
 
         per_step_time = []  # (whether to run, step name, time in minutes)
@@ -87,13 +89,14 @@ class ExtractionPipeline(object):
 
         if self.config["steps_to_run"]["crop_image"]:
             start_time = datetime.now()
-            self.run_crop_image_general(
+            used_geo_coordinates = self.run_crop_image_general(
                 ift,
                 oft,
                 execute_parallel,
                 remove_aux_file,
                 apply_tone_mapping,
                 joint_tone_mapping,
+                geo_crop_coordinates=geo_crop_coordinates
             )
             duration = (
                 datetime.now() - start_time
@@ -117,6 +120,8 @@ class ExtractionPipeline(object):
                 total += duration
             fp.write("\ntotal: {} minutes\n".format(total))
             print("total:\t{} minutes".format(total))
+
+        return used_geo_coordinates
 
     def write_aoi(self):
         # write aoi.json
@@ -208,6 +213,7 @@ class ExtractionPipeline(object):
         remove_aux_file,
         apply_tone_mapping,
         joint_tone_mapping,
+        geo_crop_coordinates=None
     ):
         work_dir = self.config["work_dir"]
 
@@ -220,7 +226,7 @@ class ExtractionPipeline(object):
         local_timer.start()
 
         # crop image and tone map
-        image_crop_general(
+        cropped_geo_coordinates = image_crop_general(
             work_dir,
             ift,
             oft,
@@ -228,11 +234,14 @@ class ExtractionPipeline(object):
             remove_aux_file,
             apply_tone_mapping,
             joint_tone_mapping,
+            geo_crop_coordinates=geo_crop_coordinates
         )
 
         # stop local timer
         local_timer.mark("image cropping done")
         logging.info(local_timer.summary())
+
+        return cropped_geo_coordinates
 
 
 if __name__ == "__main__":

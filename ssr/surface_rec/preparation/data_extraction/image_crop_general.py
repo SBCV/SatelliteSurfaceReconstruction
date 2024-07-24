@@ -56,6 +56,15 @@ import os
 import logging
 
 
+class GeoCropCoordinates:
+    # Order of points is left, up, right, down
+    def __init__(self, lon, lat, alt):
+        assert len(lon) == 4 and len(lat) == 4 and len(alt) == 4
+        self.longitude = lon
+        self.latitude = lat
+        self.altitude = alt
+
+
 def crop_ntf_general(
     in_ntf,
     hdr_img_ofp,
@@ -96,6 +105,9 @@ def image_crop_worker_general(
     remove_aux_file=False,
     apply_tone_mapping=True,
     joint_tone_mapping=True,
+    apply_geo_crop=False,
+    geo_crop_coordinates=None,
+    scale=4
 ):
     with open(utm_bbx_file) as fp:
         utm_bbx = json.load(fp)
@@ -127,6 +139,8 @@ def image_crop_worker_general(
             pid, current_idx, total_cnt, ntf_file
         )
     )
+
+    discretized_geo = None
     try:
         meta_dict = parse_meta_msi(xml_file)
         # check whether the image is too cloudy
@@ -143,16 +157,53 @@ def image_crop_worker_general(
         rpc_model = RPCModel(meta_dict)
         col, row = rpc_model.projection(xx_lat, yy_lon, zz_alt)
 
-        ul_col = int(np.round(np.min(col)))
-        ul_row = int(np.round(np.min(row)))
-        width = int(np.round(np.max(col))) - ul_col + 1
-        height = int(np.round(np.max(row))) - ul_row + 1
+        left_col = int(np.round(np.min(col)))
+        upper_row = int(np.round(np.min(row)))
+        right_col = int(np.round(np.max(col)))
+        bottom_row = int(np.round(np.max(row)))
+
+        width = right_col - left_col + 1
+        height = bottom_row - upper_row + 1
+
+        left_col_idx = np.argmin(col)
+        upper_row_idx = np.argmin(row)
+        right_col_idx = np.argmax(col)
+        bottom_row_idx = np.argmax(row)
+
+        if apply_geo_crop:
+            if geo_crop_coordinates is None:
+                return
+
+            # Discretized MS image coordinates (transformed to PAN coordinates)
+            col, row = rpc_model.projection(geo_crop_coordinates.latitude, geo_crop_coordinates.longitude,
+                                            geo_crop_coordinates.altitude)
+
+            ms_d_left_col = col[0]
+            ms_d_upper_row = row[1]
+            ms_d_right_col = col[2]
+            ms_d_bottom_row = row[3]
+
+            # Fill the bigger MSI pixels with the smaller PAN pixels in the left/right columns and bottom/upper rows
+            correction_term = scale/2 - 0.5
+            ideal_left_col = ms_d_left_col - correction_term
+            ideal_right_col = ms_d_right_col + correction_term
+            ideal_upper_row = ms_d_upper_row - correction_term
+            ideal_bottom_row = ms_d_bottom_row + correction_term
+            ideal_width = ideal_right_col - ideal_left_col + 1
+            ideal_height = ideal_bottom_row - ideal_upper_row + 1
+
+            left_col = int(np.round(ideal_left_col))
+            upper_row = int(np.round(ideal_upper_row))
+            width = int(np.round(ideal_width))
+            height = int(np.round(ideal_height))
+
+        crop_box = (left_col, upper_row, width, height)
 
         # check whether the bounding box lies in the image
         ntf_width = meta_dict["width"]
         ntf_height = meta_dict["height"]
         intersect, _, overlap = check_bbx(
-            (0, 0, ntf_width, ntf_height), (ul_col, ul_row, width, height)
+            (0, 0, ntf_width, ntf_height), crop_box
         )
         overlap_thres = 0.8
         if overlap < overlap_thres:
@@ -184,10 +235,6 @@ def image_crop_worker_general(
         else:
             assert False
 
-        # ======================================
-        # Use QGIS to examine the PNG result
-        # (i.e. color range of the created file)
-        # ======================================
         crop_ntf_general(
             in_ntf=ntf_file,
             hdr_img_ofp=out_png,
@@ -242,9 +289,33 @@ def image_crop_worker_general(
             json.dump(meta_dict, fp, indent=2)
         effective_file_list.append((out_png, out_json))
 
+        # This does not consider check_bbx function, which may generate inconsistencies!
+        # Function check_bbx should probably check NTF bounds for both MSI and PAN images (TODO)
+        right_col = ul_col + width - 1
+        bottom_row = ul_row + height - 1
+        # Calculate GEO coordinates from 3D points (4 points defining crop box)
+        if apply_geo_crop:
+            d_lon, d_lat, d_alt = rpc_model.inverse_projection(ul_col, row[0], geo_crop_coordinates.altitude[0])
+            d_lon2, d_lat2, d_alt2 = rpc_model.inverse_projection(col[1], ul_row, geo_crop_coordinates.altitude[1])
+            d_lon3, d_lat3, d_alt3 = rpc_model.inverse_projection(right_col, row[2], geo_crop_coordinates.altitude[2])
+            d_lon4, d_lat4, d_alt4 = rpc_model.inverse_projection(col[3], bottom_row, geo_crop_coordinates.altitude[3])
+        else:
+            d_lon, d_lat, d_alt = rpc_model.inverse_projection(ul_col, row[left_col_idx], zz_alt[left_col_idx])
+            d_lon2, d_lat2, d_alt2 = rpc_model.inverse_projection(col[upper_row_idx], ul_row, zz_alt[upper_row_idx])
+            d_lon3, d_lat3, d_alt3 = rpc_model.inverse_projection(right_col, row[right_col_idx], zz_alt[right_col_idx])
+            d_lon4, d_lat4, d_alt4 = rpc_model.inverse_projection(col[bottom_row_idx], bottom_row,
+                                                                  zz_alt[bottom_row_idx])
+
+        d_longitude = np.array([d_lon, d_lon2, d_lon3, d_lon4])
+        d_latitude = np.array([d_lat, d_lat2, d_lat3, d_lat4])
+        d_altitude = np.array([d_alt, d_alt2, d_alt3, d_alt4])
+        discretized_geo = GeoCropCoordinates(d_longitude, d_latitude, d_altitude)
+
     finally:
         with open(result_file, "w") as fp:
             json.dump(effective_file_list, fp, indent=2)
+
+    return discretized_geo
 
 
 def image_crop_general(
@@ -255,9 +326,11 @@ def image_crop_general(
     remove_aux_file,
     apply_tone_mapping,
     joint_tone_mapping,
+    geo_crop_coordinates=None
 ):
     cleaned_data_dir = os.path.join(work_dir, "cleaned_data")
     ntf_list = glob.glob("{}/*.NTF".format(cleaned_data_dir))
+    ntf_list.sort()
     xml_list = [item[:-4] + ".XML" for item in ntf_list]
 
     # create a tmp dir
@@ -267,7 +340,9 @@ def image_crop_general(
 
     pool = multiprocessing.Pool(multiprocessing.cpu_count())
     result_file_list = []
+
     cnt = len(ntf_list)
+    discretized_geo_coordinates_list = [None] * cnt
     for i in range(cnt):
         ntf_file = ntf_list[i]
         xml_file = xml_list[i]
@@ -280,7 +355,7 @@ def image_crop_general(
         result_file_list.append(result_file)
 
         if execute_parallel:
-            pool.apply_async(
+            discretized_geo_coords = pool.apply_async(
                 image_crop_worker_general,
                 (
                     ntf_file,
@@ -295,10 +370,13 @@ def image_crop_general(
                     remove_aux_file,
                     apply_tone_mapping,
                     joint_tone_mapping,
+                    False if geo_crop_coordinates is None else True,
+                    None if geo_crop_coordinates is None else geo_crop_coordinates[i]
                 ),
             )
+            discretized_geo_coordinates_list[i] = discretized_geo_coords.get()
         else:
-            image_crop_worker_general(
+            discretized_geo_coordinates_list[i] = image_crop_worker_general(
                 ntf_file,
                 xml_file,
                 i,
@@ -311,6 +389,8 @@ def image_crop_general(
                 remove_aux_file,
                 apply_tone_mapping,
                 joint_tone_mapping,
+                apply_geo_crop=False if geo_crop_coordinates is None else True,
+                geo_crop_coordinates=None if geo_crop_coordinates is None else geo_crop_coordinates[i]
             )
 
     pool.close()
@@ -368,6 +448,7 @@ def image_crop_general(
 
     # remove tmp_dir
     shutil.rmtree(tmp_dir)
+    return discretized_geo_coordinates_list
 
 
 if __name__ == "__main__":

@@ -21,7 +21,6 @@ from ssr.surface_rec.preparation.skew_correction.skew_correction import (
     compute_skew_free_camera_models,
 )
 
-
 class PreparationPipeline:
     def __init__(self, pm):
         self.pm = pm
@@ -36,22 +35,95 @@ class PreparationPipeline:
         remove_aux_file,
         apply_tone_mapping,
         joint_tone_mapping,
+        geo_crop_coordinates=None
     ):
 
         pipeline = ExtractionPipeline(pan_or_msi_config_fp)
-        pipeline.run(
+        extracted_crops = pipeline.run(
             ift,
             oft,
             execute_parallel,
             remove_aux_file,
             apply_tone_mapping,
             joint_tone_mapping,
+            geo_crop_coordinates=geo_crop_coordinates
         )
+        return extracted_crops
+
+    def extract_msi_pan_image_pairs(
+            self,
+            extract_msi_pan_image_pairs=True,
+            use_consistent_msi_pan_extraction=True
+    ):
+        if extract_msi_pan_image_pairs:
+            # === Additional options for extract_pan and extract_msi === #
+            oft = "png"
+            remove_aux_file = False
+            apply_tone_mapping = True
+            joint_tone_mapping = (
+                False  # Separate tone mapping yields much better results
+            )
+            execute_parallel = True
+
+            pm = self.pm
+            mkdir_safely(pm.ssr_workspace_dp)
+
+            msi_geo_crops = self.extract_msi(pm, oft, execute_parallel, remove_aux_file,
+                                             apply_tone_mapping, joint_tone_mapping)
+
+            if use_consistent_msi_pan_extraction:
+                self.extract_pan(pm, oft, execute_parallel, remove_aux_file,
+                                 apply_tone_mapping, joint_tone_mapping, msi_geo_crops)
+            else:
+                self.extract_pan(pm, oft, execute_parallel, remove_aux_file,
+                                 apply_tone_mapping, joint_tone_mapping)
+
+    def extract_msi(self, pm, oft, execute_parallel, remove_aux_file, apply_tone_mapping, joint_tone_mapping):
+        mkdir_safely(pm.msi_workspace_dp)
+        create_vissat_extraction_config(
+            pm.msi_config_fp,
+            pm.msi_ntf_idp,
+            pm.msi_workspace_dp,
+            self.ssr_config,
+        )
+        assert os.path.isfile(pm.msi_config_fp)
+
+        msi_geo_crops = PreparationPipeline.extract_files(
+            pm.msi_config_fp,
+            ift="MSI",
+            oft=oft,
+            execute_parallel=execute_parallel,
+            remove_aux_file=remove_aux_file,
+            apply_tone_mapping=apply_tone_mapping,
+            joint_tone_mapping=joint_tone_mapping,
+        )
+        return msi_geo_crops
+
+    def extract_pan(self, pm, oft, execute_parallel, remove_aux_file, apply_tone_mapping, joint_tone_mapping,
+                    msi_geo_crops=None):
+        mkdir_safely(pm.pan_workspace_dp)
+        create_vissat_extraction_config(
+            vissat_config_ofp=pm.pan_config_fp,
+            dataset_dp=pm.pan_ntf_idp,
+            workspace_dp=pm.pan_workspace_dp,
+            ssr_config=self.ssr_config,
+        )
+        assert os.path.isfile(pm.pan_config_fp)
+
+        pan_geo_crops = PreparationPipeline.extract_files(
+            pm.pan_config_fp,
+            ift="PAN",
+            oft=oft,
+            execute_parallel=execute_parallel,
+            remove_aux_file=remove_aux_file,
+            apply_tone_mapping=apply_tone_mapping,
+            joint_tone_mapping=joint_tone_mapping,
+            geo_crop_coordinates=msi_geo_crops
+        )
+        return pan_geo_crops
 
     def run(
         self,
-        extract_pan=True,
-        extract_msi=True,
         pan_sharpening=True,
         depth_map_recovery=True,
         skew_correction=True,
@@ -59,71 +131,22 @@ class PreparationPipeline:
 
         # =================================================================
         # Prerequisites (ORDER MATTERS):
-        #   1. Reconstruct mesh with PAN images
-        #   2. Extract corresponding MSI images
+        #   1. Extract corresponding MSI & PAN images
+        #   2. Reconstruct mesh with PAN images
         #   3. Compute PAN Sharpened Images
         #   4. Compute Skew Corrected Camera Models and Skew Corrected PAN
         #      Sharpened Images
         # ================================================================
 
-        # === Additional options for extract_pan and extract_msi === #
-        oft = "png"
-        remove_aux_file = False
-        apply_tone_mapping = True
-        joint_tone_mapping = (
-            False  # Separate tone mapping yields much better results
-        )
-        execute_parallel = True
 
         # === Additional options for pan_sharpening === #
         resampling_algorithm = "cubic"
         pm = self.pm
         mkdir_safely(pm.ssr_workspace_dp)
 
-        if extract_pan:
-            mkdir_safely(pm.pan_workspace_dp)
-            create_vissat_extraction_config(
-                vissat_config_ofp=pm.pan_config_fp,
-                dataset_dp=pm.pan_ntf_idp,
-                workspace_dp=pm.pan_workspace_dp,
-                ssr_config=self.ssr_config,
-            )
-            assert os.path.isfile(pm.pan_config_fp)
-
-            PreparationPipeline.extract_files(
-                pm.pan_config_fp,
-                ift="PAN",
-                oft=oft,
-                execute_parallel=execute_parallel,
-                remove_aux_file=remove_aux_file,
-                apply_tone_mapping=apply_tone_mapping,
-                joint_tone_mapping=joint_tone_mapping,
-            )
-
-            assert_dirs_equal(pm.pan_png_idp, pm.rec_pan_png_idp)
-
-        if extract_msi:
-            mkdir_safely(pm.msi_workspace_dp)
-            create_vissat_extraction_config(
-                pm.msi_config_fp,
-                pm.msi_ntf_idp,
-                pm.msi_workspace_dp,
-                self.ssr_config,
-            )
-            PreparationPipeline.extract_files(
-                pm.msi_config_fp,
-                ift="MSI",
-                oft=oft,
-                execute_parallel=execute_parallel,
-                remove_aux_file=remove_aux_file,
-                apply_tone_mapping=apply_tone_mapping,
-                joint_tone_mapping=joint_tone_mapping,
-            )
-
         if pan_sharpening:
-            assert_dirs_equal(pm.pan_png_idp, pm.rec_pan_png_idp)
             perform_pan_sharpening_for_folder(
-                pm.rec_pan_png_idp,
+                pm.pan_png_idp,
                 pm.msi_png_idp,
                 pm.sharpened_with_skew_png_dp,
                 resampling_algorithm=resampling_algorithm,
@@ -159,7 +182,7 @@ class PreparationPipeline:
 
             compute_skew_free_camera_models(
                 colmap_model_with_skew_idp=pm.sparse_model_with_skew_idp,
-                gray_image_with_skew_idp=pm.rec_pan_png_idp,
+                gray_image_with_skew_idp=pm.pan_png_idp,
                 color_image_with_skew_idp=pm.sharpened_with_skew_png_dp,
                 depth_map_with_skew_idp=pm.depth_map_real_with_skew_dp,
                 colmap_model_no_skew_odp=pm.sparse_model_no_skew_dp,
