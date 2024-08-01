@@ -83,7 +83,6 @@ if __name__ == "__main__":
     makedirs_safely(pm.ssr_workspace_dp)
     makedirs_safely(pm.meshlab_temp_dp)
 
-
     input_adapter_pipeline = RunInputAdapterPipeline(pm)
     input_adapter_pipeline.run(
         dataset_adapter=ssr_config.dataset_adapter,
