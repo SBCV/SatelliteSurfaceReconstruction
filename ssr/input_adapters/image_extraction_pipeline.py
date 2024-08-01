@@ -38,35 +38,6 @@ class ImageExtractionPipeline:
         )
         return extracted_crops
 
-    def extract_msi_pan_image_pairs(
-        self,
-        extract_msi_pan_image_pairs=True,
-        use_consistent_msi_pan_extraction=True
-    ):
-        if not extract_msi_pan_image_pairs:
-            return
-        # === Additional options for extract_pan and extract_msi === #
-        oft = "png"
-        remove_aux_file = False
-        apply_tone_mapping = True
-        joint_tone_mapping = (
-            False  # Separate tone mapping yields much better results
-        )
-        execute_parallel = True
-
-        pm = self.pm
-        mkdir_safely(pm.ssr_workspace_dp)
-
-        msi_geo_crops = self.extract_msi(pm, oft, execute_parallel, remove_aux_file,
-                                         apply_tone_mapping, joint_tone_mapping)
-
-        if use_consistent_msi_pan_extraction:
-            self.extract_pan(pm, oft, execute_parallel, remove_aux_file,
-                             apply_tone_mapping, joint_tone_mapping, msi_geo_crops)
-        else:
-            self.extract_pan(pm, oft, execute_parallel, remove_aux_file,
-                             apply_tone_mapping, joint_tone_mapping)
-
     def extract_msi(self, pm, oft, execute_parallel, remove_aux_file, apply_tone_mapping, joint_tone_mapping):
         mkdir_safely(pm.msi_workspace_dp)
         create_vissat_extraction_config(
@@ -110,3 +81,32 @@ class ImageExtractionPipeline:
             geo_crop_coordinates=msi_geo_crops
         )
         return pan_geo_crops
+
+    def run(
+        self,
+        extract_msi_pan_image_pairs=True,
+        use_consistent_msi_pan_extraction=True
+    ):
+        if not extract_msi_pan_image_pairs:
+            return
+        # === Additional options for extract_pan and extract_msi === #
+        oft = "png"
+        remove_aux_file = False
+        apply_tone_mapping = True
+        joint_tone_mapping = (
+            False  # Separate tone mapping yields much better results
+        )
+        execute_parallel = True
+
+        pm = self.pm
+        mkdir_safely(pm.ssr_workspace_dp)
+
+        msi_geo_crops = self.extract_msi(pm, oft, execute_parallel, remove_aux_file,
+                                         apply_tone_mapping, joint_tone_mapping)
+
+        if use_consistent_msi_pan_extraction:
+            self.extract_pan(pm, oft, execute_parallel, remove_aux_file,
+                             apply_tone_mapping, joint_tone_mapping, msi_geo_crops)
+        else:
+            self.extract_pan(pm, oft, execute_parallel, remove_aux_file,
+                             apply_tone_mapping, joint_tone_mapping)

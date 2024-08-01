@@ -14,7 +14,7 @@ class InputAdapter:
 
         if self.config.extract_msi_pan_image_pairs:
             image_extraction_pipeline = ImageExtractionPipeline(self.pm)
-            image_extraction_pipeline.extract_msi_pan_image_pairs(
+            image_extraction_pipeline.run(
                 extract_msi_pan_image_pairs=self.config.extract_msi_pan_image_pairs,
                 use_consistent_msi_pan_extraction=self.config.use_consistent_msi_pan_extraction,
             )
