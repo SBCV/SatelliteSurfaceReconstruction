@@ -13,6 +13,7 @@ import distutils.dir_util
 class InputAdapter:
     def __init__(self, pm: PathManager, preparation_pipeline=None):
         self.pm = pm
+        assert preparation_pipeline is None
 
     def run(self):
         logger.info("Importing the DFC2019 dataset")
