@@ -34,6 +34,18 @@ class PathManager:
         self.meshlab_temp_root_dp = meshlab_temp_root_dp
 
         # === Specific directories ===
+        self.vissat_workspace_dp = os.path.join(
+            self.vissat_workspace_root_dp,
+            self._get_relative_dp(
+                adapter,
+                aoi_name,
+                zone_number,
+                hemisphere,
+                ul_easting,
+                ul_northing,
+            ),
+        )
+
         self.ssr_workspace_dp = os.path.join(
             self.ssr_workspace_root_dp,
             self._get_relative_dp(
@@ -58,7 +70,6 @@ class PathManager:
         )
 
         # === Input Colmap VisSat File Paths ===
-        self.vissat_workspace_dp = os.path.join(self.ssr_workspace_dp, "pan")
         self.vissat_config_fp = os.path.join(
             self.vissat_workspace_dp,
             "VisSat.json",
