@@ -59,10 +59,10 @@ def perform_pan_sharpening_for_folder(
 
 
 def assert_correct_pan_msi_ratio(pan_ifp, msi_ifp, ratio=4):
-    import imageio
-    pan_img = imageio.imread(pan_ifp)
-    msi_img = imageio.imread(msi_ifp)
-    assert(pan_img.shape[0] == ratio * msi_img.shape[0] and pan_img.shape[1] == ratio * msi_img.shape[1])
+    import imageio.v3 as iio
+    pan_img_shape = iio.improps(pan_ifp).shape
+    msi_img_shape = iio.improps(msi_ifp).shape
+    assert(pan_img_shape[0] == ratio * msi_img_shape[0] and pan_img_shape[1] == ratio * msi_img_shape[1])
 
 
 if __name__ == "__main__":
