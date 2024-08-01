@@ -3,9 +3,8 @@ from ssr.utility.logging_extension import logger
 
 
 class RunInputAdapterPipeline:
-    def __init__(self, pm, preparation_pipeline=None):
+    def __init__(self, pm):
         self.pm = pm
-        self.preparation_pipeline = preparation_pipeline
 
     def run(self, dataset_adapter, run_input_adapter=True):
         if run_input_adapter:
