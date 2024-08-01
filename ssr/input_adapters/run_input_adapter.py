@@ -15,5 +15,5 @@ class RunInputAdapterPipeline:
             )
             dataset_adapter = f"ssr.input_adapters.{dataset_adapter}"
             adapter_file = importlib.import_module(dataset_adapter)
-            adapter = getattr(adapter_file, "InputAdapter")(self.pm, self.preparation_pipeline)
+            adapter = getattr(adapter_file, "InputAdapter")(self.pm)
             adapter.run()

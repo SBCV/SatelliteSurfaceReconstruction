@@ -83,8 +83,8 @@ if __name__ == "__main__":
     makedirs_safely(pm.ssr_workspace_dp)
     makedirs_safely(pm.meshlab_temp_dp)
 
-    preparation_pipeline = PreparationPipeline(pm)
-    input_adapter_pipeline = RunInputAdapterPipeline(pm, preparation_pipeline)
+
+    input_adapter_pipeline = RunInputAdapterPipeline(pm)
     input_adapter_pipeline.run(
         dataset_adapter=ssr_config.dataset_adapter,
         run_input_adapter=ssr_config.run_input_adapter,
@@ -94,6 +94,7 @@ if __name__ == "__main__":
     vissat_pipeline.init_vissat()
     vissat_pipeline.run(ssr_config.reconstruct_sfm_mvs)
 
+    preparation_pipeline = PreparationPipeline(pm)
     preparation_pipeline.run(
         pan_sharpening=ssr_config.pan_sharpening,
         depth_map_recovery=ssr_config.depth_map_recovery,
