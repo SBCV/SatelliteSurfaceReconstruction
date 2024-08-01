@@ -13,6 +13,7 @@ from ssr.surface_rec.preparation.skew_correction.skew_correction import (
     compute_skew_free_camera_models,
 )
 
+
 class PreparationPipeline:
     def __init__(self, pm):
         self.pm = pm
@@ -26,10 +27,10 @@ class PreparationPipeline:
     ):
 
         # =================================================================
-        # Prerequisites (ORDER MATTERS):
-        #   1. Extract corresponding MSI & PAN images
-        #   2. Reconstruct mesh with PAN images
+        # Prerequisites:
+        #   1. Extract MSI & PAN images
         #   3. Compute PAN Sharpened Images
+        #   2. Perform SfM with PAN images (not pan-sharped images)
         #   4. Compute Skew Corrected Camera Models and Skew Corrected PAN
         #      Sharpened Images
         # ================================================================
