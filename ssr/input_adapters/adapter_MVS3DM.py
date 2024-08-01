@@ -15,5 +15,5 @@ class InputAdapter:
         if self.config.extract_msi_pan_image_pairs and self.preparation_pipeline is not None:
             self.preparation_pipeline.extract_msi_pan_image_pairs(
                 extract_msi_pan_image_pairs=self.config.extract_msi_pan_image_pairs,
-                use_consistent_msi_pan_extraction=True
+                use_consistent_msi_pan_extraction=self.config.use_consistent_msi_pan_extraction,
             )
