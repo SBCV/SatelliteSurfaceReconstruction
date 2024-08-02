@@ -235,6 +235,10 @@ def image_crop_worker_general(
         else:
             assert False
 
+        # ======================================
+        # Use QGIS to examine the PNG result
+        # (i.e. color range of the created file)
+        # ======================================
         crop_ntf_general(
             in_ntf=ntf_file,
             hdr_img_ofp=out_png,
