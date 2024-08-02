@@ -105,7 +105,6 @@ def image_crop_worker_general(
     remove_aux_file=False,
     apply_tone_mapping=True,
     joint_tone_mapping=True,
-    apply_geo_crop=False,
     geo_crop_coordinates=None,
     scale=4
 ):
@@ -155,25 +154,40 @@ def image_crop_worker_general(
 
         # compute the bounding box
         rpc_model = RPCModel(meta_dict)
-        col, row = rpc_model.projection(xx_lat, yy_lon, zz_alt)
 
-        left_col = int(np.round(np.min(col)))
-        upper_row = int(np.round(np.min(row)))
-        right_col = int(np.round(np.max(col)))
-        bottom_row = int(np.round(np.max(row)))
+        if geo_crop_coordinates is None:
 
-        width = right_col - left_col + 1
-        height = bottom_row - upper_row + 1
+            col, row = rpc_model.projection(xx_lat, yy_lon, zz_alt)
 
-        left_col_idx = np.argmin(col)
-        upper_row_idx = np.argmin(row)
-        right_col_idx = np.argmax(col)
-        bottom_row_idx = np.argmax(row)
+            left_col = int(np.round(np.min(col)))
+            upper_row = int(np.round(np.min(row)))
+            right_col = int(np.round(np.max(col)))
+            bottom_row = int(np.round(np.max(row)))
 
-        if apply_geo_crop:
-            if geo_crop_coordinates is None:
-                return
+            width = right_col - left_col + 1
+            height = bottom_row - upper_row + 1
 
+            # This does not consider check_bbx function, which may generate inconsistencies!
+            # Function check_bbx should probably check NTF bounds for both MSI and PAN images (TODO)
+
+            # Calculate GEO coordinates from 3D points (4 points defining crop box)
+            left_col_idx = np.argmin(col)
+            upper_row_idx = np.argmin(row)
+            right_col_idx = np.argmax(col)
+            bottom_row_idx = np.argmax(row)
+
+            d_lon, d_lat, d_alt = rpc_model.inverse_projection(left_col, row[left_col_idx], zz_alt[left_col_idx])
+            d_lon2, d_lat2, d_alt2 = rpc_model.inverse_projection(col[upper_row_idx], upper_row, zz_alt[upper_row_idx])
+            d_lon3, d_lat3, d_alt3 = rpc_model.inverse_projection(right_col, row[right_col_idx], zz_alt[right_col_idx])
+            d_lon4, d_lat4, d_alt4 = rpc_model.inverse_projection(col[bottom_row_idx], bottom_row,
+                                                                  zz_alt[bottom_row_idx])
+
+            d_longitude = np.array([d_lon, d_lon2, d_lon3, d_lon4])
+            d_latitude = np.array([d_lat, d_lat2, d_lat3, d_lat4])
+            d_altitude = np.array([d_alt, d_alt2, d_alt3, d_alt4])
+            discretized_geo = GeoCropCoordinates(d_longitude, d_latitude, d_altitude)
+
+        else:
             # Discretized MS image coordinates (transformed to PAN coordinates)
             col, row = rpc_model.projection(
                 geo_crop_coordinates.latitude,
@@ -296,28 +310,6 @@ def image_crop_worker_general(
             json.dump(meta_dict, fp, indent=2)
         effective_file_list.append((out_png, out_json))
 
-        # This does not consider check_bbx function, which may generate inconsistencies!
-        # Function check_bbx should probably check NTF bounds for both MSI and PAN images (TODO)
-        right_col = ul_col + width - 1
-        bottom_row = ul_row + height - 1
-        # Calculate GEO coordinates from 3D points (4 points defining crop box)
-        if apply_geo_crop:
-            d_lon, d_lat, d_alt = rpc_model.inverse_projection(ul_col, row[0], geo_crop_coordinates.altitude[0])
-            d_lon2, d_lat2, d_alt2 = rpc_model.inverse_projection(col[1], ul_row, geo_crop_coordinates.altitude[1])
-            d_lon3, d_lat3, d_alt3 = rpc_model.inverse_projection(right_col, row[2], geo_crop_coordinates.altitude[2])
-            d_lon4, d_lat4, d_alt4 = rpc_model.inverse_projection(col[3], bottom_row, geo_crop_coordinates.altitude[3])
-        else:
-            d_lon, d_lat, d_alt = rpc_model.inverse_projection(ul_col, row[left_col_idx], zz_alt[left_col_idx])
-            d_lon2, d_lat2, d_alt2 = rpc_model.inverse_projection(col[upper_row_idx], ul_row, zz_alt[upper_row_idx])
-            d_lon3, d_lat3, d_alt3 = rpc_model.inverse_projection(right_col, row[right_col_idx], zz_alt[right_col_idx])
-            d_lon4, d_lat4, d_alt4 = rpc_model.inverse_projection(col[bottom_row_idx], bottom_row,
-                                                                  zz_alt[bottom_row_idx])
-
-        d_longitude = np.array([d_lon, d_lon2, d_lon3, d_lon4])
-        d_latitude = np.array([d_lat, d_lat2, d_lat3, d_lat4])
-        d_altitude = np.array([d_alt, d_alt2, d_alt3, d_alt4])
-        discretized_geo = GeoCropCoordinates(d_longitude, d_latitude, d_altitude)
-
     finally:
         with open(result_file, "w") as fp:
             json.dump(effective_file_list, fp, indent=2)
@@ -333,7 +325,7 @@ def image_crop_general(
     remove_aux_file,
     apply_tone_mapping,
     joint_tone_mapping,
-    geo_crop_coordinates=None
+    geo_crop_coordinates_list=None
 ):
     cleaned_data_dir = os.path.join(work_dir, "cleaned_data")
     ntf_list = glob.glob("{}/*.NTF".format(cleaned_data_dir))
@@ -349,6 +341,8 @@ def image_crop_general(
     result_file_list = []
 
     cnt = len(ntf_list)
+    if geo_crop_coordinates_list is None:
+        geo_crop_coordinates_list = [None] * cnt
     discretized_geo_coordinates_list = [None] * cnt
     for i in range(cnt):
         ntf_file = ntf_list[i]
@@ -377,8 +371,7 @@ def image_crop_general(
                     remove_aux_file,
                     apply_tone_mapping,
                     joint_tone_mapping,
-                    False if geo_crop_coordinates is None else True,
-                    None if geo_crop_coordinates is None else geo_crop_coordinates[i]
+                    geo_crop_coordinates_list[i]
                 ),
             )
             discretized_geo_coordinates_list[i] = discretized_geo_coords.get()
@@ -396,8 +389,7 @@ def image_crop_general(
                 remove_aux_file,
                 apply_tone_mapping,
                 joint_tone_mapping,
-                apply_geo_crop=False if geo_crop_coordinates is None else True,
-                geo_crop_coordinates=None if geo_crop_coordinates is None else geo_crop_coordinates[i]
+                geo_crop_coordinates=geo_crop_coordinates_list[i]
             )
 
     pool.close()

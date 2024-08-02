@@ -23,7 +23,7 @@ class ImageExtractionPipeline:
         remove_aux_file,
         apply_tone_mapping,
         joint_tone_mapping,
-        geo_crop_coordinates=None
+        geo_crop_coordinates_list=None
     ):
 
         pipeline = ExtractionPipeline(pan_or_msi_config_fp)
@@ -34,7 +34,7 @@ class ImageExtractionPipeline:
             remove_aux_file,
             apply_tone_mapping,
             joint_tone_mapping,
-            geo_crop_coordinates=geo_crop_coordinates
+            geo_crop_coordinates_list=geo_crop_coordinates_list
         )
         return extracted_crops
 
@@ -56,11 +56,12 @@ class ImageExtractionPipeline:
             remove_aux_file=remove_aux_file,
             apply_tone_mapping=apply_tone_mapping,
             joint_tone_mapping=joint_tone_mapping,
+            geo_crop_coordinates_list=None,
         )
         return msi_geo_crops
 
     def extract_pan(self, pm, oft, execute_parallel, remove_aux_file, apply_tone_mapping, joint_tone_mapping,
-                    msi_geo_crops=None):
+                    msi_geo_crop_coordinate_list=None):
         mkdir_safely(pm.pan_workspace_dp)
         create_vissat_extraction_config(
             vissat_config_ofp=pm.pan_config_fp,
@@ -78,7 +79,7 @@ class ImageExtractionPipeline:
             remove_aux_file=remove_aux_file,
             apply_tone_mapping=apply_tone_mapping,
             joint_tone_mapping=joint_tone_mapping,
-            geo_crop_coordinates=msi_geo_crops
+            geo_crop_coordinates_list=msi_geo_crop_coordinate_list
         )
         return pan_geo_crops
 
@@ -101,12 +102,24 @@ class ImageExtractionPipeline:
         pm = self.pm
         mkdir_safely(pm.ssr_workspace_dp)
 
-        msi_geo_crops = self.extract_msi(pm, oft, execute_parallel, remove_aux_file,
-                                         apply_tone_mapping, joint_tone_mapping)
+        msi_geo_crop_coordinate_list = self.extract_msi(
+            pm,
+            oft,
+            execute_parallel,
+            remove_aux_file,
+            apply_tone_mapping,
+            joint_tone_mapping,
+        )
 
-        if use_consistent_msi_pan_extraction:
-            self.extract_pan(pm, oft, execute_parallel, remove_aux_file,
-                             apply_tone_mapping, joint_tone_mapping, msi_geo_crops)
-        else:
-            self.extract_pan(pm, oft, execute_parallel, remove_aux_file,
-                             apply_tone_mapping, joint_tone_mapping)
+        if not use_consistent_msi_pan_extraction:
+            msi_geo_crop_coordinate_list = None
+
+        self.extract_pan(
+            pm,
+            oft,
+            execute_parallel,
+            remove_aux_file,
+            apply_tone_mapping,
+            joint_tone_mapping,
+            msi_geo_crop_coordinate_list
+        )

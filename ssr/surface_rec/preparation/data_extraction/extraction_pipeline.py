@@ -68,7 +68,7 @@ class ExtractionPipeline(object):
         remove_aux_file,
         apply_tone_mapping,
         joint_tone_mapping,
-        geo_crop_coordinates=None
+        geo_crop_coordinates_list=None
     ):
         used_geo_coordinates = []
         self.write_aoi()
@@ -96,7 +96,7 @@ class ExtractionPipeline(object):
                 remove_aux_file,
                 apply_tone_mapping,
                 joint_tone_mapping,
-                geo_crop_coordinates=geo_crop_coordinates
+                geo_crop_coordinates_list=geo_crop_coordinates_list
             )
             duration = (
                 datetime.now() - start_time
@@ -213,7 +213,7 @@ class ExtractionPipeline(object):
         remove_aux_file,
         apply_tone_mapping,
         joint_tone_mapping,
-        geo_crop_coordinates=None
+        geo_crop_coordinates_list=None
     ):
         work_dir = self.config["work_dir"]
 
@@ -234,7 +234,7 @@ class ExtractionPipeline(object):
             remove_aux_file,
             apply_tone_mapping,
             joint_tone_mapping,
-            geo_crop_coordinates=geo_crop_coordinates
+            geo_crop_coordinates_list=geo_crop_coordinates_list
         )
 
         # stop local timer
