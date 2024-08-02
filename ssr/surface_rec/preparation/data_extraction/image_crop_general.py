@@ -175,8 +175,11 @@ def image_crop_worker_general(
                 return
 
             # Discretized MS image coordinates (transformed to PAN coordinates)
-            col, row = rpc_model.projection(geo_crop_coordinates.latitude, geo_crop_coordinates.longitude,
-                                            geo_crop_coordinates.altitude)
+            col, row = rpc_model.projection(
+                geo_crop_coordinates.latitude,
+                geo_crop_coordinates.longitude,
+                geo_crop_coordinates.altitude
+            )
 
             ms_d_left_col = col[0]
             ms_d_upper_row = row[1]
