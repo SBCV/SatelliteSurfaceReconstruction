@@ -55,7 +55,6 @@ class InputAdapter:
                 self.pm.rec_pan_png_idp, self.pm.sharpened_with_skew_png_dp
             )
 
-
     def parse_tif_image(self, tiff_fp):
         """
         Source: https://github.com/Kai-46/SatelliteSfM/blob/7ea9aebba7cbab586792797c3d65a2c6dca51b8b/preprocess/parse_tif_image.py#L7
