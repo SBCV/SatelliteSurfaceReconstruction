@@ -79,7 +79,7 @@ class PreparationPipeline:
 
             compute_skew_free_camera_models(
                 colmap_model_with_skew_idp=pm.sparse_model_with_skew_idp,
-                gray_image_with_skew_idp=pm.pan_png_idp,
+                gray_image_with_skew_idp=pm.rec_pan_png_idp,
                 color_image_with_skew_idp=pm.sharpened_with_skew_png_dp,
                 depth_map_with_skew_idp=pm.depth_map_real_with_skew_dp,
                 colmap_model_no_skew_odp=pm.sparse_model_no_skew_dp,
