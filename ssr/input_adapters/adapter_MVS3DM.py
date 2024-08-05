@@ -7,6 +7,7 @@ from ssr.utility.logging_extension import logger
 from ssr.utility.os_extension import mkdir_safely
 from stereo_pipeline import StereoPipeline as VisSatStereoPipeline
 
+
 class InputAdapter:
     def __init__(self, pm: PathManager):
         self.pm = pm
