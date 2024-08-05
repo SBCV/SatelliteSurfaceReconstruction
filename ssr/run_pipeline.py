@@ -102,6 +102,8 @@ if __name__ == "__main__":
     pm.check_rec_pan_png_idp()
     preparation_pipeline = PreparationPipeline(pm)
     preparation_pipeline.run(
+        extract_pan=ssr_config.extract_pan,
+        extract_msi=ssr_config.extract_msi,
         pan_sharpening=ssr_config.pan_sharpening,
         depth_map_recovery=ssr_config.depth_map_recovery,
         skew_correction=ssr_config.skew_correction,
