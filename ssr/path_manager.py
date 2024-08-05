@@ -75,9 +75,9 @@ class PathManager:
             "VisSat.json",
         )
 
+        self.rec_pan_png_idp = os.path.join(self.vissat_workspace_dp, "images")
         # The name of the meta data in the vissat_workspace_dp (i.e. "metas")
         # is hardcoded in the VisSatSatelliteStereo library
-        self.rec_pan_png_idp = os.path.join(self.vissat_workspace_dp, "images")
         self.vissat_meta_data_idp = os.path.join(
             self.vissat_workspace_dp, "metas"
         )
