@@ -48,6 +48,7 @@ def perform_pan_sharpening_for_folder(
     )
 
     for pan_ifp, msi_ifp in zip(pan_list, msi_list):
+        assert_correct_pan_msi_ratio(pan_ifp, msi_ifp, ratio=4)
         msi_sharpened_ofp = os.path.join(odp, os.path.basename(pan_ifp))
         perform_pan_sharpening(
             pan_ifp,
@@ -55,6 +56,13 @@ def perform_pan_sharpening_for_folder(
             msi_sharpened_ofp,
             resampling_algorithm=resampling_algorithm,
         )
+
+
+def assert_correct_pan_msi_ratio(pan_ifp, msi_ifp, ratio=4):
+    import imageio.v3 as iio
+    pan_img_shape = iio.improps(pan_ifp).shape
+    msi_img_shape = iio.improps(msi_ifp).shape
+    assert(pan_img_shape[0] == ratio * msi_img_shape[0] and pan_img_shape[1] == ratio * msi_img_shape[1])
 
 
 if __name__ == "__main__":
