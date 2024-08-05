@@ -99,6 +99,7 @@ if __name__ == "__main__":
     vissat_pipeline.init_vissat()
     vissat_pipeline.run(ssr_config.reconstruct_sfm_mvs)
 
+    pm.check_rec_pan_png_idp()
     preparation_pipeline = PreparationPipeline(pm)
     preparation_pipeline.run(
         pan_sharpening=ssr_config.pan_sharpening,
