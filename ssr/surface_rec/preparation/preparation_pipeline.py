@@ -1,9 +1,17 @@
+import os
 from distutils.dir_util import copy_tree
 from distutils.file_util import copy_file
 from ssr.utility.os_extension import mkdir_safely
 from ssr.utility.os_extension import makedirs_safely
 from ssr.utility.os_extension import assert_dirs_equal
 
+
+from ssr.surface_rec.preparation.data_extraction.extraction_pipeline import (
+    ExtractionPipeline,
+)
+from ssr.config.vissat_config import (
+    create_vissat_extraction_config,
+)
 from ssr.config.ssr_config import SSRConfig
 from ssr.surface_rec.preparation.depth_map_recovery.depth_map_recovery import (
     recover_depth_maps,
@@ -19,27 +27,98 @@ class PreparationPipeline:
         self.pm = pm
         self.ssr_config = SSRConfig.get_instance()
 
+    @staticmethod
+    def extract_files(
+        pan_or_msi_config_fp,
+        ift,
+        oft,
+        execute_parallel,
+        remove_aux_file,
+        apply_tone_mapping,
+        joint_tone_mapping,
+    ):
+
+        pipeline = ExtractionPipeline(pan_or_msi_config_fp)
+        pipeline.run(
+            ift,
+            oft,
+            execute_parallel,
+            remove_aux_file,
+            apply_tone_mapping,
+            joint_tone_mapping,
+        )
+
     def run(
         self,
+        extract_pan=True,
+        extract_msi=True,
         pan_sharpening=True,
         depth_map_recovery=True,
         skew_correction=True,
     ):
 
         # =================================================================
-        # Prerequisites:
-        #   1. Extract MSI & PAN images
+        # Prerequisites (ORDER MATTERS):
+        #   1. Reconstruct mesh with PAN images
+        #   2. Extract corresponding MSI images
         #   3. Compute PAN Sharpened Images
-        #   2. Perform SfM with PAN images (not pan-sharped images)
         #   4. Compute Skew Corrected Camera Models and Skew Corrected PAN
         #      Sharpened Images
         # ================================================================
 
+        # === Additional options for extract_pan and extract_msi === #
+        oft = "png"
+        remove_aux_file = False
+        apply_tone_mapping = True
+        joint_tone_mapping = (
+            False  # Separate tone mapping yields much better results
+        )
+        execute_parallel = True
 
         # === Additional options for pan_sharpening === #
         resampling_algorithm = "cubic"
         pm = self.pm
         mkdir_safely(pm.ssr_workspace_dp)
+
+        if extract_pan:
+            mkdir_safely(pm.pan_workspace_dp)
+            create_vissat_extraction_config(
+                vissat_config_ofp=pm.pan_config_fp,
+                dataset_dp=pm.pan_ntf_idp,
+                workspace_dp=pm.pan_workspace_dp,
+                ssr_config=self.ssr_config,
+            )
+            assert os.path.isfile(pm.pan_config_fp)
+
+            PreparationPipeline.extract_files(
+                pm.pan_config_fp,
+                ift="PAN",
+                oft=oft,
+                execute_parallel=execute_parallel,
+                remove_aux_file=remove_aux_file,
+                apply_tone_mapping=apply_tone_mapping,
+                joint_tone_mapping=joint_tone_mapping,
+            )
+
+            assert_dirs_equal(pm.pan_png_idp, pm.rec_pan_png_idp)
+
+        if extract_msi:
+            mkdir_safely(pm.msi_workspace_dp)
+            create_vissat_extraction_config(
+                pm.msi_config_fp,
+                pm.msi_ntf_idp,
+                pm.msi_workspace_dp,
+                self.ssr_config,
+            )
+            PreparationPipeline.extract_files(
+                pm.msi_config_fp,
+                ift="MSI",
+                oft=oft,
+                execute_parallel=execute_parallel,
+                remove_aux_file=remove_aux_file,
+                apply_tone_mapping=apply_tone_mapping,
+                joint_tone_mapping=joint_tone_mapping,
+            )
 
         if pan_sharpening:
             assert_dirs_equal(pm.pan_png_idp, pm.rec_pan_png_idp)
