@@ -36,10 +36,11 @@ class PreparationPipeline:
         remove_aux_file,
         apply_tone_mapping,
         joint_tone_mapping,
+        geo_crop_coordinates_list=None,
     ):
 
         pipeline = ExtractionPipeline(pan_or_msi_config_fp)
-        pipeline.run(
+        extracted_crops = pipeline.run(
             ift,
             oft,
             execute_parallel,
@@ -47,6 +48,7 @@ class PreparationPipeline:
             apply_tone_mapping,
             joint_tone_mapping,
         )
+        return extracted_crops
 
     def run(
         self,
@@ -55,6 +57,7 @@ class PreparationPipeline:
         pan_sharpening=True,
         depth_map_recovery=True,
         skew_correction=True,
+        use_consistent_msi_pan_extraction=True
     ):
 
         # =================================================================
@@ -80,7 +83,27 @@ class PreparationPipeline:
         pm = self.pm
         mkdir_safely(pm.ssr_workspace_dp)
 
-        if extract_pan:
+        if extract_msi and extract_pan:
+            mkdir_safely(pm.msi_workspace_dp)
+            create_vissat_extraction_config(
+                pm.msi_config_fp,
+                pm.msi_ntf_idp,
+                pm.msi_workspace_dp,
+                self.ssr_config,
+            )
+            msi_geo_crop_coordinate_list = PreparationPipeline.extract_files(
+                pm.msi_config_fp,
+                ift="MSI",
+                oft=oft,
+                execute_parallel=execute_parallel,
+                remove_aux_file=remove_aux_file,
+                apply_tone_mapping=apply_tone_mapping,
+                joint_tone_mapping=joint_tone_mapping,
+            )
+
+            if not use_consistent_msi_pan_extraction:
+                msi_geo_crop_coordinate_list = None
+
             mkdir_safely(pm.pan_workspace_dp)
             create_vissat_extraction_config(
                 vissat_config_ofp=pm.pan_config_fp,
@@ -98,27 +121,10 @@ class PreparationPipeline:
                 remove_aux_file=remove_aux_file,
                 apply_tone_mapping=apply_tone_mapping,
                 joint_tone_mapping=joint_tone_mapping,
+                geo_crop_coordinates_list=msi_geo_crop_coordinate_list
             )
 
             assert_dirs_equal(pm.pan_png_idp, pm.rec_pan_png_idp)
-
-        if extract_msi:
-            mkdir_safely(pm.msi_workspace_dp)
-            create_vissat_extraction_config(
-                pm.msi_config_fp,
-                pm.msi_ntf_idp,
-                pm.msi_workspace_dp,
-                self.ssr_config,
-            )
-            PreparationPipeline.extract_files(
-                pm.msi_config_fp,
-                ift="MSI",
-                oft=oft,
-                execute_parallel=execute_parallel,
-                remove_aux_file=remove_aux_file,
-                apply_tone_mapping=apply_tone_mapping,
-                joint_tone_mapping=joint_tone_mapping,
-            )
 
         if pan_sharpening:
             assert_dirs_equal(pm.pan_png_idp, pm.rec_pan_png_idp)
