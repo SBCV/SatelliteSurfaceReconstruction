@@ -45,7 +45,6 @@ class PathManager:
                 ul_northing,
             ),
         )
-
         self.ssr_workspace_dp = os.path.join(
             self.ssr_workspace_root_dp,
             self._get_relative_dp(
