@@ -61,7 +61,6 @@ if __name__ == "__main__":
     ssr_config = create_config_from_template(
         ssr_config_template_ifp, ssr_config_fp
     )
-
     SSRConfig.set_instance(ssr_config)
     ssr_config.read_missing_aoi_data()
 
