@@ -2,7 +2,7 @@ from distutils.dir_util import copy_tree
 from distutils.file_util import copy_file
 from ssr.utility.os_extension import mkdir_safely
 from ssr.utility.os_extension import makedirs_safely
-
+from ssr.utility.os_extension import assert_dirs_equal
 
 from ssr.config.ssr_config import SSRConfig
 from ssr.surface_rec.preparation.depth_map_recovery.depth_map_recovery import (
@@ -42,8 +42,9 @@ class PreparationPipeline:
         mkdir_safely(pm.ssr_workspace_dp)
 
         if pan_sharpening:
+            assert_dirs_equal(pm.pan_png_idp, pm.rec_pan_png_idp)
             perform_pan_sharpening_for_folder(
-                pm.pan_png_idp,
+                pm.rec_pan_png_idp,
                 pm.msi_png_idp,
                 pm.sharpened_with_skew_png_dp,
                 resampling_algorithm=resampling_algorithm,
