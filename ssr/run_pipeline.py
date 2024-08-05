@@ -30,6 +30,12 @@ def check_imageio_freeimage_plugin_installation():
         assert False, msg
 
 
+def check_vissat_workspace(self, pm):
+    if not os.path.isdir(pm.rec_pan_png_idp):
+        logger.vinfo("pm.rec_pan_png_idp", pm.rec_pan_png_idp)
+        assert False
+
+
 def create_config_from_template(config_template_ifp, config_fp):
     config_template_ifp = os.path.abspath(config_template_ifp)
     config_fp = os.path.abspath(config_fp)

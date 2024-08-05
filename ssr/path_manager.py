@@ -77,6 +77,7 @@ class PathManager:
 
         # The name of the meta data in the vissat_workspace_dp (i.e. "metas")
         # is hardcoded in the VisSatSatelliteStereo library
+        self.rec_pan_png_idp = os.path.join(self.vissat_workspace_dp, "images")
         self.vissat_meta_data_idp = os.path.join(
             self.vissat_workspace_dp, "metas"
         )
@@ -224,3 +225,8 @@ class PathManager:
         if not os.path.isdir(self.vissat_workspace_dp):
             logger.vinfo("self.vissat_workspace_dp", self.vissat_workspace_dp)
             assert False, "Vissat output directory missing"
+
+    def check_rec_pan_png_idp(self):
+        if not os.path.isdir(self.rec_pan_png_idp):
+            logger.vinfo("self.rec_pan_png_idp", self.rec_pan_png_idp)
+            assert False
