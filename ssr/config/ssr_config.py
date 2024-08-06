@@ -38,6 +38,7 @@ class SSRConfig(BaseModel):
 
     aoi_specific_idn: str = ""
 
+    workspace_images_root_dp: str
     workspace_vissat_root_dp: str
     workspace_ssr_root_dp: str
     meshlab_temp_root_dp: str
@@ -59,8 +60,8 @@ class SSRConfig(BaseModel):
 
     reconstruct_sfm_mvs: Union[bool, int]
     run_input_adapter: Union[bool, int]
-    extract_msi: Union[bool, int] = False
-    extract_pan: Union[bool, int] = False
+    extract_msi_pan_image_pairs: Union[bool, int] = False
+    use_consistent_msi_pan_extraction: Union[bool, int] = True
     pan_sharpening: Union[bool, int] = False
     depth_map_recovery: Union[bool, int]
     skew_correction: Union[bool, int]

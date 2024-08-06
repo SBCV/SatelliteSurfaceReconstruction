@@ -37,6 +37,7 @@ meshlab_server_fp = "/snap/bin/meshlab.meshlabserver"
 # === === === === ===
 # Pipeline Workspaces
 # === === === === ===
+workspace_images_root_dp = "/some/path/to/a/directory"
 workspace_vissat_root_dp = "/some/path/to/a/directory"
 workspace_ssr_root_dp = "/some/path/to/a/directory"
 meshlab_temp_root_dp = "/some/path/to/a/directory"
@@ -50,8 +51,20 @@ meshlab_temp_root_dp = "/some/path/to/a/directory"
 # === Computation behavior ===
 lazy = 1
 
-# === SfM / MVS Options ===
+# === Image Extraction Step ===
+run_input_adapter = 1
+extract_msi_pan_image_pairs = 1
+pan_sharpening = 1
+
+# === Image Extraction Options ===
+use_consistent_msi_pan_extraction = 1
+
+# === SfM / MVS Steps ===
 reconstruct_sfm_mvs = 1
+
+# === Mesh / Texturing Steps ===
+depth_map_recovery = 1
+skew_correction = 1
 reconstruct_mesh = 1
 texture_mesh = 1
 
@@ -136,10 +149,6 @@ texturing_backends = [
 dataset_adapter = "adapter_MVS3DM"
 satellite_image_pan_dp = "/path/to/spacenet-dataset/Hosted-Datasets/MVS_dataset/WV3/PAN"
 satellite_image_msi_dp = "/path/to/spacenet-dataset/Hosted-Datasets/MVS_dataset/WV3/MSI"
-run_input_adapter = 1
-extract_msi = 1
-extract_pan = 1
-pan_sharpening = 1
 depth_map_recovery = 1
 skew_correction = 1
 

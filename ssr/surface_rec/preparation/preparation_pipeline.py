@@ -1,22 +1,16 @@
-import os
 from distutils.dir_util import copy_tree
 from distutils.file_util import copy_file
 from ssr.utility.os_extension import mkdir_safely
 from ssr.utility.os_extension import makedirs_safely
-from ssr.utility.os_extension import assert_dirs_equal
 
 
 from ssr.surface_rec.preparation.data_extraction.extraction_pipeline import (
     ExtractionPipeline,
 )
-from ssr.config.vissat_config import (
-    create_vissat_extraction_config,
-)
 from ssr.config.ssr_config import SSRConfig
 from ssr.surface_rec.preparation.depth_map_recovery.depth_map_recovery import (
     recover_depth_maps,
 )
-from ssr.gdal_utility.pan_sharpening import perform_pan_sharpening_for_folder
 from ssr.surface_rec.preparation.skew_correction.skew_correction import (
     compute_skew_free_camera_models,
 )
@@ -47,27 +41,15 @@ class PreparationPipeline:
             remove_aux_file,
             apply_tone_mapping,
             joint_tone_mapping,
+            geo_crop_coordinates_list=geo_crop_coordinates_list,
         )
         return extracted_crops
 
     def run(
         self,
-        extract_pan=True,
-        extract_msi=True,
-        pan_sharpening=True,
         depth_map_recovery=True,
         skew_correction=True,
-        use_consistent_msi_pan_extraction=True
     ):
-
-        # =================================================================
-        # Prerequisites (ORDER MATTERS):
-        #   1. Reconstruct mesh with PAN images
-        #   2. Extract corresponding MSI images
-        #   3. Compute PAN Sharpened Images
-        #   4. Compute Skew Corrected Camera Models and Skew Corrected PAN
-        #      Sharpened Images
-        # ================================================================
 
         # === Additional options for extract_pan and extract_msi === #
         oft = "png"
@@ -78,62 +60,8 @@ class PreparationPipeline:
         )
         execute_parallel = True
 
-        # === Additional options for pan_sharpening === #
-        resampling_algorithm = "cubic"
         pm = self.pm
         mkdir_safely(pm.ssr_workspace_dp)
-
-        if extract_msi and extract_pan:
-            mkdir_safely(pm.msi_workspace_dp)
-            create_vissat_extraction_config(
-                pm.msi_config_fp,
-                pm.msi_ntf_idp,
-                pm.msi_workspace_dp,
-                self.ssr_config,
-            )
-            msi_geo_crop_coordinate_list = PreparationPipeline.extract_files(
-                pm.msi_config_fp,
-                ift="MSI",
-                oft=oft,
-                execute_parallel=execute_parallel,
-                remove_aux_file=remove_aux_file,
-                apply_tone_mapping=apply_tone_mapping,
-                joint_tone_mapping=joint_tone_mapping,
-            )
-
-            if not use_consistent_msi_pan_extraction:
-                msi_geo_crop_coordinate_list = None
-
-            mkdir_safely(pm.pan_workspace_dp)
-            create_vissat_extraction_config(
-                vissat_config_ofp=pm.pan_config_fp,
-                dataset_dp=pm.pan_ntf_idp,
-                workspace_dp=pm.pan_workspace_dp,
-                ssr_config=self.ssr_config,
-            )
-            assert os.path.isfile(pm.pan_config_fp)
-
-            PreparationPipeline.extract_files(
-                pm.pan_config_fp,
-                ift="PAN",
-                oft=oft,
-                execute_parallel=execute_parallel,
-                remove_aux_file=remove_aux_file,
-                apply_tone_mapping=apply_tone_mapping,
-                joint_tone_mapping=joint_tone_mapping,
-                geo_crop_coordinates_list=msi_geo_crop_coordinate_list
-            )
-
-            assert_dirs_equal(pm.pan_png_idp, pm.rec_pan_png_idp)
-
-        if pan_sharpening:
-            assert_dirs_equal(pm.pan_png_idp, pm.rec_pan_png_idp)
-            perform_pan_sharpening_for_folder(
-                pm.rec_pan_png_idp,
-                pm.msi_png_idp,
-                pm.sharpened_with_skew_png_dp,
-                resampling_algorithm=resampling_algorithm,
-            )
 
         if depth_map_recovery:
             makedirs_safely(pm.depth_map_real_with_skew_dp)

@@ -69,6 +69,7 @@ if __name__ == "__main__":
         msi_ntf_idp=ssr_config.satellite_image_msi_dp,
         rgb_tif_idp=ssr_config.satellite_image_rgb_tif_dp,
         aoi_specific_idn=ssr_config.aoi_specific_idn,
+        workspace_images_root_dp=ssr_config.workspace_images_root_dp,
         vissat_workspace_root_dp=ssr_config.workspace_vissat_root_dp,
         ssr_workspace_root_dp=ssr_config.workspace_ssr_root_dp,
         meshlab_temp_root_dp=ssr_config.meshlab_temp_root_dp,
@@ -101,9 +102,6 @@ if __name__ == "__main__":
     pm.check_rec_pan_png_idp()
     preparation_pipeline = PreparationPipeline(pm)
     preparation_pipeline.run(
-        extract_pan=ssr_config.extract_pan,
-        extract_msi=ssr_config.extract_msi,
-        pan_sharpening=ssr_config.pan_sharpening,
         depth_map_recovery=ssr_config.depth_map_recovery,
         skew_correction=ssr_config.skew_correction,
     )

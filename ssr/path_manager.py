@@ -9,6 +9,7 @@ class PathManager:
         msi_ntf_idp,
         rgb_tif_idp,
         aoi_specific_idn,
+        workspace_images_root_dp,
         vissat_workspace_root_dp,
         ssr_workspace_root_dp,
         meshlab_temp_root_dp,
@@ -29,11 +30,24 @@ class PathManager:
             os.sep
         )
 
+        self.workspace_images_root_dp = workspace_images_root_dp
         self.vissat_workspace_root_dp = vissat_workspace_root_dp
         self.ssr_workspace_root_dp = ssr_workspace_root_dp
         self.meshlab_temp_root_dp = meshlab_temp_root_dp
 
         # === Specific directories ===
+        self.workspace_images_dp = os.path.join(
+            self.workspace_images_root_dp,
+            self._get_relative_dp(
+                adapter,
+                aoi_name,
+                zone_number,
+                hemisphere,
+                ul_easting,
+                ul_northing,
+            ),
+        )
+
         self.vissat_workspace_dp = os.path.join(
             self.vissat_workspace_root_dp,
             self._get_relative_dp(
@@ -68,6 +82,26 @@ class PathManager:
             ),
         )
 
+        # Pan Images (with skew)
+        self.pan_workspace_dp = os.path.join(self.workspace_images_dp, "pan")
+        self.pan_png_idp = os.path.join(self.pan_workspace_dp, "images")
+        self.pan_config_fp = os.path.join(
+            self.pan_workspace_dp, "extract_pan.json"
+        )
+        self.pan_meta_data_idp = os.path.join(self.pan_workspace_dp, "metas")
+
+        # MSI Images (with skew)
+        self.msi_workspace_dp = os.path.join(self.workspace_images_dp, "msi")
+        self.msi_png_idp = os.path.join(self.msi_workspace_dp, "images")
+        self.msi_config_fp = os.path.join(
+            self.msi_workspace_dp, "extract_msi.json"
+        )
+
+        # Sharpened Images (with skew)
+        self.sharpened_with_skew_png_dp = os.path.join(
+            self.workspace_images_dp, "sharpened_with_skew"
+        )
+
         # === Input Colmap VisSat File Paths ===
         self.vissat_config_fp = os.path.join(
             self.vissat_workspace_dp,
@@ -77,7 +111,7 @@ class PathManager:
         self.rec_pan_png_idp = os.path.join(self.vissat_workspace_dp, "images")
         # The name of the meta data in the vissat_workspace_dp (i.e. "metas")
         # is hardcoded in the VisSatSatelliteStereo library
-        self.vissat_meta_data_idp = os.path.join(
+        self.rec_meta_data_idp = os.path.join(
             self.vissat_workspace_dp, "metas"
         )
 
@@ -101,26 +135,6 @@ class PathManager:
         )
 
         # === Output Workspace File Paths ===
-
-        # Pan Images (with skew)
-        self.pan_workspace_dp = os.path.join(self.ssr_workspace_dp, "pan")
-        self.pan_png_idp = os.path.join(self.pan_workspace_dp, "images")
-
-        self.pan_config_fp = os.path.join(
-            self.pan_workspace_dp, "extract_pan.json"
-        )
-
-        # MSI Images (with skew)
-        self.msi_workspace_dp = os.path.join(self.ssr_workspace_dp, "msi")
-        self.msi_png_idp = os.path.join(self.msi_workspace_dp, "images")
-        self.msi_config_fp = os.path.join(
-            self.msi_workspace_dp, "extract_msi.json"
-        )
-
-        # Sharpened Images (with skew)
-        self.sharpened_with_skew_png_dp = os.path.join(
-            self.ssr_workspace_dp, "sharpened_with_skew"
-        )
 
         # Colmap Workspace (Camera models, images and depth maps WITHOUT skew)
         # Contains (in addition) also depth maps WITH skew.

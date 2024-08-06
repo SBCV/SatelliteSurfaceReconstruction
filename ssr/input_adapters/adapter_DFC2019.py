@@ -17,7 +17,7 @@ class InputAdapter:
     def run(self):
         logger.info("Importing the DFC2019 dataset")
         mkdir_safely(self.pm.rec_pan_png_idp)
-        mkdir_safely(self.pm.vissat_meta_data_idp)
+        mkdir_safely(self.pm.rec_meta_data_idp)
 
         # extract the images and meta information from the tif files
         tif_files = get_file_paths_in_dir(self.pm.rgb_tif_idp, ext=".tif")
@@ -33,7 +33,7 @@ class InputAdapter:
             imageio.imwrite(png_ofp, img)
 
             json_ofp = os.path.join(
-                self.pm.vissat_meta_data_idp,
+                self.pm.rec_meta_data_idp,
                 f"{index}_{current_stem}.json",
             )
             with open(json_ofp, "w") as fp:

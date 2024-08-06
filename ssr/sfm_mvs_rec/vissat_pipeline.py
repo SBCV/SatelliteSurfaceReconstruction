@@ -39,20 +39,40 @@ class VisSatPipeline:
         ), self.colmap_vissat_lib_dp
         os.environ["LD_LIBRARY_PATH"] = self.colmap_vissat_lib_dp
 
+    @staticmethod
+    def create_symlink_dp(symlink_dp, target_dp):
+        create_symlink = True
+        if os.path.isdir(symlink_dp):
+            link_target = os.readlink(symlink_dp)
+            if link_target == target_dp:
+                create_symlink = False
+
+        if create_symlink:
+            os.symlink(target_dp, symlink_dp)
+
     def run(self, reconstruct_sfm_mvs):
-        dataset_dp = self.pm.pan_ntf_idp
-        workspace_dp = self.pm.vissat_workspace_dp
-        mkdir_safely(workspace_dp)
-
-        create_vissat_config_from_ssr_config(
-            vissat_config_ofp=self.pm.vissat_config_fp,
-            dataset_dp=dataset_dp,
-            workspace_dp=workspace_dp,
-            ssr_config=self.ssr_config,
-        )
-
         if reconstruct_sfm_mvs:
+            dataset_dp = self.pm.pan_ntf_idp
+            workspace_dp = self.pm.vissat_workspace_dp
+            mkdir_safely(workspace_dp)
+
+            create_vissat_config_from_ssr_config(
+                vissat_config_ofp=self.pm.vissat_config_fp,
+                dataset_dp=dataset_dp,
+                workspace_dp=workspace_dp,
+                ssr_config=self.ssr_config,
+            )
+
             logger.vinfo("self.pm.vissat_config_fp", self.pm.vissat_config_fp)
+
+            # Create symlinks to the (cropped) pan images. These will be used
+            # for reconstruction.
+            self.create_symlink_dp(
+                self.pm.rec_pan_png_idp, self.pm.pan_png_idp
+            )
+            self.create_symlink_dp(
+                self.pm.rec_meta_data_idp, self.pm.pan_meta_data_idp
+            )
 
             # see https://github.com/Kai-46/VisSatSatelliteStereo/blob/master/stereo_pipeline.py
             from stereo_pipeline import StereoPipeline as VisSatStereoPipeline
