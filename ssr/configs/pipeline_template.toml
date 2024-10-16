@@ -101,9 +101,6 @@ texturing_backends = [
 #dataset_adapter = "adapter_DFC2019"
 #satellite_image_rgb_tif_dp = "path/to/input/tif/files"
 #satellite_aoi_data_dp = "path/to/input/DSM.txt/files"
-#run_input_adapter = 1
-#depth_map_recovery = 1
-#skew_correction = 1
 
 # ===== DFC2019 JAX 004 =====
 #aoi_specific_dn = "JAX_004"
@@ -149,8 +146,6 @@ texturing_backends = [
 dataset_adapter = "adapter_MVS3DM"
 satellite_image_pan_dp = "/path/to/spacenet-dataset/Hosted-Datasets/MVS_dataset/WV3/PAN"
 satellite_image_msi_dp = "/path/to/spacenet-dataset/Hosted-Datasets/MVS_dataset/WV3/MSI"
-depth_map_recovery = 1
-skew_correction = 1
 
 # ===== IARPA MVS3DM Site 1 (Used in the VisSat Evaluation) =====
 zone_number = 21
