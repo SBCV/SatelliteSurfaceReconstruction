@@ -1,6 +1,6 @@
 # Installation Instructions for VisSat
 
-In order to install [VisSat](https://openaccess.thecvf.com/content_ICCVW_2019/html/3DRW/Zhang_Leveraging_Vision_Reconstruction_Pipelines_for_Satellite_Imagery_ICCVW_2019_paper.html) there are two options:
+In order to install the required Colmap adaptation for [VisSat](https://openaccess.thecvf.com/content_ICCVW_2019/html/3DRW/Zhang_Leveraging_Vision_Reconstruction_Pipelines_for_Satellite_Imagery_ICCVW_2019_paper.html) there are two options:
     
 - Option 1: [ColmapForVisSatPatched](https://github.com/SBCV/ColmapForVisSatPatched) (RECOMMENDED)
     - Follow the [install instructions](https://github.com/SBCV/ColmapForVisSatPatched#build-patched-colmap-repository)
