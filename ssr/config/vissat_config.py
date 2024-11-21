@@ -27,6 +27,8 @@ def create_vissat_config(
     colmap_mvs=True,
     aggregate_2p5d=True,
     aggregate_3d=True,
+    # Debug options
+    aggregate_max_processes=None,
 ):
     """This function creates a config file used by the VisSat pipeline.
 
@@ -89,6 +91,8 @@ def create_vissat_config(
         "alt_min": alt_min,
         "alt_max": alt_max,
     }
+    if aggregate_max_processes is not None:
+        vissat_config["aggregate_max_processes"] = aggregate_max_processes
 
     with open(vissat_config_ofp, "w") as fp:
         json.dump(vissat_config, fp, indent=2)
@@ -127,6 +131,8 @@ def create_vissat_config_from_ssr_config(
         colmap_mvs=ssr_config.vis_sat_config.colmap_mvs,
         aggregate_2p5d=ssr_config.vis_sat_config.aggregate_2p5d,
         aggregate_3d=ssr_config.vis_sat_config.aggregate_3d,
+        # Debug options
+        aggregate_max_processes=ssr_config.vis_sat_config.aggregate_max_processes,
     )
 
 

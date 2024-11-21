@@ -19,7 +19,8 @@ class VisSatConfig(BaseModel):
     colmap_mvs: Union[bool, int] = True
     aggregate_2p5d: Union[bool, int] = True
     aggregate_3d: Union[bool, int] = True
-
+    # Debug options
+    aggregate_max_processes: int = None
 
 class SSRConfig(BaseModel):
     colmap_vissat_exe_fp: str
