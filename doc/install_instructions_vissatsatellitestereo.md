@@ -14,8 +14,10 @@
 
 - Install [VisSatSatelliteStereo](https://github.com/Kai-46/VisSatSatelliteStereo)
   - Option 1: Updated VisSatSatelliteStereo (Recommended)
-    - ```git clone -b main git@github.com:SBCV/VisSatSatelliteStereo.git```
-    - ```pip install -r requirements.txt```
+    - Clone the repository
+      - ```git clone -b main git@github.com:SBCV/VisSatSatelliteStereo.git```
+      - ```pip install -r requirements.txt```
+    - Use our ```SatelliteSurfaceReconstruction/requirements.txt``` instead of ```VisSatSatelliteStereo/requirements.txt```
   - Option 2: Original VisSatSatelliteStereo
     - Note: Supports only numpy versions ```< 1.20```
     - Latest tested version of VisSatSatelliteStereo: [commit c6cb1b4](https://github.com/Kai-46/VisSatSatelliteStereo/commit/c6cb1b4ca6bfc6f7210707333db3bbd8931a6265)
