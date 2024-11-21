@@ -1,4 +1,4 @@
-# # Installation Instructions for the Freeimage Plugin of Imageio
+# Installation Instructions for the Freeimage Plugin of Imageio
 
 - Install the freeimage plugin for imageio
   - Activate your conda environment (e.g. ```conda activate <ssr_conda_environment_name>```)
