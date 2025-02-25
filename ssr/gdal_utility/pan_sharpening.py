@@ -25,7 +25,7 @@ def perform_pan_sharpening(
 
 
 def perform_pan_sharpening_for_folder(
-    pan_idp, msi_idp, odp, resampling_algorithm="cubic"
+    pan_idp, msi_idp, odp, resampling_algorithm="cubic", check_consistent_msi_pan_extraction=False,
 ):
 
     # The created files are using the PAN (AND NOT THE MSI) STEM (i.e. P1BS
@@ -48,7 +48,8 @@ def perform_pan_sharpening_for_folder(
     )
 
     for pan_ifp, msi_ifp in zip(pan_list, msi_list):
-        assert_correct_pan_msi_ratio(pan_ifp, msi_ifp, ratio=4)
+        if check_consistent_msi_pan_extraction:
+            assert_correct_pan_msi_ratio(pan_ifp, msi_ifp, ratio=4)
         msi_sharpened_ofp = os.path.join(odp, os.path.basename(pan_ifp))
         perform_pan_sharpening(
             pan_ifp,
@@ -82,7 +83,12 @@ if __name__ == "__main__":
     pan_idp = "/path/to/pan"
     msi_idp = "/path/to/msi"
     odp = "path/to/pansharped"
+    check_consistent_msi_pan_extraction = True
 
     perform_pan_sharpening_for_folder(
-        pan_idp, msi_idp, odp, resampling_algorithm="cubic"
+        pan_idp,
+        msi_idp,
+        odp,
+        resampling_algorithm="cubic",
+        check_consistent_msi_pan_extraction=check_consistent_msi_pan_extraction,
     )

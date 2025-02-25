@@ -27,4 +27,5 @@ class InputAdapter:
                 self.pm.msi_png_idp,
                 self.pm.sharpened_with_skew_png_dp,
                 resampling_algorithm=resampling_algorithm,
+                check_consistent_msi_pan_extraction=self.config.use_consistent_msi_pan_extraction,
             )
