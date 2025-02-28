@@ -11,7 +11,6 @@
         - ```gdmr_bin_dp```
         - ```openmvs_bin_dp```
         - ```colmap_exe_dp```
-        - ```meshlab_server_fp```
         
     - For the reconstruction results (i.e. workspace directories)
         - ```workspace_vissat_dp```

@@ -51,8 +51,7 @@ class Meshlab:
     https://pymeshlab.readthedocs.io/en/latest/filter_list.html
     """
 
-    def __init__(self, executable_fp, meshlab_temp_dp):
-        self.executable_fp = executable_fp
+    def __init__(self, meshlab_temp_dp):
         self.meshlab_temp_dp = meshlab_temp_dp
         if self.meshlab_temp_dp is not None:
             if not os.path.isdir(self.meshlab_temp_dp):
@@ -134,10 +133,7 @@ class Meshlab:
 
 if __name__ == "__main__":
     ssr_config = SSRConfig.get_instance()
-    meshlab = Meshlab(
-        executable_fp=ssr_config.meshlab_server_fp,
-        meshlab_temp_dp=ssr_config.meshlab_temp_dp,
-    )
+    meshlab = Meshlab(meshlab_temp_dp=ssr_config.meshlab_temp_dp)
 
     mesh_ifp = "/path/to/mesh.ply"
     point_cloud_ofp = "/path/to/point_cloud.ply"

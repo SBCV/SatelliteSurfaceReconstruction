@@ -51,11 +51,7 @@ class MeshingStep:
                 lazy=lazy,
             )
         plain_mesh_ply_ofp = os.path.join(mesh_odp, plain_mesh_ply_ofn)
-        ssr_config = SSRConfig.get_instance()
-        meshlab = Meshlab(
-            executable_fp=ssr_config.meshlab_server_fp,
-            meshlab_temp_dp=temp_dp,
-        )
+        meshlab = Meshlab(meshlab_temp_dp=temp_dp)
         meshlab.remove_color(mesh_ply_ofp, plain_mesh_ply_ofp)
 
         logger.info("compute_mesh_with_colmap: Done")
@@ -115,11 +111,7 @@ class MeshingStep:
         )
         mesh_ply_ofp = os.path.join(odp, mesh_ply_ofn)
         plain_mesh_ply_ofp = os.path.join(odp, plain_mesh_ply_ofn)
-        ssr_config = SSRConfig.get_instance()
-        meshlab = Meshlab(
-            executable_fp=ssr_config.meshlab_server_fp,
-            meshlab_temp_dp=temp_dp,
-        )
+        meshlab = Meshlab(meshlab_temp_dp=temp_dp)
         meshlab.remove_color(mesh_ply_ofp, plain_mesh_ply_ofp)
 
         logger.info("compute_mesh_with_openmvs: Done")
@@ -150,11 +142,7 @@ class MeshingStep:
             fssr_output=True,
             lazy=lazy,
         )
-        ssr_config = SSRConfig.get_instance()
-        meshlab = Meshlab(
-            executable_fp=ssr_config.meshlab_server_fp,
-            meshlab_temp_dp=temp_dp,
-        )
+        meshlab = Meshlab(meshlab_temp_dp=temp_dp)
         if meshing_algo == "fssr":
             mve_mvs_reconstructor.compute_fssr_reconstruction(
                 odp, mesh_ply_ofp=mesh_ply_ofp, lazy=lazy

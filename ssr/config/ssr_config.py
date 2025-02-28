@@ -26,7 +26,6 @@ class SSRConfig(BaseModel):
     colmap_vissat_exe_fp: str
     colmap_vissat_lib_dp: str
     texrecon_apps_dp: str
-    meshlab_server_fp: str
     colmap_exe_dp: str
     gdmr_bin_dp: str
     mve_apps_dp: str
