@@ -1,10 +1,10 @@
 import tempfile
-import subprocess
 import os
 from ssr.utility.logging_extension import logger
 import xml.etree.ElementTree as ET
 from ssr.config.ssr_config import SSRConfig
 from ssr.utility.os_extension import makedirs_safely
+import pymeshlab
 
 
 class _MLXFileHandler:
@@ -41,7 +41,15 @@ class _MLXFileHandler:
 
 
 class Meshlab:
-    """This is an interface to the meshlab command line mode."""
+    """This is an interface to the meshlab command line mode.
+
+    https://github.com/cnr-isti-vclab/PyMeshLab
+    https://pymeshlab.readthedocs.io/en/latest/tutorials/apply_filter.html
+    https://pymeshlab.readthedocs.io/en/latest/tutorials/filter_script_load_and_apply.html
+    https://pymeshlab.readthedocs.io/en/latest/tutorials/filter_script_create_and_save.html#filter-script-create-and-save
+
+    https://pymeshlab.readthedocs.io/en/latest/filter_list.html
+    """
 
     def __init__(self, executable_fp, meshlab_temp_dp):
         self.executable_fp = executable_fp
@@ -74,76 +82,13 @@ class Meshlab:
 
         return tmp_ofp
 
-    def create_mesh(self, point_cloud_ifp, mesh_ofp):
-
-        template_fp_1 = self._create_lmx_template(
-            "compute_normals_for_point_sets.mlx"
-        )
-        template_fp_2 = self._create_lmx_template(
-            "surface_reconstruction_screened_poisson.mlx"
-        )
-
-        options = []
-        options += ["-i", point_cloud_ifp]
-        options += ["-o", mesh_ofp]
-        options += ["-s", template_fp_1]
-        subprocess.call([Meshlab.executable_fp] + options)
-
-        options = []
-        options += ["-i", mesh_ofp]
-        options += ["-o", mesh_ofp]
-        options += ["-s", template_fp_2]
-        subprocess.call([Meshlab.executable_fp] + options)
-
-        # Remove the file from the file system
-        os.unlink(template_fp_1)
-        os.unlink(template_fp_2)
-
-    def decimate_mesh(self, mesh_ifp, mesh_ofp):
-        # In meshlab_utility:
-        #   Filters /
-        #       Remeshing, Simplfification and Reconstruction /
-        #           Simplification: Quadric Edge Collapse Decimation
-
-        template_fp = self._create_lmx_template(
-            "simplification_quadric_edge_collapse_decimation.mlx"
-        )
-
-        options = []
-        options += ["-i", mesh_ifp]
-        options += ["-o", mesh_ofp]
-        options += ["-m", "vc"]
-        options += ["-s", template_fp]
-        # Although, this does potentially print a message like
-        # "no additional memory available!!! memory required: 490700136"
-        # it works as expected
-        subprocess.call([self.executable_fp] + options)
-
-        # Remove the file from the file system
-        os.unlink(template_fp)
-
-    def compute_hausdorff_distance(self, mesh_1_ifp, mesh_2_ifp, result_ofp):
-
-        # In meshlab_utility:
-        #   Filters / Sampling / Hausdorff Distance
-        template_fp = self._create_lmx_template("hausdorff_distance.mlx")
-
-        options = []
-        options += ["-l", result_ofp]
-        options += ["-i", mesh_1_ifp]
-        options += ["-i", mesh_2_ifp]
-        options += ["-s", template_fp]
-
-        subprocess.call([self.executable_fp] + options)
-        # Remove the file from the file system
-        os.unlink(template_fp)
-
     def sample_mesh(
         self, mesh_ifp, point_cloud_ofp, num_vertices, sampling_method
     ):
         # While meshlab provides a variety of sampling methods,
         # Cloudcompare provides only a single method that randomly samples
         # points.
+        # https://pymeshlab.readthedocs.io/en/latest/filter_scripts.html
 
         assert sampling_method in [
             "poisson_disk",
@@ -171,23 +116,20 @@ class Meshlab:
         assertion_msg = f"{num_vertices_str} vs {num_vertices}"
         assert int(num_vertices_str) == num_vertices, assertion_msg
 
-        options = []
-        options += ["-i", mesh_ifp]
-        options += ["-s", template_fp]
-        options += ["-o", point_cloud_ofp]
-
-        call_list = [self.executable_fp] + options
-        logger.vinfo("call_list", call_list)
-        subprocess.call(call_list)
-
-        # Remove the file from the file system
-        os.unlink(template_fp)
+        ms = pymeshlab.MeshSet()
+        ms.load_new_mesh(mesh_ifp)
+        ms.load_filter_script(template_fp)
+        ms.apply_filter_script()
+        ms.save_current_mesh(point_cloud_ofp)
 
     def remove_color(self, mesh_ifp, mesh_ofp):
-        options = []
-        options += ["-i", mesh_ifp]
-        options += ["-o", mesh_ofp]
-        subprocess.call([self.executable_fp] + options)
+        # https://pymeshlab.readthedocs.io/en/latest/io_format_list.html#save-mesh-parameters
+        ms = pymeshlab.MeshSet()
+        ms.load_new_mesh(mesh_ifp)
+        ms.save_current_mesh(
+            mesh_ofp,
+            save_vertex_color=False,
+        )
 
 
 if __name__ == "__main__":
