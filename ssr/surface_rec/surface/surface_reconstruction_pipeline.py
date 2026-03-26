@@ -10,10 +10,6 @@ from ssr.surface_rec.backends.texturing_backend import (
 from ssr.surface_rec.tasks.task_manager import (
     TaskManager,
 )
-from ssr.surface_rec.meshing.meshing import MeshingStep
-
-from ssr.surface_rec.surface.texturing import TexturingStep
-
 
 from ssr.utility.logging_extension import logger
 from ssr.utility.os_extension import mkdir_safely
@@ -44,6 +40,8 @@ class SurfaceReconstructionPipeline:
             self.process_texturing_task(texturingn_task, lazy)
 
     def process_meshing_task(self, meshing_task, lazy):
+        from ssr.surface_rec.meshing.meshing import MeshingStep
+
         mesh_ply_ofn = meshing_task.mesh_ply_ofn
         plain_mesh_ply_ofn = meshing_task.plain_mesh_ply_ofn
         logger.vinfo("mesh_ply_ofn", mesh_ply_ofn)
@@ -110,6 +108,8 @@ class SurfaceReconstructionPipeline:
             assert False
 
     def process_texturing_task(self, texturing_task, lazy):
+        from ssr.surface_rec.surface.texturing import TexturingStep
+
         # Ensure that "<parent_folder>/surface" exists
         mkdir_safely(
             os.path.dirname(os.path.dirname(texturing_task.textured_mesh_odp))
